@@ -10,42 +10,37 @@
 <helmet>
 <link rel="stylesheet" href="_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/styles.css">
 <script src="_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/_ds_bundle.js"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="도화엘리시아">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Noto+Serif+KR:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
 <style>
-body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:"Lora","Noto Serif KR",serif;word-break:keep-all}
+html,body{overscroll-behavior:none}
+body{margin:0;background:var(--color-bg);-webkit-tap-highlight-color:transparent;color:var(--color-text);font-family:"Lora","Noto Serif KR",serif;word-break:keep-all}
 button,input,textarea{font-family:"Lora","Noto Serif KR",serif}
 a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 .scr::-webkit-scrollbar{display:none}
 </style>
 </helmet>
-<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;justify-content:center;padding:40px 24px;box-sizing:border-box">
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;justify-content:center;padding:{{ outerPad }};box-sizing:border-box">
 
-  <div style="max-width:300px;display:flex;flex-direction:column;gap:20px;padding-top:24px">
-    <div style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700)">도화엘리시아 · ANDROID 프로토타입 · CLASSICAL</div>
-    <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;line-height:1.2;font-weight:500;text-wrap:pretty">관리비 고지서와 공지를 한 장의 지면처럼</div>
-    <div style="font-size:14px;line-height:1.65;color:var(--color-neutral-700);text-wrap:pretty">101동 16호 · 102동 15호, 총 31호의 월별 고지 데이터(bills-data-yyyy-mm.json)를 읽어 표시합니다. 화면별 레이아웃 안은 Tweaks 패널에서 바꿀 수 있습니다.</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="font-size:12px;color:var(--color-neutral-700)">바로 보기</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">
-        <button class="btn btn-secondary" onClick="{{ jumpLogin }}">로그인</button>
-        <button class="btn btn-secondary" onClick="{{ jumpTenant }}">세입자 (101동 202호)</button>
-        <button class="btn btn-secondary" onClick="{{ jumpAdmin }}">관리자</button>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--color-accent-700);border-top:1px solid var(--color-divider);padding-top:12px"><i class="icon-database" style="font-size:14px"></i><span>{{ dataSrc }}</span></div>
-    <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">시연: 101동 202호 · 비밀번호 1234 / 관리인 비밀번호 0000 (다른 호수 번호는 관리자 → 설정에서 확인)</div>
-  </div>
 
-  <div style="width:392px;height:852px;flex:none;background:#1b1a19;border-radius:40px;padding:10px;box-sizing:border-box;box-shadow:var(--shadow-lg)">
-    <div style="position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
+  <div style="width:{{ frameW }};height:{{ frameH }};flex:none;background:{{ frameBg }};border-radius:{{ frameR }};padding:{{ framePad }};box-sizing:border-box;box-shadow:{{ frameShadow }}">
+    <div style="position:relative;width:100%;height:100%;border-radius:{{ innerR }};overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column;padding-top:{{ safeTop }};box-sizing:border-box">
 
+      <sc-if value="{{ showDesk }}" hint-placeholder-val="{{ true }}">
       <div style="height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600">
         <span>12:47</span>
         <div style="width:10px;height:10px;border-radius:50%;background:#1b1a19;position:absolute;left:50%;top:11px;margin-left:-5px"></div>
         <div style="display:flex;gap:5px;align-items:center;font-size:15px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></div>
       </div>
+      </sc-if>
 
       <div class="scr" ref="{{ scRef }}" style="flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none">
 
@@ -646,7 +641,12 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </sc-for>
         </div>
       </sc-if>
+      <sc-if value="{{ showDesk }}" hint-placeholder-val="{{ true }}">
       <div style="height:22px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--color-bg)"><div style="width:110px;height:4px;border-radius:2px;background:var(--color-text);opacity:.8"></div></div>
+      </sc-if>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <div style="height:env(safe-area-inset-bottom);flex:none;background:var(--color-bg)"></div>
+      </sc-if>
 
       <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
         <div onClick="{{ bannerTap }}" style="position:absolute;top:38px;left:10px;right:10px;background:var(--color-bg);box-shadow:var(--shadow-lg);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;z-index:5">
@@ -745,7 +745,12 @@ const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-
 class Component extends DCLogic {
   scRef=React.createRef();
   state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pws:initPws(),adminPw:'0000',apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
-  componentDidMount(){this.applyStart();
+  componentDidMount(){
+    this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
+    this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
+    try{history.replaceState({dohwa:this.state.screen},'');}catch(e){}
+    if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+    this.applyStart();
     const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
     Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{
       const found=res.filter(Boolean);
@@ -756,9 +761,9 @@ class Component extends DCLogic {
     });
   }
   componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
-  componentWillUnmount(){clearTimeout(this.tt);clearTimeout(this.bt);}
+  componentWillUnmount(){window.removeEventListener('popstate',this.onPop);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);clearTimeout(this.tt);clearTimeout(this.bt);}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
-  go(screen,extra){this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
+  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
@@ -864,7 +869,9 @@ class Component extends DCLogic {
       resetAllPw:()=>{const np={...s.pws};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>np[x.key]=String(1000+Math.floor(Math.random()*9000)));this.setState({pws:np,showPw:true});this.toast(s.apDong+'동 전체 비밀번호를 새로 만들었습니다');},
       adminLogout:()=>this.go('login',{role:null,banner:null,lMode:'tenant',lPw:'1234'}),
       banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
-      scRef:this.scRef,dataSrc:s.dataSrc||'데이터 불러오는 중…'
+      scRef:this.scRef,
+      isMobile:!!s.isMobile,showDesk:!s.isMobile,outerPad:s.isMobile?'0':'40px 24px',
+      frameW:s.isMobile?'100%':'392px',frameH:s.isMobile?'100dvh':'852px',frameBg:s.isMobile?'var(--color-bg)':'#1b1a19',frameR:s.isMobile?'0':'40px',framePad:s.isMobile?'0':'10px',frameShadow:s.isMobile?'none':'var(--shadow-lg)',innerR:s.isMobile?'0':'30px',safeTop:s.isMobile?'env(safe-area-inset-top)':'0',dataSrc:s.dataSrc||'데이터 불러오는 중…'
     };
   }
 }
