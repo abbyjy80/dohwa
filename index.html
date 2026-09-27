@@ -123,6 +123,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </div>
               </sc-for>
             </div>
+            <sc-if value="{{ noLatest }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:var(--color-neutral-700);margin-top:14px">아직 등록된 공지가 없습니다.</div></sc-if>
           </div>
         </sc-if>
 
@@ -189,11 +190,11 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             </div>
             <button class="btn btn-primary btn-block" onClick="{{ goBill }}" style="min-height:46px;font-size:15px;margin-top:14px">고지서 자세히 보기</button>
 
-            <div class="card" onClick="{{ pinned.open }}" style="margin-top:32px;cursor:pointer">
+            <sc-if value="{{ pinned }}" hint-placeholder-val="{{ false }}"><div class="card" onClick="{{ pinned.open }}" style="margin-top:32px;cursor:pointer">
               <div class="card-kicker" style="color:var(--color-accent-700)">고정 공지 · {{ pinned.cat }}</div>
               <div class="card-title">{{ pinned.title }}</div>
               <div class="card-meta" style="color:var(--color-neutral-700)">{{ pinned.date }}</div>
-            </div>
+            </div></sc-if>
           </div>
         </sc-if>
 
@@ -277,6 +278,16 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="align-self:flex-start;margin-top:8px;min-height:42px"><i class="icon-copy"></i>계좌번호 복사</button>
             </div>
             <div style="font-size:12px;line-height:1.65;color:var(--color-neutral-700);margin-top:28px;text-wrap:pretty">상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다. 실 정산금액은 정수올림 처리에 따라 원 단위 차이가 있을 수 있습니다. 문의 관리인 박은혜 010-3769-1962</div>
+            <sc-if value="{{ hasBillNotes }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--color-divider)">
+                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600">{{ bm.monthTitle }} 안내</div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+                  <sc-for list="{{ billNotes }}" as="bn" hint-placeholder-count="6">
+                    <div style="font-size:{{ bn.size }};line-height:1.65;font-weight:{{ bn.w }};color:{{ bn.color }};margin-top:{{ bn.mt }};text-align:justify">{{ bn.t }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -404,6 +415,55 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </sc-for>
               </div>
             </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isANotices }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">공지</span>
+              <button class="btn btn-primary" onClick="{{ goCompose }}" style="min-height:40px"><i class="icon-pencil"></i>작성</button>
+            </div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:6px">{{ notesStatus }}</div>
+            <div style="display:flex;flex-direction:column;gap:20px;margin-top:22px">
+              <sc-for list="{{ adminNotices }}" as="n" hint-placeholder-count="4">
+                <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
+                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ n.cat }} · {{ n.date }}</div>
+                  <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
+                  <div style="font-size:11px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">uploads/{{ n.id }}.json</div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noAdminNotices }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:var(--color-neutral-700)">작성된 공지가 없습니다. 오른쪽 위 "작성"으로 첫 공지를 올려보세요.</div></sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isACompose }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 22px 40px">
+            <button class="btn btn-ghost" onClick="{{ composeCancel }}" style="margin-left:-6px;min-height:44px"><i class="icon-x" style="font-size:18px"></i>취소</button>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:10px">새 공지</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;font-variant-numeric:tabular-nums">저장 파일 · uploads/{{ nextNoteId }}.json</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:22px 0 8px">분류</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ composeCats }}" as="c" hint-placeholder-count="5">
+                <button onClick="{{ c.go }}" style="border:1px solid var(--color-divider);border-radius:4px;padding:8px 12px;font-size:13px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:6px;margin-top:20px">
+              <span style="font-size:13px;color:var(--color-neutral-700)">제목</span>
+              <input class="input" value="{{ cTitle }}" onChange="{{ onCTitle }}" placeholder="예: 옥상 방수 공사 안내" style="min-height:46px;font-size:16px">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;margin-top:16px">
+              <span style="font-size:13px;color:var(--color-neutral-700)">내용</span>
+              <textarea class="input" value="{{ cBody }}" onChange="{{ onCBody }}" placeholder="줄을 바꾸면 문단이 나뉩니다" style="min-height:180px;font-size:15px;line-height:1.6"></textarea>
+            </label>
+            <div onClick="{{ toggleCPin }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 6px;cursor:pointer">
+              <div><div style="font-size:15px">맨 위에 고정</div><div style="font-size:12px;color:var(--color-neutral-700)">중요한 공지를 목록 맨 위에 둡니다</div></div>
+              <div style="width:44px;height:26px;border-radius:13px;background:{{ cPinBg }};position:relative;flex:none;transition:background .2s"><div style="position:absolute;top:3px;left:{{ cPinX }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div></div>
+            </div>
+            <sc-if value="{{ cErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px">{{ cErr }}</div></sc-if>
+            <button class="btn btn-primary btn-block" onClick="{{ saveNote }}" disabled="{{ noteBusy }}" style="min-height:48px;font-size:15px;margin-top:18px">{{ saveNoteLabel }}</button>
+            <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:10px">{{ saveNoteHint }}</div>
           </div>
         </sc-if>
 
@@ -569,17 +629,12 @@ const RAW='101,201,김**,41.08,0;101,202,임**,29.09,44130;101,203,송**,45.07,4
 let UNITS=RAW.split(';').map(s=>{const [d,h,r,a,p,m]=s.split(',');return {dong:d,ho:h,key:d+'-'+h,resident:r,area:a,prev:+p,move:m||'',shop:h[0]==='B'};});
 const fmt=n=>Math.round(n).toLocaleString('ko-KR');
 const CATS=['일반','공사·점검','분리수거','주차','회의·투표'];
-const NOTICES=[
- {id:'n1',cat:'일반',pinned:true,date:'2026.09.26',title:'9월분 관리비 고지 및 변경 사항 안내',body:['8월분 납부 내역을 제출하지 않은 세대는 전월 미납액이 합산되어 고지서가 발행되었습니다. 이미 납부하신 세대는 관리인에게 이체확인증을 보내주신 후, 미납액을 뺀 당월 관리비만 입금해 주시면 정상 정산됩니다.','당분간 관리단 자체 관리로 관리용역비를 월 31만 원에서 15만 원으로 낮췄습니다. 수선유지비는 세대당 4,300원에서 10,000원으로 조정되었습니다.','이번 달에는 소방관리교육비(154,000원)와 관리단 설립 비용(등기·우편 152,620원)이 추가되었습니다.','3개월 이상 미납 세대는 공용게시판에 공지 후 단수 조치되며, 2개월 이상 미납 세대는 주차장을 이용할 수 없습니다.']},
- {id:'n2',cat:'공사·점검',date:'2026.09.24',title:'승강기 정기 안전점검 — 10월 2일(금) 오전',body:['10월 2일(금) 오전 10시부터 12시까지 101동·102동 승강기 정기 안전점검이 진행됩니다.','점검 중에는 승강기 운행이 중지되니 계단을 이용해 주세요. 거동이 불편하신 분은 미리 관리인에게 알려주시면 시간을 조정해 드립니다.']},
- {id:'n3',cat:'회의·투표',date:'2026.09.22',title:'관리단 정기 집회 개최 안내',meeting:[{k:'일시',v:'10월 18일(일) 오후 7시'},{k:'장소',v:'101동 1층 필로티'},{k:'안건',v:'관리규약 제정 · 수선유지비 조정'}],body:['구분소유자와 입주민 모두 참석하실 수 있습니다. 의결은 구분소유자 기준으로 진행됩니다.','참석이 어려운 소유주께서는 10월 16일까지 위임장을 관리인에게 제출해 주세요. 위임장 양식은 101동 공용게시판에 비치되어 있습니다.']},
- {id:'n4',cat:'분리수거',date:'2026.09.18',title:'10월부터 재활용 배출 요일이 화·금으로 바뀝니다',body:['재활용품 배출 요일이 월·목에서 화·금 저녁 6시 이후로 변경됩니다. 음식물 쓰레기는 기존과 같이 매일 배출할 수 있습니다.','스티로폼과 비닐은 반드시 분리해 주시고, 택배 상자는 테이프와 송장을 제거해 접어서 배출해 주세요.']},
- {id:'n5',cat:'주차',date:'2026.09.15',title:'장기 미납 세대 주차장 이용 제한 안내',body:['관리규약에 따라 관리비를 2개월 이상 미납한 세대는 10월 1일부터 지하 주차장을 이용할 수 없습니다.','미납액을 정산하시면 확인 즉시 이용이 재개됩니다. 외부 차량 방문 시에는 관리인에게 차량번호를 미리 알려주세요.']},
- {id:'n6',cat:'공사·점검',date:'2026.09.08',title:'소방시설 작동 점검 결과 안내',body:['9월 5일 실시한 소방시설 작동 점검 결과, 102동 3층 감지기 1개가 교체되었고 그 외 시설은 정상입니다.','세대 내 감지기 점검을 받지 못한 세대는 관리인에게 연락해 일정을 잡아주세요.']},
- {id:'n7',cat:'일반',date:'2026.09.01',title:'관리단 자체 관리 전환 안내',body:['9월부터 관리회사 위탁을 종료하고 관리단이 직접 관리합니다. 관리인은 박은혜(010-3769-1962)입니다.','관리비 고지서와 공지는 앞으로 이 앱과 공용게시판으로 함께 안내됩니다.']}
-];
-const READ_COUNTS={n1:18,n2:24,n3:21,n4:27,n5:25,n6:28,n7:30};
-function initReads(){const r={};NOTICES.forEach((n,ni)=>{const order=UNITS.map((u,i)=>UNITS[(i*13+ni*5)%31].key);let set=order.filter(k=>k!=='101-202').slice(0,READ_COUNTS[n.id]-(ni>=3?1:0));if(ni>=3)set.push('101-202');r[n.id]=set;});return r;}
+const NOTICES=[];
+const NOTE_RE=/^note_(\d{8})_(\d{3})\.json$/,NOTE_INDEX='uploads/notes-index.json',READ_LS='dohwa-reads';
+const noteDate=id=>{const m=/note_(\d{4})(\d{2})(\d{2})/.exec(id);return m?m[1]+'.'+m[2]+'.'+m[3]:'';};
+const todayYmd=()=>{const t=new Date();return t.getFullYear()+String(t.getMonth()+1).padStart(2,'0')+String(t.getDate()).padStart(2,'0');};
+const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),date:j.date||noteDate(id),pinned:!!j.pinned});
+function initReads(){try{return JSON.parse(localStorage.getItem(READ_LS)||'{}')||{};}catch(e){return {};}}
 function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
 function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:r&&u.shop?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
 const DATA_DIR='uploads/';
@@ -629,14 +684,14 @@ class Component extends DCLogic {
     try{history.replaceState({dohwa:this.state.screen},'');}catch(e){}
     if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
     this.loadPwFile();
+    this.loadNotes();
     this.applyStart();
     const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
     Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{
       const found=res.filter(Boolean);
       if(!found.length)return this.setState({dataSrc:'bills-data-yyyy-mm.json 파일이 없어 내장 데이터로 표시 중'});
       const {body,issue}=applyAll(found);const [y,m]=found[0].ym.split('-').map(Number);
-      const notices=this.state.notices.map(n=>n.id==='n1'?{...n,title:m+'월분 관리비 고지 및 변경 사항 안내',body:body||n.body,date:issue?issue.replace(/-/g,'.'):n.date}:n);
-      this.setState({reads:initReads(),notices,billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
+      this.setState({billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
     });
   }
   componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
@@ -663,6 +718,24 @@ class Component extends DCLogic {
       const n=Object.keys(this.state.pwPending).length;const r=await ghApi(tok,p,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'비밀번호 업데이트 ('+(n?n+'건 변경':'재저장')+') · 관리자 앱',content:b64utf8(JSON.stringify(f,null,1)),branch:GH.branch,...(sha?{sha}:{})})});if(!r.ok)throw r.status;
       savePending({});if(ap)this.adminPlain=ap;const d=new Date();this.setState({ghBusy:false,pwFile:f,pwPending:{},plainPw:plain,vaultMsg:'',pwFileStatus:d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' GitHub에 저장됨'});this.toast('GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 적용');}
     catch(st){this.setState({ghBusy:false,ghErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});if(st===401){lsSet(GH_LS,'');this.setState({ghToken:''});}}}
+  async loadNotes(){const names=new Set();
+    try{const r=await fetch(NOTE_INDEX,{cache:'no-store'});if(r.ok){const j=await r.json();(j.files||[]).forEach(f=>NOTE_RE.test(f)&&names.add(f));}}catch(e){}
+    try{const r=await fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+'/contents/uploads?ref='+GH.branch,{cache:'no-store',headers:{'Accept':'application/vnd.github+json'}});if(r.ok){(await r.json()).forEach(f=>NOTE_RE.test(f.name)&&names.add(f.name));}}catch(e){}
+    const list=(await Promise.all([...names].map(f=>fetch('uploads/'+f,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>j?normNote(f.replace('.json',''),j):null).catch(()=>null)))).filter(Boolean).sort((a,b)=>b.id.localeCompare(a.id));
+    this.setState({notices:list,notesStatus:list.length?'uploads 폴더의 공지 '+list.length+'건':'uploads 폴더에 공지 파일이 없습니다'});}
+  nextNoteId(){const d=todayYmd();const used=this.state.notices.filter(n=>n.id.startsWith('note_'+d+'_')).map(n=>+n.id.slice(-3));return 'note_'+d+'_'+String((used.length?Math.max(...used):0)+1).padStart(3,'0');}
+  async saveNote(){const s=this.state;if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});
+    const id=this.nextNoteId();const t=new Date();const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),date:noteDate(id),pinned:!!s.cPin,author:'관리인 박은혜',createdAt:t.toISOString()};
+    const text=JSON.stringify(note,null,1);const n=normNote(id,note);
+    const done=msg=>{this.go('anotices',{notices:[n,...s.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cTitle:'',cBody:'',cErr:'',cPin:false,noteBusy:false});this.toast(msg);};
+    if(!s.ghToken){const blob=new Blob([text],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);return done(id+'.json을 내려받았습니다 · uploads 폴더에 올려주세요');}
+    this.setState({noteBusy:true,cErr:''});const tok=s.ghToken;
+    try{const r=await ghApi(tok,'/contents/uploads/'+id+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 등록: '+note.title,content:b64utf8(text),branch:GH.branch})});if(!r.ok)throw r.status;
+      try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
+        const all=[...new Set([id+'.json',...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)).sort().reverse();
+        await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:t.toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
+      done('GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
+    catch(st){this.setState({noteBusy:false,cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
   setPending(p){savePending(p);this.setState({pwPending:p});}
   loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'},()=>{if(this.state.role==='admin')this.unlockVault();});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
@@ -671,20 +744,20 @@ class Component extends DCLogic {
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});setTimeout(()=>this.unlockVault(),0);}
   doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
-  openNotice(id){const s=this.state;const reads={...s.reads};if(s.role==='tenant'&&!reads[id].includes(s.unit))reads[id]=[...reads[id],s.unit];this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
+  openNotice(id){const s=this.state;const reads={...s.reads};const rl=reads[id]||[];if(s.role==='tenant'&&!rl.includes(s.unit)){reads[id]=[...rl,s.unit];try{localStorage.setItem(READ_LS,JSON.stringify(reads));}catch(e){}}this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
     const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
     const u=UNITS.find(x=>x.key===s.unit)||UNITS[1];
     const cur=billFor(u,5),bm=billFor(u,s.billMonth);
     const isT=s.role==='tenant',isA=s.role==='admin';
-    const unread=n=>isT&&!s.reads[n.id].includes(u.key);
-    const excerpt=n=>n.body[0].length>90?n.body[0].slice(0,88)+'…':n.body[0];
-    const nv=n=>({...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:s.reads[n.id].length,pct:Math.round(s.reads[n.id].length/31*100)+'%'});
+    const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
+    const excerpt=n=>{const b=n.body[0]||'';return b.length>90?b.slice(0,88)+'…':b;};
+    const nv=n=>({...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:(s.reads[n.id]||[]).length,pct:'0%'});
     const sorted=[...s.notices].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
     const filtered=sorted.filter(n=>s.cat==='전체'||n.cat===s.cat).map(nv);
     const chip=(on)=>({bg:on?'var(--color-accent-100)':'transparent',fg:on?'var(--color-accent-800)':'var(--color-text)'});
-    const ndRaw=s.notices.find(n=>n.id===s.noticeId)||s.notices[0];
+    const ndRaw=s.notices.find(n=>n.id===s.noticeId)||s.notices[0]||{id:'',cat:'',title:'',body:[],date:''};
     const nd=nv(ndRaw);
     const itemsNZ=bm.items.filter(i=>i.amount>0);
     const bsorted=[...itemsNZ].sort((a,b)=>b.amount-a.amount);
@@ -699,7 +772,7 @@ class Component extends DCLogic {
     const perOf=([n,a,r])=>Math.ceil(aVals[n]/(r?29:31));
     const up10=n=>Math.ceil(n/10)*10;const perRes=up10(ITEMS9.reduce((t,it)=>t+perOf(it),0)),perShop=up10(ITEMS9.filter(it=>!it[2]).reduce((t,it)=>t+perOf(it),0));
     const unpaidUnits=UNITS.filter(x=>x.prev>0);
-    const latestN=nv(s.notices[0]);
+    const latestN=s.notices[0]?nv(s.notices[0]):null;
     const ho=x=>x.dong+'동 '+x.ho+'호';
     const stepsDef=['항목 입력','호수별 확인','발송'];
     return {
@@ -718,7 +791,7 @@ class Component extends DCLogic {
       latest3:sorted.slice(0,3).map(nv),
       feed:[{date:s.issueShort||'09.26',kind:'고지서',icon:'icon-receipt',kColor:'var(--color-accent-2-700)',title:PD.label+'분 관리비 '+cur.totalFmt+'원이 청구되었습니다',unread:false,open:()=>this.go('bill',{billMonth:5})},...s.notices.slice(0,5).map(n=>({date:n.date.slice(5),kind:n.cat,icon:'icon-megaphone',kColor:'var(--color-accent-700)',title:n.title,unread:unread(n),open:()=>this.openNotice(n.id)}))],
       trend:MONTHS.map((m,i)=>({label:m[0],short:(trendVals[i]/10000).toFixed(1)+'만',h:(trendVals[i]/tMax*120)+'px',color:i===5?'var(--color-accent)':cur.unpaid.has(i)?'var(--color-neutral-800)':'var(--color-neutral-300)',w:i===5?700:400,open:()=>this.go('bill',{billMonth:i})})),
-      pinned:nv(sorted[0]),
+      pinned:sorted[0]?nv(sorted[0]):null,noLatest:!s.notices.length,
       isBill:s.screen==='bill',isBillA:billL==='영수증',isBillB:billL==='구성비',bm,
       monthChips:MONTHS.map((m,i)=>({label:m[0],...chip(i===s.billMonth),go:()=>this.setState({billMonth:i})})),
       billItems:itemsNZ.map(i=>({name:i.name,amtFmt:fmt(i.amount)})),
@@ -727,14 +800,14 @@ class Component extends DCLogic {
       catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c})})),
       noticeList:filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
       isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
-      readGrid:['101','102'].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
+      readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
       logout:()=>this.go('login',{role:null,banner:null}),
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
       latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
-      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:''}),
+      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cCat:'일반'}),
       isABill:s.screen==='abill',sent:s.sent,showStepper:!s.sent&&aflow==='단계별',
       steps:stepsDef.map((l,i)=>{const on=s.step===i+1,done=s.step>i+1;return {n:done?'✓':String(i+1),label:l,fg:on?'var(--color-text)':'var(--color-neutral-700)',w:on?700:400,bg:on||done?'var(--color-accent)':'var(--color-neutral-300)',nfg:on||done?'var(--color-bg)':'var(--color-text)'};}),
       showItems:!s.sent&&(aflow==='한 화면'||s.step===1),showPreview:!s.sent&&aflow==='단계별'&&s.step===2,showConfirm:!s.sent&&aflow==='단계별'&&s.step===3,
@@ -748,7 +821,10 @@ class Component extends DCLogic {
       confirmOpen:s.confirmOpen,closeConfirm:()=>this.setState({confirmOpen:false}),
       doSend:()=>{this.setState({sent:true,confirmOpen:false,step:1});this.toast('31호에 고지서 발송 알림을 보냈습니다');},
       resetSend:()=>this.setState({sent:false,step:1}),
-      isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),
+      isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),noAdminNotices:!s.notices.length,notesStatus:s.notesStatus||'공지 불러오는 중…',nextNoteId:this.nextNoteId(),
+      composeCancel:()=>this.go('anotices',{cErr:''}),cPinBg:s.cPin?'var(--color-accent)':'var(--color-neutral-300)',cPinX:s.cPin?'21px':'3px',toggleCPin:()=>this.setState({cPin:!s.cPin}),
+      saveNote:()=>this.saveNote(),noteBusy:!!s.noteBusy,saveNoteLabel:s.noteBusy?'저장 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 비밀번호 탭에서 GitHub를 연결하면 바로 저장됩니다.',
+      billNotes:((srcAt(u,s.billMonth)||{}).notices||[]).map(t=>{const head=/^특이사항$/.test(t.trim());const star=/^※/.test(t.trim());return {t:t.trim(),size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};}),hasBillNotes:!!(((srcAt(u,s.billMonth)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
       cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
@@ -756,11 +832,11 @@ class Component extends DCLogic {
       publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
       showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
       tenantTabs:tabs([['home','홈','icon-house'],['bill','고지서','icon-receipt'],['notices','공지','icon-megaphone',anyUnread],['settings','내 정보','icon-circle-user']]),
-      adminTabs:tabs([['ahome','현황','icon-chart-column'],['asettings','비밀번호','icon-key-round']]),
+      adminTabs:tabs([['ahome','현황','icon-chart-column'],['anotices','공지','icon-megaphone'],['asettings','비밀번호','icon-key-round']]),
       isASettings:s.screen==='asettings',
       apCur:s.apCur,apNew:s.apNew,apNew2:s.apNew2,apErr:s.apErr,
       onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
-      saveAdminPw:()=>{if(this.hashOf('admin')!==hashPw('admin',s.apCur))return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.apCur)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setPending({...s.pwPending,admin:s.apNew});this.setState({apCur:'',apNew:'',apNew2:''});this.toast('변경했습니다 · 파일 내보내기를 해야 다른 폰에 적용됩니다');},
+      saveAdminPw:()=>{if(this.hashOf('admin')!==hashPw('admin',s.apCur))return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.apCur)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setPending({...s.pwPending,admin:s.apNew});this.setState({apCur:'',apNew:'',apNew2:''});this.toast('변경했습니다 · GitHub에 저장해야 다른 폰에 적용됩니다');},
       p101:s.apDong==='101',p102:s.apDong==='102',pickP101:()=>this.setState({apDong:'101'}),pickP102:()=>this.setState({apDong:'102'}),
       showPwLabel:s.showPw?'번호 숨기기':'번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
       vaultMsg:s.vaultMsg,
@@ -773,7 +849,7 @@ class Component extends DCLogic {
       ghDisconnect:()=>{lsSet(GH_LS,'');this.setState({ghToken:'',ghErr:''});this.toast('이 폰에서 GitHub 연결을 해제했습니다');},
       toggleGhHelp:()=>this.setState({ghHelp:!s.ghHelp}),
       ghSaveLabel:s.ghBusy?'저장 중…':'GitHub에 저장'+(Object.keys(s.pwPending).length?' ('+Object.keys(s.pwPending).length+'건)':''),
-      ghSteps:[{n:'1',t:'GitHub에 로그인 후 아래 "토큰 만들기 페이지"를 엽니다 (Settings → Developer settings → Fine-grained tokens).'},{n:'2',t:'Token name에 "도화 관리자앱", Expiration은 1년(366 days)을 고릅니다.'},{n:'3',t:'Repository access에서 "Only select repositories" → abbyjy80/dohwa 를 선택합니다.'},{n:'4',t:'Permissions → Repository permissions → Contents 를 "Read and write"로 바꿉니다.'},{n:'5',t:'맨 아래 Generate token → 생성된 github_pat_… 문자열을 복사합니다.'},{n:'6',t:'이 화면 입력칸에 붙여넣고 "연결"을 누릅니다.'}],
+      ghSteps:[{n:'1',t:'GitHub에 로그인 후 아래 "토큰 만들기 페이지"를 엽니다 (Settings → Developer settings → Fine-grained tokens).'},{n:'2',t:'Token name에 "도화 관리자앱", Expiration은 1년(366 days)을 고릅니다.'},{n:'3',t:'Repository access에서 "Only select repositories" → abbyjy80/dohwa 를 선택합니다.'},{n:'4',t:'Permissions에서 "+ Add permissions" 버튼 → 목록에서 Contents 선택 → 오른쪽 Access를 "Read and write"로 바꿉니다. (버튼이 안 보이면 3번의 저장소 선택을 먼저 하세요)'},{n:'5',t:'맨 아래 Generate token → 생성된 github_pat_… 문자열을 복사합니다.'},{n:'6',t:'이 화면 입력칸에 붙여넣고 "연결"을 누릅니다.'}],
       exportPw:async()=>{const {f}=await this.buildPwFile();const blob=new Blob([JSON.stringify(f,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passwords.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);this.toast('passwords.json을 내려받았습니다');},
       pwSheet:!!s.pwEdit,pwSheetTitle:s.pwEdit?s.pwEdit.replace('-','동 ')+'호 비밀번호':'',pwNew:s.pwNew,pwErr:s.pwErr,
       onPwNew:e=>this.setState({pwNew:e.target.value.replace(/\D/g,'').slice(0,4),pwErr:''}),
