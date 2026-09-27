@@ -1,92 +1,873 @@
 <!DOCTYPE html>
-<html lang="ko"><head>
+<html>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2026년 9월 관리비 고지서</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/styles.css">
+<script src="_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/_ds_bundle.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Noto+Serif+KR:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
 <style>
-:root{--bg:#f3f2f2;--text:#201f1d;--accent:#b68235;--accent-700:#8a6228;--divider:rgba(32,31,29,.14);--card:#fbfaf9}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Lora',Georgia,serif;
-     display:flex;justify-content:center;padding:clamp(24px,6vw,48px) clamp(12px,4vw,20px) 60px}
-.wrap{width:100%;max-width:640px;min-width:0}
-h1,h2,.num{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400}
-.head{text-align:center;margin-bottom:28px}
-.kicker{color:var(--accent-700);letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 8px}
-h1{font-size:clamp(22px,6vw,30px);margin:0 0 6px}
-.meta{margin:0;font-size:13px;opacity:.6}
-select[hidden]{display:none}
-select{width:100%;max-width:320px;margin:0 auto 28px;display:block;padding:10px 12px;border:1px solid var(--divider);
-       border-radius:4px;background:var(--card);font-family:inherit;font-size:15px;color:inherit}
-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.card{background:var(--card);border:1px solid var(--divider);border-radius:4px;
-      box-shadow:0 1px 2px rgba(32,31,29,.05);padding:clamp(16px,5vw,28px);margin-bottom:20px;overflow-wrap:break-word}
-.unit{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:baseline;
-      padding-bottom:16px;border-bottom:1px solid var(--divider)}
-h2{font-size:clamp(18px,5vw,22px);margin:0 0 4px}
-.sub{flex:0 0 100%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 8px}
-.sub span:last-child{margin-left:auto;text-align:right}
-.tag{border:1px solid var(--accent);color:var(--accent-700);border-radius:4px;padding:3px 10px;font-size:12px}
-.amounts{display:flex;flex-wrap:wrap;gap:16px 24px;padding:20px 0;border-bottom:1px solid var(--divider)}
-.amounts>div{flex:1;min-width:130px}
-.lbl{margin:0 0 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.55}
-.num{font-size:clamp(22px,7vw,32px);margin:0;white-space:nowrap;font-feature-settings:"tnum" 1}
-.note{white-space:pre-line;font-size:13px;line-height:1.6;opacity:.7;margin:16px 0 0}
-.sec{letter-spacing:.06em;text-transform:uppercase;opacity:.6;margin:22px 0 6px;font-size:12px;font-weight:600}
-.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;padding:9px 0;
-     border-bottom:1px solid var(--divider);font-size:14.5px}
-.row span:last-child{white-space:nowrap;font-feature-settings:"tnum" 1}
-.sum{display:flex;justify-content:space-between;padding:4px 0;font-size:14px;opacity:.65;
-     font-feature-settings:"tnum" 1}
-.total{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;padding:12px 0;margin-top:10px;
-       border-top:1px solid var(--text);font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:17px}
-.total span:last-child{color:var(--accent);font-feature-settings:"tnum" 1}
-.footer{white-space:pre-line;font-size:12.5px;line-height:1.6;opacity:.55;margin:8px 0 0}
-.notice{margin:0 0 8px;font-size:13.5px;line-height:1.6;opacity:.78}
-</style></head>
-<body><div class="wrap">
-  <div class="head">
-    <p class="kicker">도화엘리시아</p>
-    <h1>2026년 9월 관리비 고지서</h1>
-    <p class="meta">발행일자 : 2026-09-26 · 강서구 강서로45나길 59</p>
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:"Lora","Noto Serif KR",serif;word-break:keep-all}
+button,input,textarea{font-family:"Lora","Noto Serif KR",serif}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+.scr::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;justify-content:center;padding:40px 24px;box-sizing:border-box">
+
+  <div style="max-width:300px;display:flex;flex-direction:column;gap:20px;padding-top:24px">
+    <div style="font-size:11px;letter-spacing:.1em;color:var(--color-accent-700)">도화엘리시아 · ANDROID 프로토타입 · CLASSICAL</div>
+    <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;line-height:1.2;font-weight:500;text-wrap:pretty">관리비 고지서와 공지를 한 장의 지면처럼</div>
+    <div style="font-size:14px;line-height:1.65;color:var(--color-neutral-700);text-wrap:pretty">101동 16호 · 102동 15호, 총 31호의 월별 고지 데이터(bills-data-yyyy-mm.json)를 읽어 표시합니다. 화면별 레이아웃 안은 Tweaks 패널에서 바꿀 수 있습니다.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:var(--color-neutral-700)">바로 보기</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <button class="btn btn-secondary" onClick="{{ jumpLogin }}">로그인</button>
+        <button class="btn btn-secondary" onClick="{{ jumpTenant }}">세입자 (101동 202호)</button>
+        <button class="btn btn-secondary" onClick="{{ jumpAdmin }}">관리자</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--color-accent-700);border-top:1px solid var(--color-divider);padding-top:12px"><i class="icon-database" style="font-size:14px"></i><span>{{ dataSrc }}</span></div>
+    <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">시연: 101동 202호 · 비밀번호 1234 / 관리인 비밀번호 0000 (다른 호수 번호는 관리자 → 설정에서 확인)</div>
   </div>
-  <select id="sel" ></select>
-  <div id="out"></div>
+
+  <div style="width:392px;height:852px;flex:none;background:#1b1a19;border-radius:40px;padding:10px;box-sizing:border-box;box-shadow:var(--shadow-lg)">
+    <div style="position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
+
+      <div style="height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600">
+        <span>12:47</span>
+        <div style="width:10px;height:10px;border-radius:50%;background:#1b1a19;position:absolute;left:50%;top:11px;margin-left:-5px"></div>
+        <div style="display:flex;gap:5px;align-items:center;font-size:15px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></div>
+      </div>
+
+      <div class="scr" ref="{{ scRef }}" style="flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none">
+
+        <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:28px 24px 32px;display:flex;flex-direction:column;min-height:100%;box-sizing:border-box">
+            <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
+              <span>도화엘리시아 관리단</span><span>강서구 강서로45나길 59</span>
+            </div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:34px;line-height:1.18;font-weight:500;margin:40px 0 10px;text-wrap:pretty">우리 집 관리비와 공지를 한곳에서</div>
+            <div style="font-size:14px;color:var(--color-neutral-700);line-height:1.6">매월 고지서와 관리단 소식을 동·호수로 확인하세요.</div>
+
+            <div style="display:flex;gap:22px;margin:40px 0 24px;font-size:15px">
+              <button onClick="{{ modeTenant }}" style="border:0;background:none;padding:0 0 6px;cursor:pointer;font-size:15px;color:var(--color-text);font-weight:{{ tenantTabW }};border-bottom:2px solid {{ tenantTabLine }}">입주민</button>
+              <button onClick="{{ modeAdmin }}" style="border:0;background:none;padding:0 0 6px;cursor:pointer;font-size:15px;color:var(--color-text);font-weight:{{ adminTabW }};border-bottom:2px solid {{ adminTabLine }}">관리인</button>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <sc-if value="{{ isTenantMode }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:13px;color:var(--color-neutral-700)">동</span>
+                  <div class="seg" style="align-self:flex-start">
+                    <label class="seg-opt" style="padding:10px 22px;font-size:15px"><input type="radio" name="dong" checked="{{ d101 }}" onChange="{{ pick101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
+                    <label class="seg-opt" style="padding:10px 22px;font-size:15px"><input type="radio" name="dong" checked="{{ d102 }}" onChange="{{ pick102 }}" style="position:absolute;opacity:0;width:0;height:0">102동</label>
+                  </div>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:13px;color:var(--color-neutral-700)">호수</span>
+                  <input class="input" value="{{ lHo }}" onChange="{{ onHo }}" placeholder="예: 302 또는 B01" style="min-height:48px;font-size:16px">
+                </label>
+              </sc-if>
+              <label style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:13px;color:var(--color-neutral-700)">{{ pwLabel }}</span>
+                <input class="input" type="password" inputMode="numeric" maxLength="4" value="{{ lPw }}" onChange="{{ onPw }}" placeholder="숫자 4자리" style="min-height:48px;font-size:16px;letter-spacing:.3em">
+              </label>
+              <sc-if value="{{ lErr }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:13px;color:var(--color-accent-2-700);display:flex;gap:6px;align-items:center"><i class="icon-circle-alert" style="font-size:16px"></i>{{ lErr }}</div>
+              </sc-if>
+              <button class="btn btn-primary" onClick="{{ doLogin }}" style="min-height:50px;font-size:16px;margin-top:6px">로그인</button>
+            </div>
+            <div style="flex:1"></div>
+            <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:32px">비밀번호를 잊으셨다면 관리인 박은혜 <a href="tel:01037691962">010-3769-1962</a>로 문의하세요.</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isHomeA }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
+              <span>도화엘리시아</span><span>{{ pd.todayFull }}</span>
+            </div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:28px">{{ unitLabel }} 귀하 · {{ pd.label }}분 관리비</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-top:6px">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:52px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em">{{ cur.totalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px">원</span>
+            </div>
+            <div style="font-size:14px;margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 12px">
+              <span>납부기한 {{ pd.dueFull }}</span><span style="color:var(--color-accent-700);font-weight:600">{{ pd.dday }}</span>
+            </div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">납기 후 {{ cur.afterFmt }}원</div>
+            <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>전월 미납액 {{ cur.prevFmt }}원이 합산되었습니다. 이미 납부하셨다면 이체확인증을 관리인에게 보내주세요.</span></div>
+            </sc-if>
+            <div style="display:flex;gap:10px;margin-top:22px">
+              <button class="btn btn-primary" onClick="{{ goBill }}" style="flex:1;min-height:46px;font-size:15px">고지서 보기</button>
+              <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="min-height:46px;font-size:15px"><i class="icon-copy"></i>계좌 복사</button>
+            </div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:10px">국민은행 444401-01-505592 · 입금자명 {{ depositName }}</div>
+
+            <div style="margin-top:48px;display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600">관리단 소식</span>
+              <button class="btn btn-ghost" onClick="{{ goNotices }}">전체 보기</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:22px;margin-top:16px">
+              <sc-for list="{{ latest3 }}" as="n" hint-placeholder-count="3">
+                <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                    <span>{{ n.cat }}</span>
+                    <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                  </div>
+                  <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;line-height:1.35;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
+                  <div style="font-size:12px;color:var(--color-neutral-700)">{{ n.date }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isHomeB }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 22px 40px">
+            <div style="font-size:13px;color:var(--color-neutral-700)">도화엘리시아 · {{ unitLabel }}</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:4px">안녕하세요</div>
+            <div class="card" onClick="{{ goBill }}" style="margin-top:22px;cursor:pointer;padding:18px">
+              <div class="card-kicker" style="color:var(--color-accent-700)">{{ pd.label }}분 관리비 · {{ pd.dday }}</div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+                <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:32px;font-weight:500;font-variant-numeric:tabular-nums">{{ cur.totalFmt }}<span style="font-size:16px;font-weight:400">원</span></span>
+                <i class="icon-chevron-right" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px"></i>
+              </div>
+              <div class="card-meta" style="color:var(--color-neutral-700);font-size:12px">납부기한 {{ pd.dueShort }} · 납기 후 {{ cur.afterFmt }}원</div>
+              <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
+                <span class="tag tag-accent-2" style="align-self:flex-start">전월 미납 {{ cur.prevFmt }}원 포함</span>
+              </sc-if>
+            </div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:36px 0 14px">최근 소식</div>
+            <div style="display:flex;flex-direction:column;gap:22px">
+              <sc-for list="{{ feed }}" as="f" hint-placeholder-count="5">
+                <div onClick="{{ f.open }}" style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;cursor:pointer">
+                  <div style="font-size:13px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700);padding-top:2px">{{ f.date }}</div>
+                  <div style="display:flex;flex-direction:column;gap:3px">
+                    <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:{{ f.kColor }}">
+                      <i class="{{ f.icon }}" style="font-size:14px"></i><span>{{ f.kind }}</span>
+                      <sc-if value="{{ f.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                    </div>
+                    <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ f.title }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isHomeC }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 22px 40px">
+            <div style="font-size:13px;color:var(--color-neutral-700)">{{ unitLabel }} · {{ pd.label }}분</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-top:6px">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:44px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums">{{ cur.subtotalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px">원</span>
+            </div>
+            <div style="font-size:14px;margin-top:10px">지난달보다 <span style="color:var(--color-accent-700);font-weight:600">{{ deltaFmt }}원</span> 늘었습니다</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">수선유지비 인상(4,300원 → 10,000원)과 소방교육·관리단 설립 비용이 더해졌습니다.</div>
+
+            <div style="display:flex;align-items:flex-end;gap:10px;height:170px;margin-top:30px">
+              <sc-for list="{{ trend }}" as="b" hint-placeholder-count="6">
+                <div onClick="{{ b.open }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%;cursor:pointer">
+                  <span style="font-size:11px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700)">{{ b.short }}</span>
+                  <div style="width:100%;height:{{ b.h }};background:{{ b.color }};border-radius:1px"></div>
+                  <span style="font-size:12px;font-weight:{{ b.w }}">{{ b.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--color-neutral-700);margin-top:12px">
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-neutral-300)"></span>납부</span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-neutral-800)"></span>미납</span>
+              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-accent)"></span>이번 달</span>
+            </div>
+
+            <div style="margin-top:30px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:13px;color:var(--color-neutral-700)">이번 달 청구액 (미납 포함)</div>
+              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums">{{ cur.totalFmt }}원 <span style="font-size:13px;font-weight:400;color:var(--color-neutral-700)">· {{ pd.dueShort }}까지</span></div>
+            </div>
+            <button class="btn btn-primary btn-block" onClick="{{ goBill }}" style="min-height:46px;font-size:15px;margin-top:14px">고지서 자세히 보기</button>
+
+            <div class="card" onClick="{{ pinned.open }}" style="margin-top:32px;cursor:pointer">
+              <div class="card-kicker" style="color:var(--color-accent-700)">고정 공지 · {{ pinned.cat }}</div>
+              <div class="card-title">{{ pinned.title }}</div>
+              <div class="card-meta" style="color:var(--color-neutral-700)">{{ pinned.date }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isBill }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">관리비 고지서</div>
+            <div style="display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none">
+              <sc-for list="{{ monthChips }}" as="m" hint-placeholder-count="6">
+                <button onClick="{{ m.go }}" style="flex:none;border:1px solid var(--color-divider);border-radius:2px;padding:8px 14px;font-size:14px;cursor:pointer;background:{{ m.bg }};color:{{ m.fg }}">{{ m.label }}</button>
+              </sc-for>
+            </div>
+
+            <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+              <div>
+                <div style="font-size:13px;color:var(--color-neutral-700)">{{ bm.monthTitle }} · {{ unitType }}</div>
+                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600;margin-top:2px">{{ unitLabel }} 귀하</div>
+                <div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px">{{ resident }} · 전용 {{ area }}㎡</div>
+              </div>
+              <span class="tag {{ bm.tagClass }}">{{ bm.status }}</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px">
+              <div>
+                <div style="font-size:12px;color:var(--color-neutral-700)">청구액</div>
+                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:28px;font-weight:600;color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ bm.totalFmt }}<span style="font-size:14px">원</span></div>
+              </div>
+              <div>
+                <div style="font-size:12px;color:var(--color-neutral-700)">납기 후 금액</div>
+                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums">{{ bm.afterFmt }}<span style="font-size:14px">원</span></div>
+              </div>
+            </div>
+            <sc-if value="{{ bm.move }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--color-accent-2-700);margin-top:10px">{{ bm.move }}</div>
+            </sc-if>
+
+            <sc-if value="{{ isBillA }}" hint-placeholder-val="{{ true }}">
+              <div style="font-size:13px;color:var(--color-neutral-700);margin:32px 0 6px">항목별 내역</div>
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ billItems }}" as="it" hint-placeholder-count="10">
+                  <div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:15px">
+                    <span>{{ it.name }}</span><span style="font-variant-numeric:tabular-nums">{{ it.amtFmt }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isBillB }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--color-neutral-700);margin:32px 0 10px">어디에 쓰였나</div>
+              <div style="display:flex;height:22px;gap:2px">
+                <sc-for list="{{ billSegs }}" as="sg" hint-placeholder-count="6">
+                  <div style="width:{{ sg.w }};background:{{ sg.color }}"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;margin-top:22px">
+                <sc-for list="{{ billSorted }}" as="it" hint-placeholder-count="10">
+                  <div style="display:flex;flex-direction:column;gap:5px">
+                    <div style="display:flex;justify-content:space-between;gap:10px;font-size:15px">
+                      <span style="display:flex;gap:8px;align-items:center"><span style="width:8px;height:8px;background:{{ it.color }}"></span>{{ it.name }}</span>
+                      <span style="font-variant-numeric:tabular-nums">{{ it.amtFmt }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ it.pct }}</span></span>
+                    </div>
+                    <div style="height:3px;background:var(--color-surface)"><div style="height:3px;width:{{ it.w }};background:{{ it.color }}"></div></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="margin-top:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--color-neutral-700)">
+              <div style="display:flex;justify-content:space-between"><span>소계</span><span style="font-variant-numeric:tabular-nums">{{ bm.subtotalFmt }}</span></div>
+              <div style="display:flex;justify-content:space-between"><span>전월 미납액</span><span style="font-variant-numeric:tabular-nums">{{ bm.prevFmt }}</span></div>
+              <div style="display:flex;justify-content:space-between"><span>연체료 (5%)</span><span style="font-variant-numeric:tabular-nums">0</span></div>
+            </div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;display:flex;justify-content:space-between;border-top:1px solid var(--color-text);margin-top:10px;padding-top:12px;font-size:18px;font-weight:600">
+              <span>합계</span><span style="color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ bm.totalFmt }}원</span>
+            </div>
+
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--color-divider);display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:13px;color:var(--color-neutral-700)">납부 계좌</div>
+              <div style="font-size:17px;font-weight:600">국민은행 444401-01-505592</div>
+              <div style="font-size:13px">예금주 도화엘리시아 관리단</div>
+              <div style="font-size:13px">입금자명은 <b>{{ depositName }}</b> 으로 적어주세요</div>
+              <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="align-self:flex-start;margin-top:8px;min-height:42px"><i class="icon-copy"></i>계좌번호 복사</button>
+            </div>
+            <div style="font-size:12px;line-height:1.65;color:var(--color-neutral-700);margin-top:28px;text-wrap:pretty">상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다. 실 정산금액은 정수올림 처리에 따라 원 단위 차이가 있을 수 있습니다. 문의 관리인 박은혜 010-3769-1962</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isNotices }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">공지사항</div>
+            <div style="display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none">
+              <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="6">
+                <button onClick="{{ c.go }}" style="flex:none;border:1px solid var(--color-divider);border-radius:2px;padding:8px 12px;font-size:13px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ isNoticeA }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:24px;margin-top:26px">
+                <sc-for list="{{ noticeList }}" as="n" hint-placeholder-count="6">
+                  <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
+                    <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                      <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:13px"></i></sc-if>
+                      <span>{{ n.cat }}</span>
+                      <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                    </div>
+                    <div style="font-size:17px;line-height:1.4;font-weight:{{ n.weight }};text-wrap:pretty">{{ n.title }}</div>
+                    <div style="font-size:12px;color:var(--color-neutral-700)">{{ n.date }} · 관리인 박은혜</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isNoticeB }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ lead }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ lead.open }}" style="cursor:pointer;margin-top:26px;display:flex;flex-direction:column;gap:8px">
+                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ lead.cat }} · {{ lead.date }}</div>
+                  <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;line-height:1.25;font-weight:600;text-wrap:pretty">{{ lead.title }}</div>
+                  <div style="font-size:14px;line-height:1.65;color:var(--color-neutral-700);text-wrap:pretty">{{ lead.excerpt }}</div>
+                  <sc-if value="{{ lead.unread }}" hint-placeholder-val="{{ false }}"><span class="tag tag-accent" style="align-self:flex-start">읽지 않음</span></sc-if>
+                </div>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;margin-top:32px">
+                <sc-for list="{{ rest }}" as="n" hint-placeholder-count="4">
+                  <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px">
+                    <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                      <span>{{ n.cat }}</span>
+                      <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                    </div>
+                    <div style="font-size:15px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
+                    <div style="font-size:12px;line-height:1.5;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{ n.excerpt }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-700)">{{ n.date }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ noNotices }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:14px;color:var(--color-neutral-700);margin-top:40px">이 분류의 공지가 없습니다.</div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isNotice }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 22px 40px">
+            <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-arrow-left" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>{{ backLabel }}</button>
+            <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700);margin-top:14px">{{ nd.cat }}</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:27px;line-height:1.25;font-weight:600;margin-top:6px;text-wrap:pretty">{{ nd.title }}</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:10px">{{ nd.date }} · 관리인 박은혜</div>
+            <sc-if value="{{ nd.meeting }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 12px;margin-top:26px;font-size:15px">
+                <sc-for list="{{ nd.meeting }}" as="mt" hint-placeholder-count="3">
+                  <span style="color:var(--color-neutral-700)">{{ mt.k }}</span><span style="font-weight:600">{{ mt.v }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:26px">
+              <sc-for list="{{ nd.body }}" as="para" hint-placeholder-count="4">
+                <p style="margin:0;font-size:16px;line-height:1.75;text-align:justify;word-break:keep-all">{{ para }}</p>
+              </sc-for>
+            </div>
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:36px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                  <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600">읽음 확인</span>
+                  <span style="font-size:14px;font-variant-numeric:tabular-nums"><b style="color:var(--color-accent-700)">{{ nd.readCount }}</b> / 31호</span>
+                </div>
+                <sc-for list="{{ readGrid }}" as="g" hint-placeholder-count="2">
+                  <div style="margin-top:18px">
+                    <div style="font-size:13px;color:var(--color-neutral-700);margin-bottom:8px">{{ g.dong }} · {{ g.count }}</div>
+                    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px">
+                      <sc-for list="{{ g.units }}" as="h" hint-placeholder-count="15">
+                        <div style="font-size:12px;text-align:center;padding:7px 0;border-radius:2px;font-variant-numeric:tabular-nums;background:{{ h.bg }};color:{{ h.fg }};border:1px solid {{ h.bd }}">{{ h.ho }}</div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="display:flex;gap:16px;font-size:12px;color:var(--color-neutral-700);margin-top:12px">
+                  <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-accent-100);border:1px solid var(--color-accent)"></span>읽음</span>
+                  <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;border:1px solid var(--color-neutral-400)"></span>안 읽음</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">내 정보</div>
+            <div style="margin-top:24px">
+              <div style="font-size:13px;color:var(--color-neutral-700)">{{ unitType }} · 전용 {{ area }}㎡</div>
+              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;margin-top:2px">{{ unitLabel }}</div>
+              <div style="font-size:14px;margin-top:2px">{{ resident }}</div>
+            </div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:36px 0 6px">알림</div>
+            <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="2">
+              <div onClick="{{ t.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;cursor:pointer">
+                <div><div style="font-size:16px">{{ t.label }}</div><div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px">{{ t.sub }}</div></div>
+                <div style="width:44px;height:26px;border-radius:13px;background:{{ t.bg }};position:relative;flex:none;transition:background .2s">
+                  <div style="position:absolute;top:3px;left:{{ t.x }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div>
+                </div>
+              </div>
+            </sc-for>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">관리인</div>
+            <div style="font-size:16px;font-weight:600">박은혜</div>
+            <div style="display:flex;gap:10px;margin-top:10px">
+              <a class="btn btn-secondary" href="tel:01037691962" style="min-height:42px"><i class="icon-phone"></i>010-3769-1962</a>
+              <a class="btn btn-secondary" href="sms:01037691962" style="min-height:42px"><i class="icon-message-square"></i>문자</a>
+            </div>
+            <button class="btn btn-ghost" onClick="{{ logout }}" style="margin-top:40px;margin-left:-6px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isAHome }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
+              <span>관리인 박은혜</span><span>{{ pd.todayFull }}</span>
+            </div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:24px">관리 현황</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px">
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">전체</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500">31<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">101동 16 · 102동 15</div></div>
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;color:var(--color-accent-2-700)">{{ unpaidCount }}<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">전월 기준</div></div>
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납 총액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;line-height:1.35;margin-top:4px;font-variant-numeric:tabular-nums">{{ unpaidSumMan }}<span style="font-size:13px">만원</span></div></div>
+            </div>
+
+            <div style="margin-top:34px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:17px;font-weight:600">이번 달 할 일</span></div>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
+                <div onClick="{{ goABill }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+                  <i class="icon-receipt" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;color:var(--color-accent-700)"></i>
+                  <div style="flex:1"><div style="font-size:15px;font-weight:600">{{ pd.nextLabel }}분 관리비 입력</div><div style="font-size:12px;color:var(--color-neutral-700)">{{ billTaskSub }}</div></div>
+                  <i class="icon-chevron-right"></i>
+                </div>
+                <div onClick="{{ goCompose }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+                  <i class="icon-megaphone" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;color:var(--color-accent-700)"></i>
+                  <div style="flex:1"><div style="font-size:15px;font-weight:600">새 공지 작성</div><div style="font-size:12px;color:var(--color-neutral-700)">푸시 알림과 함께 전 세대 발송</div></div>
+                  <i class="icon-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:34px">
+              <div style="font-size:17px;font-weight:600">미납 상위 세대</div>
+              <div style="display:flex;flex-direction:column;margin-top:8px">
+                <sc-for list="{{ topUnpaid }}" as="x" hint-placeholder-count="5">
+                  <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:15px"><span>{{ x.label }}</span><span style="font-variant-numeric:tabular-nums;color:var(--color-accent-2-700)">{{ x.amt }}원</span></div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div onClick="{{ latestA.open }}" style="margin-top:30px;cursor:pointer">
+              <div style="font-size:17px;font-weight:600">최근 공지 읽음</div>
+              <div style="font-size:14px;margin-top:8px;text-wrap:pretty">{{ latestA.title }}</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+                <div style="flex:1;height:6px;background:var(--color-surface)"><div style="height:6px;width:{{ latestA.pct }};background:var(--color-accent)"></div></div>
+                <span style="font-size:13px;font-variant-numeric:tabular-nums">{{ latestA.readCount }}/31</span>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isABill }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="font-size:13px;color:var(--color-neutral-700)">세대 균등 분배 · 납부기한 {{ pd.nextDue }}</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:2px">{{ pd.nextLabel }}분 관리비</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px">저장 파일명 · {{ pd.nextFile }}</div>
+
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:40px;display:flex;flex-direction:column;gap:10px">
+                <i class="icon-circle-check" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:44px;color:var(--color-accent)"></i>
+                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">31호에 고지서를 발송했습니다</div>
+                <div style="font-size:14px;color:var(--color-neutral-700);line-height:1.6">주거 {{ perRes }}원 · 상가 {{ perShop }}원 (미납액 별도). 입주민 앱에 고지서 발송 알림이 전달되었습니다.</div>
+                <button class="btn btn-secondary" onClick="{{ resetSend }}" style="align-self:flex-start;margin-top:10px">다시 편집</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:16px;margin-top:18px;font-size:13px">
+                <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+                  <span style="display:flex;gap:6px;align-items:center;color:{{ st.fg }};font-weight:{{ st.w }}"><span style="width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;background:{{ st.bg }};color:{{ st.nfg }}">{{ st.n }}</span>{{ st.label }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showItems }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--color-neutral-700);margin:26px 0 4px;line-height:1.5">항목별 총액을 입력하면 호수별 금액이 자동 계산됩니다. 승강기 항목은 주거 29호에만 나눕니다.</div>
+              <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
+                <sc-for list="{{ aItems }}" as="ai" hint-placeholder-count="12">
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) 124px;gap:4px 12px;align-items:center">
+                    <div><div style="font-size:15px">{{ ai.name }}</div><div style="font-size:11px;color:var(--color-neutral-700)">{{ ai.scope }} · 호당 {{ ai.per }}원</div></div>
+                    <input class="input" inputMode="numeric" value="{{ ai.value }}" onChange="{{ ai.onChange }}" style="text-align:right;font-variant-numeric:tabular-nums;min-height:42px;font-size:15px">
+                  </div>
+                </sc-for>
+              </div>
+              <div style="border-top:1px solid var(--color-text);margin-top:20px;padding-top:12px;display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between;font-size:14px"><span>총액</span><span style="font-variant-numeric:tabular-nums">{{ aTotal }}원</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:17px;font-weight:600"><span>주거 호당</span><span style="color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ perRes }}원</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:14px"><span>상가 호당</span><span style="font-variant-numeric:tabular-nums">{{ perShop }}원</span></div>
+              </div>
+              <button class="btn btn-primary btn-block" onClick="{{ primaryItems }}" style="min-height:48px;font-size:15px;margin-top:22px">{{ primaryItemsLabel }}</button>
+            </sc-if>
+
+            <sc-if value="{{ showPreview }}" hint-placeholder-val="{{ false }}">
+              <div class="seg" style="margin-top:24px">
+                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ a101 }}" onChange="{{ pickA101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
+                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ a102 }}" onChange="{{ pickA102 }}" style="position:absolute;opacity:0;width:0;height:0">102동</label>
+              </div>
+              <div style="display:flex;flex-direction:column;margin-top:14px">
+                <sc-for list="{{ previewUnits }}" as="pu" hint-placeholder-count="15">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:15px">
+                    <span>{{ pu.ho }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ pu.res }}</span></span>
+                    <span style="text-align:right"><span style="font-variant-numeric:tabular-nums;font-weight:600">{{ pu.total }}</span><span style="display:block;font-size:11px;color:var(--color-accent-2-700)">{{ pu.prevNote }}</span></span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:20px">
+                <button class="btn btn-secondary" onClick="{{ stepBack }}" style="min-height:48px">이전</button>
+                <button class="btn btn-primary" onClick="{{ stepNext }}" style="flex:1;min-height:48px;font-size:15px">발송 확인으로</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showConfirm }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:28px;display:flex;flex-direction:column;gap:8px;font-size:15px">
+                <div style="display:flex;justify-content:space-between"><span>발송 대상</span><b>31호 (주거 29 · 상가 2)</b></div>
+                <div style="display:flex;justify-content:space-between"><span>주거 호당</span><b style="font-variant-numeric:tabular-nums">{{ perRes }}원</b></div>
+                <div style="display:flex;justify-content:space-between"><span>상가 호당</span><b style="font-variant-numeric:tabular-nums">{{ perShop }}원</b></div>
+                <div style="display:flex;justify-content:space-between"><span>미납액 합산</span><b>{{ unpaidCount }}호</b></div>
+                <div style="display:flex;justify-content:space-between"><span>납부기한</span><b>{{ pd.nextDueFull }}</b></div>
+              </div>
+              <div style="font-size:13px;color:var(--color-neutral-700);line-height:1.6;margin-top:18px">발송하면 입주민 앱에 고지서 발송 알림이 갑니다. 발송 후에는 금액을 수정할 수 없습니다.</div>
+              <div style="display:flex;gap:10px;margin-top:20px">
+                <button class="btn btn-secondary" onClick="{{ stepBack }}" style="min-height:48px">이전</button>
+                <button class="btn btn-primary" onClick="{{ doSend }}" style="flex:1;min-height:48px;font-size:15px">31호에 발송</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isANotices }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">공지 관리</span>
+              <button class="btn btn-primary" onClick="{{ goCompose }}" style="min-height:40px"><i class="icon-pencil"></i>작성</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:22px;margin-top:24px">
+              <sc-for list="{{ adminNotices }}" as="n" hint-placeholder-count="6">
+                <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px">
+                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ n.cat }} · {{ n.date }}</div>
+                  <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:4px;background:var(--color-surface)"><div style="height:4px;width:{{ n.pct }};background:var(--color-accent)"></div></div>
+                    <span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700)">{{ n.readCount }}/31 읽음</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isASettings }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">설정</div>
+
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600;margin-top:28px">관리인 비밀번호</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">관리인 화면에 들어갈 때 쓰는 4자리 번호입니다.</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">현재 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ apCur }}" onChange="{{ onApCur }}" placeholder="숫자 4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ apNew }}" onChange="{{ onApNew }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호 확인</span><input class="input" type="password" inputMode="numeric" value="{{ apNew2 }}" onChange="{{ onApNew2 }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+              </div>
+              <sc-if value="{{ apErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-2-700)">{{ apErr }}</div></sc-if>
+              <button class="btn btn-primary" onClick="{{ saveAdminPw }}" style="align-self:flex-start;min-height:44px">비밀번호 변경</button>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:44px">
+              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600">호수별 비밀번호</span>
+              <button class="btn btn-ghost" onClick="{{ toggleShowPw }}"><i class="{{ showPwIcon }}"></i>{{ showPwLabel }}</button>
+            </div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">입주민이 동·호수와 함께 입력하는 번호입니다. 이사한 세대는 새 번호로 바꿔주세요.</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+              <div class="seg">
+                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="pdong" checked="{{ p101 }}" onChange="{{ pickP101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
+                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="pdong" checked="{{ p102 }}" onChange="{{ pickP102 }}" style="position:absolute;opacity:0;width:0;height:0">102동</label>
+              </div>
+              <button class="btn btn-secondary" onClick="{{ resetAllPw }}" style="font-size:13px"><i class="icon-refresh-cw"></i>동 전체 재발급</button>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-top:10px">
+              <sc-for list="{{ pwUnits }}" as="pu" hint-placeholder-count="15">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 60px auto;gap:10px;align-items:center;padding:4px 0">
+                  <span style="font-size:15px">{{ pu.ho }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ pu.res }}</span></span>
+                  <span style="font-size:15px;font-variant-numeric:tabular-nums;letter-spacing:.12em">{{ pu.pw }}</span>
+                  <button class="btn btn-ghost" onClick="{{ pu.edit }}" style="min-height:40px">변경</button>
+                </div>
+              </sc-for>
+            </div>
+
+            <button class="btn btn-ghost" onClick="{{ adminLogout }}" style="margin-top:36px;margin-left:-6px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isACompose }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 22px 40px">
+            <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-x" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>취소</button>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:10px">새 공지</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:22px 0 8px">분류</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ composeCats }}" as="c" hint-placeholder-count="5">
+                <button onClick="{{ c.go }}" style="border:1px solid var(--color-divider);border-radius:2px;padding:8px 12px;font-size:13px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:6px;margin-top:20px">
+              <span style="font-size:13px;color:var(--color-neutral-700)">제목</span>
+              <input class="input" value="{{ cTitle }}" onChange="{{ onCTitle }}" placeholder="예: 옥상 방수 공사 안내" style="min-height:46px;font-size:16px">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;margin-top:16px">
+              <span style="font-size:13px;color:var(--color-neutral-700)">내용</span>
+              <textarea class="input" value="{{ cBody }}" onChange="{{ onCBody }}" placeholder="일시, 장소, 입주민 협조 사항을 적어주세요" style="min-height:160px;font-size:15px;line-height:1.6"></textarea>
+            </label>
+            <div onClick="{{ toggleCPush }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 6px;cursor:pointer">
+              <div><div style="font-size:15px">푸시 알림 보내기</div><div style="font-size:12px;color:var(--color-neutral-700)">새 공지 알림을 켠 세대에 발송</div></div>
+              <div style="width:44px;height:26px;border-radius:13px;background:{{ cPushBg }};position:relative;flex:none;transition:background .2s"><div style="position:absolute;top:3px;left:{{ cPushX }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div></div>
+            </div>
+            <sc-if value="{{ cErr }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--color-accent-2-700);margin-top:8px">{{ cErr }}</div>
+            </sc-if>
+            <button class="btn btn-primary btn-block" onClick="{{ publish }}" style="min-height:48px;font-size:15px;margin-top:18px">게시하기</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ showTenantNav }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;display:flex;background:var(--color-bg);box-shadow:0 -1px 0 var(--color-divider)">
+          <sc-for list="{{ tenantTabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.go }}" style="flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0 6px;cursor:pointer;color:{{ t.color }};position:relative">
+              <i class="{{ t.icon }}" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px"></i><span style="font-size:11px;font-weight:{{ t.w }}">{{ t.label }}</span>
+              <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:8px;left:55%;width:7px;height:7px;border-radius:50%;background:var(--color-accent-2)"></span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showAdminNav }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;display:flex;background:var(--color-bg);box-shadow:0 -1px 0 var(--color-divider)">
+          <sc-for list="{{ adminTabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.go }}" style="flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0 6px;cursor:pointer;color:{{ t.color }}">
+              <i class="{{ t.icon }}" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px"></i><span style="font-size:11px;font-weight:{{ t.w }}">{{ t.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <div style="height:22px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--color-bg)"><div style="width:110px;height:4px;border-radius:2px;background:var(--color-text);opacity:.8"></div></div>
+
+      <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ bannerTap }}" style="position:absolute;top:38px;left:10px;right:10px;background:var(--color-bg);box-shadow:var(--shadow-lg);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;z-index:5">
+          <i class="icon-building-2" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;color:var(--color-accent-700)"></i>
+          <div style="flex:1;min-width:0"><div style="font-size:11px;color:var(--color-neutral-700)">도화엘리시아 · 지금</div><div style="font-size:14px;font-weight:600;margin-top:2px">{{ banner.title }}</div><div style="font-size:13px;margin-top:2px">{{ banner.body }}</div></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--color-text);color:var(--color-bg);font-size:13px;padding:10px 16px;border-radius:2px;white-space:nowrap;z-index:6">{{ toast }}</div>
+      </sc-if>
+      <sc-if value="{{ pwSheet }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
+          <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px;font-weight:600">{{ pwSheetTitle }}</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:6px">새 번호를 입주민에게 직접 알려주세요.</div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <input class="input" inputMode="numeric" value="{{ pwNew }}" onChange="{{ onPwNew }}" placeholder="숫자 4자리" style="font-family:var(--font-heading),'Noto Serif KR',serif;flex:1;min-height:48px;font-size:18px;letter-spacing:.3em">
+              <button class="btn btn-secondary" onClick="{{ pwRandom }}" style="min-height:48px"><i class="icon-shuffle"></i>자동 생성</button>
+            </div>
+            <sc-if value="{{ pwErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-2-700);margin-top:8px">{{ pwErr }}</div></sc-if>
+            <div style="display:flex;gap:10px;margin-top:20px">
+              <button class="btn btn-secondary" onClick="{{ pwCancel }}" style="min-height:48px">취소</button>
+              <button class="btn btn-primary" onClick="{{ pwSave }}" style="flex:1;min-height:48px;font-size:15px">저장</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
+          <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px;font-weight:600">{{ pd.nextLabel }}분 고지서를 발송할까요?</div>
+            <div style="font-size:14px;line-height:1.6;color:var(--color-neutral-700);margin-top:8px">31호에 주거 {{ perRes }}원, 상가 {{ perShop }}원으로 발송하고 미납 {{ unpaidCount }}호는 전월 미납액을 합산합니다. 발송 후에는 수정할 수 없습니다.</div>
+            <div style="display:flex;gap:10px;margin-top:20px">
+              <button class="btn btn-secondary" onClick="{{ closeConfirm }}" style="min-height:48px">취소</button>
+              <button class="btn btn-primary" onClick="{{ doSend }}" style="flex:1;min-height:48px;font-size:15px">발송</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
 </div>
-<script>
-const BILLS = [{"key": "101동201호", "type": "세대", "dong": "101동", "ho": "201호", "resident": "김* *", "area": "41.08", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동201호", "type": "세대", "dong": "102동", "ho": "201호", "resident": "한* *", "area": "40.33", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동202호", "type": "세대", "dong": "101동", "ho": "202호", "resident": "임* *", "area": "29.09", "move": "", "dueAmount": 100700, "afterDueAmount": 105740, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 44130, "lateFee": 0, "total": 100700, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동202호", "type": "세대", "dong": "102동", "ho": "202호", "resident": "미* *", "area": "29.09", "move": "", "dueAmount": 2202290, "afterDueAmount": 2312410, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 2145720, "lateFee": 0, "total": 2202290, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동203호", "type": "세대", "dong": "101동", "ho": "203호", "resident": "송* *", "area": "45.07", "move": "", "dueAmount": 100700, "afterDueAmount": 105740, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 44130, "lateFee": 0, "total": 100700, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동203호", "type": "세대", "dong": "102동", "ho": "203호", "resident": "강* *", "area": "45.07", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동301호", "type": "세대", "dong": "101동", "ho": "301호", "resident": "미* *", "area": "41.08", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동301호", "type": "세대", "dong": "102동", "ho": "301호", "resident": "한* *", "area": "40.33", "move": "", "dueAmount": 144620, "afterDueAmount": 151860, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 88050, "lateFee": 0, "total": 144620, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동302호", "type": "세대", "dong": "101동", "ho": "302호", "resident": "미* *", "area": "29.09", "move": "", "dueAmount": 656240, "afterDueAmount": 689060, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 599670, "lateFee": 0, "total": 656240, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동302호", "type": "세대", "dong": "102동", "ho": "302호", "resident": "박* *", "area": "29.09", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동303호", "type": "세대", "dong": "101동", "ho": "303호", "resident": "류* *", "area": "45.07", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동303호", "type": "세대", "dong": "102동", "ho": "303호", "resident": "김* *", "area": "45.07", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동401호", "type": "세대", "dong": "101동", "ho": "401호", "resident": "미* *", "area": "29.76", "move": "", "dueAmount": 144620, "afterDueAmount": 151860, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 88050, "lateFee": 0, "total": 144620, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동401호", "type": "세대", "dong": "102동", "ho": "401호", "resident": "미* *", "area": "29.76", "move": "", "dueAmount": 100700, "afterDueAmount": 105740, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 44130, "lateFee": 0, "total": 100700, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동402호", "type": "세대", "dong": "102동", "ho": "402호", "resident": "미* *", "area": "29.09", "move": "", "dueAmount": 800660, "afterDueAmount": 840700, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 744090, "lateFee": 0, "total": 800660, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동402호", "type": "세대", "dong": "101동", "ho": "402호", "resident": "정* *", "area": "29.09", "move": "", "dueAmount": 320500, "afterDueAmount": 336530, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 263930, "lateFee": 0, "total": 320500, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동403호", "type": "세대", "dong": "101동", "ho": "403호", "resident": "이* *", "area": "45.07", "move": "", "dueAmount": 450660, "afterDueAmount": 473200, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 394090, "lateFee": 0, "total": 450660, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동403호", "type": "세대", "dong": "102동", "ho": "403호", "resident": "윤* *", "area": "45.07", "move": "", "dueAmount": 100700, "afterDueAmount": 105740, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 44130, "lateFee": 0, "total": 100700, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동501호", "type": "세대", "dong": "102동", "ho": "501호", "resident": "권* *", "area": "29.02", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동501호", "type": "세대", "dong": "101동", "ho": "501호", "resident": "곽* *", "area": "29.02", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동502호", "type": "세대", "dong": "101동", "ho": "502호", "resident": "미* *", "area": "29.09", "move": "", "dueAmount": 282670, "afterDueAmount": 296810, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 226100, "lateFee": 0, "total": 282670, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동502호", "type": "세대", "dong": "102동", "ho": "502호", "resident": "김* *", "area": "29.99", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동503호", "type": "세대", "dong": "101동", "ho": "503호", "resident": "성* *", "area": "38.02", "move": "", "dueAmount": 389160, "afterDueAmount": 408620, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 332590, "lateFee": 0, "total": 389160, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동503호", "type": "세대", "dong": "102동", "ho": "503호", "resident": "미* *", "area": "38.02", "move": "", "dueAmount": 282670, "afterDueAmount": 296810, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 226100, "lateFee": 0, "total": 282670, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동601호", "type": "세대", "dong": "101동", "ho": "601호", "resident": "미* *", "area": "23.26", "move": "이사로 8일 계산금액", "dueAmount": 15090, "afterDueAmount": 15840, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동601호", "type": "세대", "dong": "102동", "ho": "601호", "resident": "김* *", "area": "45.06", "move": "", "dueAmount": 100700, "afterDueAmount": 105740, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 44130, "lateFee": 0, "total": 100700, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동602호", "type": "세대", "dong": "101동", "ho": "602호", "resident": "김* *", "area": "29.02", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동602호", "type": "세대", "dong": "102동", "ho": "602호", "resident": "권* *", "area": "40.79", "move": "", "dueAmount": 56570, "afterDueAmount": 59400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 0, "lateFee": 0, "total": 56570, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동603호", "type": "세대", "dong": "101동", "ho": "603호", "resident": "이* *", "area": "38.02", "move": "", "dueAmount": 288330, "afterDueAmount": 302750, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 242}, {"name": "승강기유지비", "amount": 12138}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 56570, "prevUnpaid": 231760, "lateFee": 0, "total": 288330, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "101동B01호", "type": "상가", "dong": "101동", "ho": "B01호", "resident": "박* *", "area": "43.37", "move": "", "dueAmount": 44190, "afterDueAmount": 46400, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 0}, {"name": "승강기유지비", "amount": 0}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 44190, "prevUnpaid": 0, "lateFee": 0, "total": 44190, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}, {"key": "102동B02호", "type": "상가", "dong": "102동", "ho": "B02호", "resident": "박* *", "area": "103.27", "move": "", "dueAmount": 132240, "afterDueAmount": 138860, "accountNote": "납부계좌 : 국민은행 444401-01-505592 \n(예금주 : 도화엘리시아 관리단)", "dueDateNote": "납부기한 : 매월 5일까지", "footerNote": "상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다.\n입금 시 호수표시 또는 입주자명(101101 or 홍길동) 기재", "items": [{"name": "공용전기", "amount": 6916}, {"name": "관리회사용역비", "amount": 4839}, {"name": "소방관리대행료", "amount": 3549}, {"name": "승강기보험", "amount": 0}, {"name": "승강기유지비", "amount": 0}, {"name": "전기안전관리비", "amount": 2484}, {"name": "정화조청소", "amount": 871}, {"name": "청소비", "amount": 5162}, {"name": "화재보험", "amount": 473}, {"name": "수선유지비", "amount": 10000}, {"name": "교육비(소방관리)", "amount": 4968}, {"name": "관리단설립(등기,우편)", "amount": 4924}], "subtotal": 44190, "prevUnpaid": 88050, "lateFee": 0, "total": 132240, "notices": ["※ 8월분 납부 내역 미제출 세대는 '전월 미납액'이 합산되어 고지서가 발행되었습니다.", "이미 납부하신 세대는 관리인으로 이체확인증을 보내주신 후,", "미납액을 뺀 '당월 관리비'만 입금해 주시면 정상 정산됩니다.", "특이사항", "당분간 관리단 자체관리로 관리용역비 31만원 → 15만원으로 하향", "수선유지비 (13.5만 → 31만) 세대당 4300원→ 10,000원으로 증액", "소방관리교육비(154,000원)와 관리단설립(152,620원)에 사용된 비용추가", "3개월 이상 미납세대는 공용게시판에 공지 및 세대 단수합니다．", "2개월 이상 미납세대는 주차장을 이용할 수 없습니다．", "실 정산금액은 정수올림 처리방법에 따라 원단위 금액 차이가 있을 수 있습니다．"]}];
-const won = n => n.toLocaleString('ko-KR') + '원';
-const sel = document.getElementById('sel'), out = document.getElementById('out');
-BILLS.forEach((b,i) => sel.add(new Option(`${b.type}  ${b.dong} ${b.ho}`, i)));
-function render(){
-  const b = BILLS[sel.value||0];
-  out.innerHTML = `
-  <div class="card">
-    <div class="unit">
-      <div><h2>${b.type} ${b.dong} ${b.ho} 귀하</h2></div>
-      <span class="tag">${b.resident}</span>
-      <p class="meta sub"><span>${b.area ? '전용면적(㎡) : ' + b.area : ''}</span><span>${b.move}</span></p>
-    </div>
-    <div class="amounts">
-      <div><p class="lbl">당월 청구액</p><p class="num" style="color:var(--accent)">${won(b.dueAmount)}</p></div>
-      <div><p class="lbl">납기 후 금액</p><p class="num">${won(b.afterDueAmount)}</p></div>
-    </div>
-    <p class="note">${b.accountNote}</p>
-    <p class="note" style="margin-top:6px">${b.dueDateNote}</p>
-    <p class="sec">항목별 내역</p>
-    ${b.items.map(i => `<div class="row"><span>${i.name}</span><span>${won(i.amount)}</span></div>`).join('')}
-    <div style="padding-top:14px">
-      <div class="sum"><span>소계</span><span>${won(b.subtotal)}</span></div>
-      <div class="sum"><span>전월미납액</span><span>${won(b.prevUnpaid)}</span></div>
-      <div class="sum"><span>연체료(5%)</span><span>${won(b.lateFee)}</span></div>
-      <div class="total"><span>합계(당월청구액)</span><span>${won(b.total)}</span></div>
-    </div>
-    <p class="footer">${b.footerNote}</p>
-  </div>
-  ${b.notices.length ? `<div class="card"><p class="sec" style="margin-top:0">공지사항</p>
-    ${b.notices.map(n => `<p class="notice">· ${n}</p>`).join('')}</div>` : ''}`;
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startAs&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;로그인&quot;,&quot;세입자&quot;,&quot;관리자&quot;],&quot;default&quot;:&quot;로그인&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;시작 화면&quot;},&quot;homeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1면&quot;,&quot;피드&quot;,&quot;추이&quot;],&quot;default&quot;:&quot;1면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;billLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;영수증&quot;,&quot;구성비&quot;],&quot;default&quot;:&quot;영수증&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;noticeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;목록&quot;,&quot;1면&quot;],&quot;default&quot;:&quot;목록&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;adminFlow&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;한 화면&quot;,&quot;단계별&quot;],&quot;default&quot;:&quot;한 화면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;}}">
+const ITEMS9=[['공용전기',6916,0],['관리회사용역비',4839,0],['소방관리대행료',3549,0],['승강기보험',242,1],['승강기유지비',12138,1],['전기안전관리비',2484,0],['정화조청소',871,0],['청소비',5162,0],['화재보험',473,0],['수선유지비',10000,0],['교육비(소방관리)',4968,0],['관리단설립(등기,우편)',4924,0]];
+const ITEMSPAST=[['공용전기',0,0],['관리회사용역비',10000,0],['소방관리대행료',3549,0],['승강기보험',242,1],['승강기유지비',12138,1],['전기안전관리비',2484,0],['정화조청소',871,0],['청소비',5162,0],['화재보험',473,0],['수선유지비',4300,0]];
+const ELEC=[4310,4680,5120,4700,4911];
+const WD='일월화수목금토';
+const ymStr=(y,m)=>y+'-'+String(m).padStart(2,'0');
+const addM=(y,m,k)=>{const d=new Date(y,m-1+k,1);return [d.getFullYear(),d.getMonth()+1];};
+let MONTHS=[];
+function buildMonths(y,m){MONTHS=[];for(let k=-5;k<=0;k++){const [yy,mm]=addM(y,m,k);MONTHS.push([mm+'월',ELEC[(k+5)%5],ymStr(yy,mm)]);}}
+buildMonths(2026,9);
+let PD=null;
+function buildPeriod(y,m,dueDay){const t=new Date();const t0=new Date(t.getFullYear(),t.getMonth(),t.getDate());const [ny,nm]=addM(y,m,1),[my,mm2]=addM(y,m,2);const due=new Date(ny,nm-1,dueDay);const dd=Math.round((due-t0)/864e5);const due2=new Date(my,mm2-1,dueDay);
+  PD={label:m+'월',ym:ymStr(y,m),dueFull:nm+'월 '+dueDay+'일('+WD[due.getDay()]+')',dueShort:nm+'월 '+dueDay+'일',dday:dd>0?'D-'+dd:dd===0?'오늘 마감':'기한 '+(-dd)+'일 경과',
+    nextLabel:nm+'월',nextDue:mm2+'월 '+dueDay+'일',nextDueFull:my+'년 '+mm2+'월 '+dueDay+'일',nextFile:'bills-data-'+ymStr(ny,nm)+'.json',
+    todayFull:t.getFullYear()+'년 '+(t.getMonth()+1)+'월 '+t.getDate()+'일 '+WD[t.getDay()]+'요일'};}
+buildPeriod(2026,9,5);
+const RAW='101,201,김**,41.08,0;101,202,임**,29.09,44130;101,203,송**,45.07,44130;101,301,미**,41.08,0;101,302,미**,29.09,599670;101,303,류**,45.07,0;101,401,미**,29.76,88050;101,402,정**,29.09,263930;101,403,이**,45.07,394090;101,501,곽**,29.02,0;101,502,미**,29.09,226100;101,503,성**,38.02,332590;101,601,미**,23.26,0,이사로 8일 일할 계산된 금액입니다;101,602,김**,29.02,0;101,603,이**,38.02,231760;101,B01,박**,43.37,0;102,201,한**,40.33,0;102,202,미**,29.09,2145720;102,203,강**,45.07,0;102,301,한**,40.33,88050;102,302,박**,29.09,0;102,303,김**,45.07,0;102,401,미**,29.76,44130;102,402,미**,29.09,744090;102,403,윤**,45.07,44130;102,501,권**,29.02,0;102,502,김**,29.99,0;102,503,미**,38.02,226100;102,601,김**,45.06,44130;102,602,권**,40.79,0;102,B02,박**,103.27,88050';
+let UNITS=RAW.split(';').map(s=>{const [d,h,r,a,p,m]=s.split(',');return {dong:d,ho:h,key:d+'-'+h,resident:r,area:a,prev:+p,move:m||'',shop:h[0]==='B'};});
+const fmt=n=>Math.round(n).toLocaleString('ko-KR');
+const CATS=['일반','공사·점검','분리수거','주차','회의·투표'];
+const NOTICES=[
+ {id:'n1',cat:'일반',pinned:true,date:'2026.09.26',title:'9월분 관리비 고지 및 변경 사항 안내',body:['8월분 납부 내역을 제출하지 않은 세대는 전월 미납액이 합산되어 고지서가 발행되었습니다. 이미 납부하신 세대는 관리인에게 이체확인증을 보내주신 후, 미납액을 뺀 당월 관리비만 입금해 주시면 정상 정산됩니다.','당분간 관리단 자체 관리로 관리용역비를 월 31만 원에서 15만 원으로 낮췄습니다. 수선유지비는 세대당 4,300원에서 10,000원으로 조정되었습니다.','이번 달에는 소방관리교육비(154,000원)와 관리단 설립 비용(등기·우편 152,620원)이 추가되었습니다.','3개월 이상 미납 세대는 공용게시판에 공지 후 단수 조치되며, 2개월 이상 미납 세대는 주차장을 이용할 수 없습니다.']},
+ {id:'n2',cat:'공사·점검',date:'2026.09.24',title:'승강기 정기 안전점검 — 10월 2일(금) 오전',body:['10월 2일(금) 오전 10시부터 12시까지 101동·102동 승강기 정기 안전점검이 진행됩니다.','점검 중에는 승강기 운행이 중지되니 계단을 이용해 주세요. 거동이 불편하신 분은 미리 관리인에게 알려주시면 시간을 조정해 드립니다.']},
+ {id:'n3',cat:'회의·투표',date:'2026.09.22',title:'관리단 정기 집회 개최 안내',meeting:[{k:'일시',v:'10월 18일(일) 오후 7시'},{k:'장소',v:'101동 1층 필로티'},{k:'안건',v:'관리규약 제정 · 수선유지비 조정'}],body:['구분소유자와 입주민 모두 참석하실 수 있습니다. 의결은 구분소유자 기준으로 진행됩니다.','참석이 어려운 소유주께서는 10월 16일까지 위임장을 관리인에게 제출해 주세요. 위임장 양식은 101동 공용게시판에 비치되어 있습니다.']},
+ {id:'n4',cat:'분리수거',date:'2026.09.18',title:'10월부터 재활용 배출 요일이 화·금으로 바뀝니다',body:['재활용품 배출 요일이 월·목에서 화·금 저녁 6시 이후로 변경됩니다. 음식물 쓰레기는 기존과 같이 매일 배출할 수 있습니다.','스티로폼과 비닐은 반드시 분리해 주시고, 택배 상자는 테이프와 송장을 제거해 접어서 배출해 주세요.']},
+ {id:'n5',cat:'주차',date:'2026.09.15',title:'장기 미납 세대 주차장 이용 제한 안내',body:['관리규약에 따라 관리비를 2개월 이상 미납한 세대는 10월 1일부터 지하 주차장을 이용할 수 없습니다.','미납액을 정산하시면 확인 즉시 이용이 재개됩니다. 외부 차량 방문 시에는 관리인에게 차량번호를 미리 알려주세요.']},
+ {id:'n6',cat:'공사·점검',date:'2026.09.08',title:'소방시설 작동 점검 결과 안내',body:['9월 5일 실시한 소방시설 작동 점검 결과, 102동 3층 감지기 1개가 교체되었고 그 외 시설은 정상입니다.','세대 내 감지기 점검을 받지 못한 세대는 관리인에게 연락해 일정을 잡아주세요.']},
+ {id:'n7',cat:'일반',date:'2026.09.01',title:'관리단 자체 관리 전환 안내',body:['9월부터 관리회사 위탁을 종료하고 관리단이 직접 관리합니다. 관리인은 박은혜(010-3769-1962)입니다.','관리비 고지서와 공지는 앞으로 이 앱과 공용게시판으로 함께 안내됩니다.']}
+];
+const READ_COUNTS={n1:18,n2:24,n3:21,n4:27,n5:25,n6:28,n7:30};
+function initReads(){const r={};NOTICES.forEach((n,ni)=>{const order=UNITS.map((u,i)=>UNITS[(i*13+ni*5)%31].key);let set=order.filter(k=>k!=='101-202').slice(0,READ_COUNTS[n.id]-(ni>=3?1:0));if(ni>=3)set.push('101-202');r[n.id]=set;});return r;}
+function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
+function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:r&&u.shop?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
+const DATA_DIR='uploads/';
+const fileFor=ym=>'bills-data-'+ym+'.json';
+const keyOf=b=>b.dong.replace('동','')+'-'+b.ho.replace('호','');
+// found: [{ym, json}] newest first
+function applyAll(found){
+  const latest=found[0],j=latest.json;const [y,m]=latest.ym.split('-').map(Number);
+  const dm=/(\d+)\s*일/.exec((j.bills[0]&&j.bills[0].dueDateNote)||'');buildPeriod(y,m,dm?+dm[1]:5);buildMonths(y,m);
+  const byYm={};found.forEach(f=>{const mp={};f.json.bills.forEach(b=>mp[keyOf(b)]=b);byYm[f.ym]=mp;});
+  UNITS=j.bills.map(b=>{const k=keyOf(b),d=k.split('-')[0],h=k.split('-')[1];const srcs={};Object.keys(byYm).forEach(ym=>{if(byYm[ym][k])srcs[ym]=byYm[ym][k];});return {dong:d,ho:h,key:k,resident:b.resident.replace(/\s/g,''),area:b.area,prev:b.prevUnpaid||0,shop:b.type==='상가',move:b.dueAmount!==b.total?'일할 계산이 적용된 청구액입니다 (월 전체 '+fmt(b.total)+'원)':'',srcs};}).sort((a,b)=>a.key.localeCompare(b.key));
+  const lines=(j.bills[0]&&j.bills[0].notices)||[];const si=lines.indexOf('특이사항');
+  const body=si>0?[lines.slice(0,si).join(' ').replace(/^※\s*/,''),...lines.slice(si+1)]:lines;
+  return {body:body.length?body:null,issue:(j.building&&j.building.issueDate)||''};
 }
-sel.onchange = render; render();
-</script></body></html>
+const srcAt=(u,mi)=>u.srcs&&MONTHS[mi]?u.srcs[MONTHS[mi][2]]:null;
+function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':' (예시)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
+const initPws=()=>{const p={};UNITS.forEach((u,i)=>p[u.key]=u.key==='101-202'?'1234':String(1000+((i*3719+2417)%9000)));return p;};
+const defTotals=()=>{const t={};ITEMS9.forEach(([n,a,r])=>t[n]=String(a*(r?29:31)));return t;};
+const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-400)','var(--color-neutral-700)','var(--color-neutral-500)','var(--color-neutral-300)'];
+
+class Component extends DCLogic {
+  scRef=React.createRef();
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pws:initPws(),adminPw:'0000',apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  componentDidMount(){this.applyStart();
+    const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
+    Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{
+      const found=res.filter(Boolean);
+      if(!found.length)return this.setState({dataSrc:'bills-data-yyyy-mm.json 파일이 없어 내장 데이터로 표시 중'});
+      const {body,issue}=applyAll(found);const [y,m]=found[0].ym.split('-').map(Number);
+      const notices=this.state.notices.map(n=>n.id==='n1'?{...n,title:m+'월분 관리비 고지 및 변경 사항 안내',body:body||n.body,date:issue?issue.replace(/-/g,'.'):n.date}:n);
+      this.setState({reads:initReads(),pws:initPws(),notices,billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
+    });
+  }
+  componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
+  componentWillUnmount(){clearTimeout(this.tt);clearTimeout(this.bt);}
+  applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
+  go(screen,extra){this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
+  toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
+  enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
+  enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
+  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(s.lPw!==s.adminPw)return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(s.pws[key]!==s.lPw)return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
+  openNotice(id){const s=this.state;const reads={...s.reads};if(s.role==='tenant'&&!reads[id].includes(s.unit))reads[id]=[...reads[id],s.unit];this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
+  renderVals(){
+    const s=this.state,p=this.props;
+    const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
+    const u=UNITS.find(x=>x.key===s.unit)||UNITS[1];
+    const cur=billFor(u,5),bm=billFor(u,s.billMonth);
+    const isT=s.role==='tenant',isA=s.role==='admin';
+    const unread=n=>isT&&!s.reads[n.id].includes(u.key);
+    const excerpt=n=>n.body[0].length>90?n.body[0].slice(0,88)+'…':n.body[0];
+    const nv=n=>({...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:s.reads[n.id].length,pct:Math.round(s.reads[n.id].length/31*100)+'%'});
+    const sorted=[...s.notices].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+    const filtered=sorted.filter(n=>s.cat==='전체'||n.cat===s.cat).map(nv);
+    const chip=(on)=>({bg:on?'var(--color-accent-100)':'transparent',fg:on?'var(--color-accent-800)':'var(--color-text)'});
+    const ndRaw=s.notices.find(n=>n.id===s.noticeId)||s.notices[0];
+    const nd=nv(ndRaw);
+    const itemsNZ=bm.items.filter(i=>i.amount>0);
+    const bsorted=[...itemsNZ].sort((a,b)=>b.amount-a.amount);
+    const maxI=bsorted[0]?bsorted[0].amount:1;
+    const colorOf=i=>SEGC[Math.min(i,5)];
+    const segs=bsorted.slice(0,5).map((it,i)=>({w:(it.amount/bm.subtotal*100)+'%',color:colorOf(i)}));
+    const restAmt=bsorted.slice(5).reduce((a,b)=>a+b.amount,0);if(restAmt)segs.push({w:(restAmt/bm.subtotal*100)+'%',color:SEGC[5]});
+    const trendVals=MONTHS.map((m,i)=>sub(u,i));const tMax=Math.max(...trendVals);
+    const tabs=(defs)=>defs.map(([k,label,icon,badge])=>{const on=s.screen===k||(k==='notices'&&s.screen==='notice'&&s.prevScreen==='notices')||(k==='anotices'&&(s.screen==='acompose'||(s.screen==='notice'&&isA)));return {label,icon,badge:!!badge,color:on?'var(--color-accent-700)':'var(--color-neutral-700)',w:on?700:400,go:()=>this.go(k)};});
+    const anyUnread=s.notices.some(unread);
+    const aVals={};ITEMS9.forEach(([n])=>aVals[n]=parseInt(String(s.totals[n]).replace(/\D/g,''))||0);
+    const perOf=([n,a,r])=>Math.ceil(aVals[n]/(r?29:31));
+    const up10=n=>Math.ceil(n/10)*10;const perRes=up10(ITEMS9.reduce((t,it)=>t+perOf(it),0)),perShop=up10(ITEMS9.filter(it=>!it[2]).reduce((t,it)=>t+perOf(it),0));
+    const unpaidUnits=UNITS.filter(x=>x.prev>0);
+    const latestN=nv(s.notices[0]);
+    const ho=x=>x.dong+'동 '+x.ho+'호';
+    const stepsDef=['항목 입력','호수별 확인','발송'];
+    return {
+      jumpLogin:()=>this.go('login',{role:null,banner:null}),jumpTenant:()=>{this.setState({billMonth:5});this.enterTenant('101-202');},jumpAdmin:()=>this.enterAdmin(),
+      isLogin:s.screen==='login',isTenantMode:s.lMode==='tenant',
+      tenantTabW:s.lMode==='tenant'?700:400,adminTabW:s.lMode==='admin'?700:400,tenantTabLine:s.lMode==='tenant'?'var(--color-accent)':'transparent',adminTabLine:s.lMode==='admin'?'var(--color-accent)':'transparent',
+      modeTenant:()=>this.setState({lMode:'tenant',lErr:'',lPw:'1234'}),modeAdmin:()=>this.setState({lMode:'admin',lErr:'',lPw:''}),
+      pwLabel:s.lMode==='admin'?'관리인 비밀번호':'비밀번호',
+      d101:s.lDong==='101',d102:s.lDong==='102',pick101:()=>this.setState({lDong:'101'}),pick102:()=>this.setState({lDong:'102'}),
+      lHo:s.lHo,lPw:s.lPw,lErr:s.lErr,onHo:e=>this.setState({lHo:e.target.value,lErr:''}),onPw:e=>this.setState({lPw:e.target.value.replace(/\D/g,'').slice(0,4),lErr:''}),doLogin:()=>this.doLogin(),
+      isHomeA:s.screen==='home'&&home==='1면',isHomeB:s.screen==='home'&&home==='피드',isHomeC:s.screen==='home'&&home==='추이',
+      unitLabel:ho(u),unitType:u.shop?'상가':'세대',resident:u.resident,area:u.area,depositName:u.dong+'-'+u.ho,
+      cur,hasPrev:u.prev>0,deltaFmt:fmt(cur.subtotal-sub(u,4)),
+      goBill:()=>this.go('bill',{billMonth:5}),goNotices:()=>this.go('notices'),
+      copyAcct:()=>{try{navigator.clipboard.writeText('44440101505592').catch(()=>{});}catch(e){}this.toast('계좌번호를 복사했습니다');},
+      latest3:sorted.slice(0,3).map(nv),
+      feed:[{date:s.issueShort||'09.26',kind:'고지서',icon:'icon-receipt',kColor:'var(--color-accent-2-700)',title:PD.label+'분 관리비 '+cur.totalFmt+'원이 청구되었습니다',unread:false,open:()=>this.go('bill',{billMonth:5})},...s.notices.slice(0,5).map(n=>({date:n.date.slice(5),kind:n.cat,icon:'icon-megaphone',kColor:'var(--color-accent-700)',title:n.title,unread:unread(n),open:()=>this.openNotice(n.id)}))],
+      trend:MONTHS.map((m,i)=>({label:m[0],short:(trendVals[i]/10000).toFixed(1)+'만',h:(trendVals[i]/tMax*120)+'px',color:i===5?'var(--color-accent)':cur.unpaid.has(i)?'var(--color-neutral-800)':'var(--color-neutral-300)',w:i===5?700:400,open:()=>this.go('bill',{billMonth:i})})),
+      pinned:nv(sorted[0]),
+      isBill:s.screen==='bill',isBillA:billL==='영수증',isBillB:billL==='구성비',bm,
+      monthChips:MONTHS.map((m,i)=>({label:m[0],...chip(i===s.billMonth),go:()=>this.setState({billMonth:i})})),
+      billItems:itemsNZ.map(i=>({name:i.name,amtFmt:fmt(i.amount)})),
+      billSegs:segs,billSorted:bsorted.map((it,i)=>({name:it.name,amtFmt:fmt(it.amount),pct:Math.round(it.amount/bm.subtotal*100)+'%',w:(it.amount/maxI*100)+'%',color:colorOf(i)})),
+      isNotices:s.screen==='notices',isNoticeA:noticeL==='목록',isNoticeB:noticeL==='1면',
+      catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c})})),
+      noticeList:filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
+      isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
+      readGrid:['101','102'].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
+      isSettings:s.screen==='settings',
+      toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
+      logout:()=>this.go('login',{role:null,banner:null}),
+      isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
+      topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
+      latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
+      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:''}),
+      isABill:s.screen==='abill',sent:s.sent,showStepper:!s.sent&&aflow==='단계별',
+      steps:stepsDef.map((l,i)=>{const on=s.step===i+1,done=s.step>i+1;return {n:done?'✓':String(i+1),label:l,fg:on?'var(--color-text)':'var(--color-neutral-700)',w:on?700:400,bg:on||done?'var(--color-accent)':'var(--color-neutral-300)',nfg:on||done?'var(--color-bg)':'var(--color-text)'};}),
+      showItems:!s.sent&&(aflow==='한 화면'||s.step===1),showPreview:!s.sent&&aflow==='단계별'&&s.step===2,showConfirm:!s.sent&&aflow==='단계별'&&s.step===3,
+      aItems:ITEMS9.map(it=>({name:it[0],scope:it[2]?'주거 29호':'전체 31호',value:s.totals[it[0]],per:fmt(perOf(it)),onChange:e=>this.setState({totals:{...s.totals,[it[0]]:e.target.value.replace(/[^\d,]/g,'')}})})),
+      aTotal:fmt(Object.values(aVals).reduce((a,b)=>a+b,0)),perRes:fmt(perRes),perShop:fmt(perShop),
+      primaryItemsLabel:aflow==='단계별'?'다음 · 호수별 확인':'고지서 발송',
+      primaryItems:()=>aflow==='단계별'?(this.setState({step:2}),this.scRef.current&&(this.scRef.current.scrollTop=0)):this.setState({confirmOpen:true}),
+      a101:s.aDong==='101',a102:s.aDong==='102',pickA101:()=>this.setState({aDong:'101'}),pickA102:()=>this.setState({aDong:'102'}),
+      previewUnits:UNITS.filter(x=>x.dong===s.aDong).map(x=>({ho:x.ho+'호',res:x.resident,total:fmt((x.shop?perShop:perRes)+x.prev)+'원',prevNote:x.prev?'미납 '+fmt(x.prev)+' 포함':''})),
+      stepBack:()=>this.setState({step:Math.max(1,s.step-1)}),stepNext:()=>this.setState({step:3}),
+      confirmOpen:s.confirmOpen,closeConfirm:()=>this.setState({confirmOpen:false}),
+      doSend:()=>{this.setState({sent:true,confirmOpen:false,step:1});this.toast('31호에 고지서 발송 알림을 보냈습니다');},
+      resetSend:()=>this.setState({sent:false,step:1}),
+      isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),
+      isACompose:s.screen==='acompose',
+      composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
+      cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
+      cPushBg:s.cPush?'var(--color-accent)':'var(--color-neutral-300)',cPushX:s.cPush?'21px':'3px',toggleCPush:()=>this.setState({cPush:!s.cPush}),cErr:s.cErr,
+      publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
+      showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
+      tenantTabs:tabs([['home','홈','icon-house'],['bill','고지서','icon-receipt'],['notices','공지','icon-megaphone',anyUnread],['settings','내 정보','icon-circle-user']]),
+      adminTabs:tabs([['ahome','현황','icon-chart-column'],['abill','관리비 입력','icon-calculator'],['anotices','공지 관리','icon-megaphone'],['asettings','설정','icon-settings']]),
+      isASettings:s.screen==='asettings',
+      apCur:s.apCur,apNew:s.apNew,apNew2:s.apNew2,apErr:s.apErr,
+      onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
+      saveAdminPw:()=>{if(s.apCur!==s.adminPw)return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.adminPw)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setState({adminPw:s.apNew,apCur:'',apNew:'',apNew2:''});this.toast('관리인 비밀번호를 변경했습니다');},
+      p101:s.apDong==='101',p102:s.apDong==='102',pickP101:()=>this.setState({apDong:'101'}),pickP102:()=>this.setState({apDong:'102'}),
+      showPwLabel:s.showPw?'번호 숨기기':'번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
+      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>({ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':''),pw:s.showPw?s.pws[x.key]:'••••',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})})),
+      pwSheet:!!s.pwEdit,pwSheetTitle:s.pwEdit?s.pwEdit.replace('-','동 ')+'호 비밀번호':'',pwNew:s.pwNew,pwErr:s.pwErr,
+      onPwNew:e=>this.setState({pwNew:e.target.value.replace(/\D/g,'').slice(0,4),pwErr:''}),
+      pwRandom:()=>this.setState({pwNew:String(1000+Math.floor(Math.random()*9000)),pwErr:''}),
+      pwCancel:()=>this.setState({pwEdit:null}),
+      pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const label=s.pwEdit.replace('-','동 ')+'호';this.setState({pws:{...s.pws,[s.pwEdit]:s.pwNew},pwEdit:null});this.toast(label+' 비밀번호를 변경했습니다');},
+      resetAllPw:()=>{const np={...s.pws};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>np[x.key]=String(1000+Math.floor(Math.random()*9000)));this.setState({pws:np,showPw:true});this.toast(s.apDong+'동 전체 비밀번호를 새로 만들었습니다');},
+      adminLogout:()=>this.go('login',{role:null,banner:null,lMode:'tenant',lPw:'1234'}),
+      banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
+      scRef:this.scRef,dataSrc:s.dataSrc||'데이터 불러오는 중…'
+    };
+  }
+}
+</script>
+</body>
+</html>
