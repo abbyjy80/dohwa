@@ -417,8 +417,38 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 <span style="font-size:12px;color:var(--color-neutral-700)">{{ pwFileStatus }}</span>
               </div>
               <div style="font-size:13px;line-height:1.6;color:var(--color-neutral-700)">{{ pendingNote }}</div>
-              <button class="btn btn-primary" onClick="{{ exportPw }}" style="align-self:flex-start;min-height:44px;margin-top:4px"><i class="icon-download"></i>파일 내보내기{{ pendingBadge }}</button>
-              <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">내려받은 passwords.json을 GitHub 저장소의 <b>uploads</b> 폴더에 덮어쓰면 1~2분 뒤 모든 폰에 적용됩니다.</div>
+
+              <sc-if value="{{ ghConnected }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px">
+                  <button class="btn btn-primary" onClick="{{ saveToGitHub }}" disabled="{{ ghBusy }}" style="min-height:44px"><i class="icon-github"></i>{{ ghSaveLabel }}</button>
+                  <button class="btn btn-ghost" onClick="{{ exportPw }}" style="min-height:44px"><i class="icon-download"></i>파일로 받기</button>
+                </div>
+                <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">abbyjy80/dohwa · uploads/passwords.json 에 바로 저장합니다. 저장 후 1~2분 뒤 모든 폰에 적용됩니다.</div>
+                <button class="btn btn-ghost" onClick="{{ ghDisconnect }}" style="align-self:flex-start;font-size:12px;margin-left:-6px;color:var(--color-neutral-700)">이 폰에서 GitHub 연결 해제</button>
+              </sc-if>
+
+              <sc-if value="{{ ghNotConnected }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:14px;font-weight:600;margin-top:6px">GitHub 연결</div>
+                <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">토큰을 한 번 입력하면 이 폰에서 버튼 한 번으로 저장소에 저장됩니다. 토큰은 이 폰에만 보관됩니다.</div>
+                <div style="display:flex;gap:8px">
+                  <input class="input" type="password" value="{{ ghInput }}" onChange="{{ onGhInput }}" placeholder="github_pat_로 시작하는 토큰" style="flex:1;min-height:44px;font-size:14px">
+                  <button class="btn btn-primary" onClick="{{ ghConnect }}" disabled="{{ ghBusy }}" style="min-height:44px">연결</button>
+                </div>
+                <button class="btn btn-ghost" onClick="{{ toggleGhHelp }}" style="align-self:flex-start;font-size:13px;margin-left:-6px"><i class="icon-circle-help"></i>토큰 만드는 방법</button>
+                <sc-if value="{{ ghHelp }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.6">
+                    <sc-for list="{{ ghSteps }}" as="st" hint-placeholder-count="6">
+                      <div style="display:grid;grid-template-columns:18px minmax(0,1fr);gap:6px"><span style="color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ st.n }}</span><span>{{ st.t }}</span></div>
+                    </sc-for>
+                    <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="font-size:13px">토큰 만들기 페이지 열기 →</a>
+                  </div>
+                </sc-if>
+                <button class="btn btn-ghost" onClick="{{ exportPw }}" style="align-self:flex-start;font-size:13px;margin-left:-6px"><i class="icon-download"></i>토큰 없이 파일로 받기{{ pendingBadge }}</button>
+              </sc-if>
+
+              <sc-if value="{{ ghErr }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);display:flex;gap:6px"><i class="icon-circle-alert" style="flex:none;margin-top:2px"></i><span>{{ ghErr }}</span></div>
+              </sc-if>
             </div>
 
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600;margin-top:32px">관리인 비밀번호</div>
@@ -436,7 +466,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600">호수별 비밀번호</span>
               <button class="btn btn-ghost" onClick="{{ toggleShowPw }}"><i class="{{ showPwIcon }}"></i>{{ showPwLabel }}</button>
             </div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">저장된 번호는 암호화되어 있어 다시 볼 수 없습니다. 새로 정한 번호만 내보내기 전까지 이 화면에 표시됩니다.</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">번호는 관리인 비밀번호로 암호화되어 저장되고, 관리인으로 로그인한 이 화면에서만 풀어서 보여줍니다.</div>
+            <sc-if value="{{ vaultMsg }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px;display:flex;gap:6px"><i class="icon-lock" style="flex:none;margin-top:2px"></i><span>{{ vaultMsg }}</span></div>
+            </sc-if>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
               <div class="seg">
                 <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="pdong" checked="{{ p101 }}" onChange="{{ pickP101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
@@ -565,19 +598,31 @@ function applyAll(found){
 const srcAt=(u,mi)=>u.srcs&&MONTHS[mi]?u.srcs[MONTHS[mi][2]]:null;
 function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':' (예시)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
 const initPws=()=>{const p={};UNITS.forEach((u,i)=>p[u.key]=u.key==='101-202'?'1234':String(1000+((i*3719+2417)%9000)));return p;};
-function sha256(s){const u=unescape(encodeURIComponent(s));const K=[],H=[];let p=2,n=0;const isP=x=>{for(let f=2;f*f<=x;f++)if(x%f===0)return false;return true;};const frac=x=>((x-Math.floor(x))*4294967296)|0;while(n<64){if(isP(p)){if(n<8)H[n]=frac(Math.pow(p,1/2));K[n]=frac(Math.pow(p,1/3));n++;}p++;}const by=[];for(let i=0;i<u.length;i++)by.push(u.charCodeAt(i));const l=u.length*8;by.push(128);while(by.length%64!==56)by.push(0);const hi=Math.floor(l/4294967296),lo=l>>>0;for(let i=3;i>=0;i--)by.push((hi>>>(i*8))&255);for(let i=3;i>=0;i--)by.push((lo>>>(i*8))&255);const r=(x,c)=>(x>>>c)|(x<<(32-c));const w=[];for(let i=0;i<by.length;i+=64){for(let j=0;j<16;j++)w[j]=(by[i+j*4]<<24)|(by[i+j*4+1]<<16)|(by[i+j*4+2]<<8)|by[i+j*4+3];for(let j=16;j<64;j++){const s0=r(w[j-15],7)^r(w[j-15],18)^(w[j-15]>>>3),s1=r(w[j-2],17)^r(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)|0;}let [a,b,c,d,e,f,g,h]=H;for(let j=0;j<64;j++){const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+w[j])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;}return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');}
+let SHA_C=null;
+function sha256(s){const u=unescape(encodeURIComponent(s));if(!SHA_C){const K0=[],H0=[];let p=2,n=0;const isP=x=>{for(let f=2;f*f<=x;f++)if(x%f===0)return false;return true;};const frac=x=>((x-Math.floor(x))*4294967296)|0;while(n<64){if(isP(p)){if(n<8)H0[n]=frac(Math.pow(p,1/2));K0[n]=frac(Math.pow(p,1/3));n++;}p++;}SHA_C={K:K0,H:H0};}const K=SHA_C.K,H=SHA_C.H.slice();const by=[];for(let i=0;i<u.length;i++)by.push(u.charCodeAt(i));const l=u.length*8;by.push(128);while(by.length%64!==56)by.push(0);const hi=Math.floor(l/4294967296),lo=l>>>0;for(let i=3;i>=0;i--)by.push((hi>>>(i*8))&255);for(let i=3;i>=0;i--)by.push((lo>>>(i*8))&255);const r=(x,c)=>(x>>>c)|(x<<(32-c));const w=[];for(let i=0;i<by.length;i+=64){for(let j=0;j<16;j++)w[j]=(by[i+j*4]<<24)|(by[i+j*4+1]<<16)|(by[i+j*4+2]<<8)|by[i+j*4+3];for(let j=16;j<64;j++){const s0=r(w[j-15],7)^r(w[j-15],18)^(w[j-15]>>>3),s1=r(w[j-2],17)^r(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)|0;}let [a,b,c,d,e,f,g,h]=H;for(let j=0;j<64;j++){const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+w[j])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;}return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');}
 const PW_URL='uploads/passwords.json',PW_LS='dohwa-pw-pending';
 const hashPw=(k,pw)=>sha256('dohwa-elysia:'+k+':'+pw);
 const defaultPw=k=>k==='101-202'?'1234':k==='admin'?'0000':String(1000+((parseInt(k.replace(/\D/g,''),10)*3719+2417)%9000));
 const loadPending=()=>{try{return JSON.parse(localStorage.getItem(PW_LS)||'{}')||{};}catch(e){return {};}};
 const savePending=p=>{try{localStorage.setItem(PW_LS,JSON.stringify(p));}catch(e){}};
+const GH={owner:'abbyjy80',repo:'dohwa',branch:'main',path:'uploads/passwords.json'},GH_LS='dohwa-gh-token';
+const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
+const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
+const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
+const ghApi=(tok,path,opt)=>fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+path,{...(opt||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+tok,'X-GitHub-Api-Version':'2022-11-28',...((opt&&opt.headers)||{})}});
+const ghErrMsg=st=>st===401?'토큰이 올바르지 않거나 만료되었습니다. 새 토큰으로 다시 연결하세요.':st===403?'토큰에 이 저장소의 쓰기 권한(Contents: Read and write)이 없습니다.':st===404?'저장소를 찾을 수 없습니다. 토큰의 저장소 선택에 dohwa가 포함됐는지 확인하세요.':st===409||st===422?'저장 중 충돌이 났습니다. 잠시 후 다시 시도하세요.':'GitHub 저장에 실패했습니다 (오류 '+st+'). 인터넷 연결을 확인하세요.';
+const b64=buf=>{const a=new Uint8Array(buf);let s='';for(let i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s);};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function vaultKey(pw,salt){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode('dohwa-vault:'+pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:100000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+async function sealVault(pw,obj){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));const k=await vaultKey(pw,salt);const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,new TextEncoder().encode(JSON.stringify(obj)));return {alg:'PBKDF2-SHA256-100000/AES-GCM-256',salt:b64(salt),iv:b64(iv),data:b64(ct)};}
+async function openVault(pw,v){const k=await vaultKey(pw,unb64(v.salt));const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(v.iv)},k,unb64(v.data));return JSON.parse(new TextDecoder().decode(pt));}
 const rnd4=()=>String(1000+Math.floor(Math.random()*9000));
 const defTotals=()=>{const t={};ITEMS9.forEach(([n,a,r])=>t[n]=String(a*(r?29:31)));return t;};
 const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-400)','var(--color-neutral-700)','var(--color-neutral-500)','var(--color-neutral-300)'];
 
 class Component extends DCLogic {
   scRef=React.createRef();
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),ghToken:lsGet(GH_LS),plainPw:null,vaultMsg:'',ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
   componentDidMount(){
     this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
     this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
@@ -597,14 +642,35 @@ class Component extends DCLogic {
   componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
   componentWillUnmount(){window.removeEventListener('popstate',this.onPop);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);clearTimeout(this.tt);clearTimeout(this.bt);}
   hashOf(k){const s=this.state;if(s.pwPending[k])return hashPw(k,s.pwPending[k]);const f=s.pwFile;if(f){const v=k==='admin'?f.admin:(f.units||{})[k];if(v)return v;}return hashPw(k,defaultPw(k));}
+  adminPwNow(){const s=this.state;return s.pwPending.admin||this.adminPlain||(!s.pwFile?defaultPw('admin'):'');}
+  knownPw(k){const s=this.state;if(s.pwPending[k])return s.pwPending[k];if(s.plainPw&&s.plainPw[k])return s.plainPw[k];if(!s.pwFile)return defaultPw(k);return '';}
+  async unlockVault(){const s=this.state,f=s.pwFile;if(!f){this.setState({plainPw:null,vaultMsg:''});return;}
+    let plain={};
+    if(f.vault){const pw=this.adminPwNow()||defaultPw('admin');
+      try{const o=await openVault(pw,f.vault);this.adminPlain=pw;plain=o.units||{};}catch(e){this.setState({plainPw:{},vaultMsg:'관리인 비밀번호로 로그인해야 저장된 번호를 볼 수 있습니다. 로그아웃 후 다시 로그인하세요.'});return;}}
+    const missing=UNITS.map(u=>u.key).filter(k=>!plain[k]&&f.units&&f.units[k]);
+    if(!missing.length){this.setState({plainPw:plain,vaultMsg:''});return;}
+    this.setState({plainPw:plain,vaultMsg:'저장된 번호를 푸는 중… (0/'+missing.length+')'});
+    const found={...plain};let done=0;
+    const step=()=>{if(this.state.role!=='admin')return;const t0=Date.now();while(done<missing.length&&Date.now()-t0<40){const k=missing[done],h=f.units[k];const dp=defaultPw(k);let hit=hashPw(k,dp)===h?dp:'';for(let i=0;!hit&&i<10000;i++){const c=String(i).padStart(4,'0');if(hashPw(k,c)===h)hit=c;}if(hit)found[k]=hit;done++;}
+      if(done<missing.length){this.setState({plainPw:{...found},vaultMsg:'저장된 번호를 푸는 중… ('+done+'/'+missing.length+')'});setTimeout(step,0);}
+      else{const miss=missing.filter(k=>!found[k]).length;this.setState({plainPw:found,vaultMsg:miss?miss+'개 호수의 번호를 풀지 못했습니다.':''});}};
+    setTimeout(step,0);}
+  async buildPwFile(){const units={},plain={};UNITS.forEach(u=>{units[u.key]=this.hashOf(u.key);const p=this.knownPw(u.key);if(p)plain[u.key]=p;});const f={version:2,updatedAt:new Date().toISOString(),note:'units: sha256("dohwa-elysia:"+동-호+":"+비밀번호) 로그인 확인용 · vault: 관리인 비밀번호로 암호화된 번호 목록(관리자 화면 표시용)',admin:this.hashOf('admin'),units};
+    const ap=this.adminPwNow();if(ap&&window.crypto&&crypto.subtle){f.vault=await sealVault(ap,{admin:ap,units:plain});}return {f,plain,ap};}
+  async ghConnect(){const tok=this.state.ghInput.trim();if(!tok)return this.setState({ghErr:'토큰을 붙여넣어 주세요'});this.setState({ghBusy:true,ghErr:''});try{const r=await ghApi(tok,'');if(!r.ok)throw r.status;const j=await r.json();if(j.permissions&&!j.permissions.push)throw 403;lsSet(GH_LS,tok);this.setState({ghToken:tok,ghInput:'',ghBusy:false,ghHelp:false});this.toast('GitHub에 연결했습니다');}catch(st){this.setState({ghBusy:false,ghErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
+  async saveToGitHub(){const tok=this.state.ghToken;if(!tok)return;this.setState({ghBusy:true,ghErr:''});const {f,plain,ap}=await this.buildPwFile();const p='/contents/'+GH.path;try{let sha;const g=await ghApi(tok,p+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){sha=(await g.json()).sha;}else if(g.status!==404)throw g.status;
+      const n=Object.keys(this.state.pwPending).length;const r=await ghApi(tok,p,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'비밀번호 업데이트 ('+(n?n+'건 변경':'재저장')+') · 관리자 앱',content:b64utf8(JSON.stringify(f,null,1)),branch:GH.branch,...(sha?{sha}:{})})});if(!r.ok)throw r.status;
+      savePending({});if(ap)this.adminPlain=ap;const d=new Date();this.setState({ghBusy:false,pwFile:f,pwPending:{},plainPw:plain,vaultMsg:'',pwFileStatus:d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' GitHub에 저장됨'});this.toast('GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 적용');}
+    catch(st){this.setState({ghBusy:false,ghErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});if(st===401){lsSet(GH_LS,'');this.setState({ghToken:''});}}}
   setPending(p){savePending(p);this.setState({pwPending:p});}
-  loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
+  loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'},()=>{if(this.state.role==='admin')this.unlockVault();});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
   go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
-  enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
-  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
+  enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});setTimeout(()=>this.unlockVault(),0);}
+  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
   openNotice(id){const s=this.state;const reads={...s.reads};if(s.role==='tenant'&&!reads[id].includes(s.unit))reads[id]=[...reads[id],s.unit];this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
@@ -696,19 +762,26 @@ class Component extends DCLogic {
       onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
       saveAdminPw:()=>{if(this.hashOf('admin')!==hashPw('admin',s.apCur))return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.apCur)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setPending({...s.pwPending,admin:s.apNew});this.setState({apCur:'',apNew:'',apNew2:''});this.toast('변경했습니다 · 파일 내보내기를 해야 다른 폰에 적용됩니다');},
       p101:s.apDong==='101',p102:s.apDong==='102',pickP101:()=>this.setState({apDong:'101'}),pickP102:()=>this.setState({apDong:'102'}),
-      showPwLabel:s.showPw?'새 번호 숨기기':'새 번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
-      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>{const pn=s.pwPending[x.key];return {ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':''),pw:pn?(s.showPw?pn:'변경됨'):'••••',color:pn?'var(--color-accent-700)':'var(--color-neutral-700)',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})};}),
+      showPwLabel:s.showPw?'번호 숨기기':'번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
+      vaultMsg:s.vaultMsg,
+      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>{const pn=s.pwPending[x.key],kn=this.knownPw(x.key);return {ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':'')+(pn?' · 변경됨':''),pw:kn?(s.showPw?kn:'••••'):'?',color:pn?'var(--color-accent-700)':'var(--color-text)',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})};}),
       pwFileStatus:s.pwFileStatus,
-      pendingNote:Object.keys(s.pwPending).length?'이 폰에서 바꾼 번호 '+Object.keys(s.pwPending).length+'건이 아직 파일에 반영되지 않았습니다. 내보내기 후 GitHub에 올려주세요.':'모든 폰이 같은 비밀번호 파일을 사용합니다. 번호를 바꾼 뒤 내보내기 하세요.',
+      pendingNote:Object.keys(s.pwPending).length?'이 폰에서 바꾼 번호 '+Object.keys(s.pwPending).length+'건이 아직 저장되지 않았습니다. GitHub에 저장해야 다른 폰에 적용됩니다.':'모든 폰이 같은 비밀번호 파일을 사용합니다. 번호를 바꾼 뒤 GitHub에 저장하세요.',
       pendingBadge:Object.keys(s.pwPending).length?' ('+Object.keys(s.pwPending).length+'건)':'',
-      exportPw:()=>{const units={};UNITS.forEach(u=>units[u.key]=this.hashOf(u.key));const f={version:1,updatedAt:new Date().toISOString(),note:'sha256("dohwa-elysia:"+동-호+":"+비밀번호). 관리자 앱에서 생성',admin:this.hashOf('admin'),units};const blob=new Blob([JSON.stringify(f,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passwords.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);this.toast('passwords.json을 내려받았습니다');},
+      ghConnected:!!s.ghToken,ghNotConnected:!s.ghToken,ghBusy:s.ghBusy,ghErr:s.ghErr,ghInput:s.ghInput,ghHelp:s.ghHelp,
+      onGhInput:e=>this.setState({ghInput:e.target.value,ghErr:''}),ghConnect:()=>this.ghConnect(),saveToGitHub:()=>this.saveToGitHub(),
+      ghDisconnect:()=>{lsSet(GH_LS,'');this.setState({ghToken:'',ghErr:''});this.toast('이 폰에서 GitHub 연결을 해제했습니다');},
+      toggleGhHelp:()=>this.setState({ghHelp:!s.ghHelp}),
+      ghSaveLabel:s.ghBusy?'저장 중…':'GitHub에 저장'+(Object.keys(s.pwPending).length?' ('+Object.keys(s.pwPending).length+'건)':''),
+      ghSteps:[{n:'1',t:'GitHub에 로그인 후 아래 "토큰 만들기 페이지"를 엽니다 (Settings → Developer settings → Fine-grained tokens).'},{n:'2',t:'Token name에 "도화 관리자앱", Expiration은 1년(366 days)을 고릅니다.'},{n:'3',t:'Repository access에서 "Only select repositories" → abbyjy80/dohwa 를 선택합니다.'},{n:'4',t:'Permissions → Repository permissions → Contents 를 "Read and write"로 바꿉니다.'},{n:'5',t:'맨 아래 Generate token → 생성된 github_pat_… 문자열을 복사합니다.'},{n:'6',t:'이 화면 입력칸에 붙여넣고 "연결"을 누릅니다.'}],
+      exportPw:async()=>{const {f}=await this.buildPwFile();const blob=new Blob([JSON.stringify(f,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passwords.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);this.toast('passwords.json을 내려받았습니다');},
       pwSheet:!!s.pwEdit,pwSheetTitle:s.pwEdit?s.pwEdit.replace('-','동 ')+'호 비밀번호':'',pwNew:s.pwNew,pwErr:s.pwErr,
       onPwNew:e=>this.setState({pwNew:e.target.value.replace(/\D/g,'').slice(0,4),pwErr:''}),
       pwRandom:()=>this.setState({pwNew:rnd4(),pwErr:''}),
       pwCancel:()=>this.setState({pwEdit:null}),
       pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const label=s.pwEdit.replace('-','동 ')+'호';this.setPending({...s.pwPending,[s.pwEdit]:s.pwNew});this.setState({pwEdit:null,showPw:true});this.toast(label+' 변경 · 내보내기 필요');},
       resetAllPw:()=>{const np={...s.pwPending};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>np[x.key]=rnd4());this.setPending(np);this.setState({showPw:true});this.toast(s.apDong+'동 새 번호를 만들었습니다 · 내보내기 필요');},
-      adminLogout:()=>this.go('login',{role:null,banner:null,lMode:'tenant',lPw:'1234'}),
+      adminLogout:()=>{this.adminPlain='';this.go('login',{role:null,banner:null,lMode:'tenant',lPw:'1234',plainPw:null,showPw:false});},
       banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
       scRef:this.scRef,
       isMobile:!!s.isMobile,showDesk:!s.isMobile,outerPad:s.isMobile?'0':'40px 24px',
