@@ -352,28 +352,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 <p style="margin:0;font-size:16px;line-height:1.75;text-align:justify;word-break:keep-all">{{ para }}</p>
               </sc-for>
             </div>
-            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:36px">
-                <div style="display:flex;justify-content:space-between;align-items:baseline">
-                  <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600">읽음 확인</span>
-                  <span style="font-size:14px;font-variant-numeric:tabular-nums"><b style="color:var(--color-accent-700)">{{ nd.readCount }}</b> / 31호</span>
-                </div>
-                <sc-for list="{{ readGrid }}" as="g" hint-placeholder-count="2">
-                  <div style="margin-top:18px">
-                    <div style="font-size:13px;color:var(--color-neutral-700);margin-bottom:8px">{{ g.dong }} · {{ g.count }}</div>
-                    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px">
-                      <sc-for list="{{ g.units }}" as="h" hint-placeholder-count="15">
-                        <div style="font-size:12px;text-align:center;padding:7px 0;border-radius:2px;font-variant-numeric:tabular-nums;background:{{ h.bg }};color:{{ h.fg }};border:1px solid {{ h.bd }}">{{ h.ho }}</div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </sc-for>
-                <div style="display:flex;gap:16px;font-size:12px;color:var(--color-neutral-700);margin-top:12px">
-                  <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-accent-100);border:1px solid var(--color-accent)"></span>읽음</span>
-                  <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;border:1px solid var(--color-neutral-400)"></span>안 읽음</span>
-                </div>
-              </div>
-            </sc-if>
+            
           </div>
         </sc-if>
 
@@ -410,26 +389,11 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <span>관리인 박은혜</span><span>{{ pd.todayFull }}</span>
             </div>
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:24px">관리 현황</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">{{ pd.label }}분 고지 기준</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px">
               <div><div style="font-size:12px;color:var(--color-neutral-700)">전체</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500">31<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">101동 16 · 102동 15</div></div>
               <div><div style="font-size:12px;color:var(--color-neutral-700)">미납</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;color:var(--color-accent-2-700)">{{ unpaidCount }}<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">전월 기준</div></div>
               <div><div style="font-size:12px;color:var(--color-neutral-700)">미납 총액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;line-height:1.35;margin-top:4px;font-variant-numeric:tabular-nums">{{ unpaidSumMan }}<span style="font-size:13px">만원</span></div></div>
-            </div>
-
-            <div style="margin-top:34px">
-              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:17px;font-weight:600">이번 달 할 일</span></div>
-              <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
-                <div onClick="{{ goABill }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
-                  <i class="icon-receipt" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;color:var(--color-accent-700)"></i>
-                  <div style="flex:1"><div style="font-size:15px;font-weight:600">{{ pd.nextLabel }}분 관리비 입력</div><div style="font-size:12px;color:var(--color-neutral-700)">{{ billTaskSub }}</div></div>
-                  <i class="icon-chevron-right"></i>
-                </div>
-                <div onClick="{{ goCompose }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
-                  <i class="icon-megaphone" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;color:var(--color-accent-700)"></i>
-                  <div style="flex:1"><div style="font-size:15px;font-weight:600">새 공지 작성</div><div style="font-size:12px;color:var(--color-neutral-700)">푸시 알림과 함께 전 세대 발송</div></div>
-                  <i class="icon-chevron-right"></i>
-                </div>
-              </div>
             </div>
 
             <div style="margin-top:34px">
@@ -440,137 +404,39 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </sc-for>
               </div>
             </div>
-
-            <div onClick="{{ latestA.open }}" style="margin-top:30px;cursor:pointer">
-              <div style="font-size:17px;font-weight:600">최근 공지 읽음</div>
-              <div style="font-size:14px;margin-top:8px;text-wrap:pretty">{{ latestA.title }}</div>
-              <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
-                <div style="flex:1;height:6px;background:var(--color-surface)"><div style="height:6px;width:{{ latestA.pct }};background:var(--color-accent)"></div></div>
-                <span style="font-size:13px;font-variant-numeric:tabular-nums">{{ latestA.readCount }}/31</span>
-              </div>
-            </div>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ isABill }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:18px 22px 40px">
-            <div style="font-size:13px;color:var(--color-neutral-700)">세대 균등 분배 · 납부기한 {{ pd.nextDue }}</div>
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:2px">{{ pd.nextLabel }}분 관리비</div>
-            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px">저장 파일명 · {{ pd.nextFile }}</div>
-
-            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:40px;display:flex;flex-direction:column;gap:10px">
-                <i class="icon-circle-check" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:44px;color:var(--color-accent)"></i>
-                <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">31호에 고지서를 발송했습니다</div>
-                <div style="font-size:14px;color:var(--color-neutral-700);line-height:1.6">주거 {{ perRes }}원 · 상가 {{ perShop }}원 (미납액 별도). 입주민 앱에 고지서 발송 알림이 전달되었습니다.</div>
-                <button class="btn btn-secondary" onClick="{{ resetSend }}" style="align-self:flex-start;margin-top:10px">다시 편집</button>
-              </div>
-            </sc-if>
-
-            <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex;gap:16px;margin-top:18px;font-size:13px">
-                <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
-                  <span style="display:flex;gap:6px;align-items:center;color:{{ st.fg }};font-weight:{{ st.w }}"><span style="width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;background:{{ st.bg }};color:{{ st.nfg }}">{{ st.n }}</span>{{ st.label }}</span>
-                </sc-for>
-              </div>
-            </sc-if>
-
-            <sc-if value="{{ showItems }}" hint-placeholder-val="{{ false }}">
-              <div style="font-size:13px;color:var(--color-neutral-700);margin:26px 0 4px;line-height:1.5">항목별 총액을 입력하면 호수별 금액이 자동 계산됩니다. 승강기 항목은 주거 29호에만 나눕니다.</div>
-              <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
-                <sc-for list="{{ aItems }}" as="ai" hint-placeholder-count="12">
-                  <div style="display:grid;grid-template-columns:minmax(0,1fr) 124px;gap:4px 12px;align-items:center">
-                    <div><div style="font-size:15px">{{ ai.name }}</div><div style="font-size:11px;color:var(--color-neutral-700)">{{ ai.scope }} · 호당 {{ ai.per }}원</div></div>
-                    <input class="input" inputMode="numeric" value="{{ ai.value }}" onChange="{{ ai.onChange }}" style="text-align:right;font-variant-numeric:tabular-nums;min-height:42px;font-size:15px">
-                  </div>
-                </sc-for>
-              </div>
-              <div style="border-top:1px solid var(--color-text);margin-top:20px;padding-top:12px;display:flex;flex-direction:column;gap:4px">
-                <div style="display:flex;justify-content:space-between;font-size:14px"><span>총액</span><span style="font-variant-numeric:tabular-nums">{{ aTotal }}원</span></div>
-                <div style="display:flex;justify-content:space-between;font-size:17px;font-weight:600"><span>주거 호당</span><span style="color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ perRes }}원</span></div>
-                <div style="display:flex;justify-content:space-between;font-size:14px"><span>상가 호당</span><span style="font-variant-numeric:tabular-nums">{{ perShop }}원</span></div>
-              </div>
-              <button class="btn btn-primary btn-block" onClick="{{ primaryItems }}" style="min-height:48px;font-size:15px;margin-top:22px">{{ primaryItemsLabel }}</button>
-            </sc-if>
-
-            <sc-if value="{{ showPreview }}" hint-placeholder-val="{{ false }}">
-              <div class="seg" style="margin-top:24px">
-                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ a101 }}" onChange="{{ pickA101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
-                <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ a102 }}" onChange="{{ pickA102 }}" style="position:absolute;opacity:0;width:0;height:0">102동</label>
-              </div>
-              <div style="display:flex;flex-direction:column;margin-top:14px">
-                <sc-for list="{{ previewUnits }}" as="pu" hint-placeholder-count="15">
-                  <div style="display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:15px">
-                    <span>{{ pu.ho }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ pu.res }}</span></span>
-                    <span style="text-align:right"><span style="font-variant-numeric:tabular-nums;font-weight:600">{{ pu.total }}</span><span style="display:block;font-size:11px;color:var(--color-accent-2-700)">{{ pu.prevNote }}</span></span>
-                  </div>
-                </sc-for>
-              </div>
-              <div style="display:flex;gap:10px;margin-top:20px">
-                <button class="btn btn-secondary" onClick="{{ stepBack }}" style="min-height:48px">이전</button>
-                <button class="btn btn-primary" onClick="{{ stepNext }}" style="flex:1;min-height:48px;font-size:15px">발송 확인으로</button>
-              </div>
-            </sc-if>
-
-            <sc-if value="{{ showConfirm }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:28px;display:flex;flex-direction:column;gap:8px;font-size:15px">
-                <div style="display:flex;justify-content:space-between"><span>발송 대상</span><b>31호 (주거 29 · 상가 2)</b></div>
-                <div style="display:flex;justify-content:space-between"><span>주거 호당</span><b style="font-variant-numeric:tabular-nums">{{ perRes }}원</b></div>
-                <div style="display:flex;justify-content:space-between"><span>상가 호당</span><b style="font-variant-numeric:tabular-nums">{{ perShop }}원</b></div>
-                <div style="display:flex;justify-content:space-between"><span>미납액 합산</span><b>{{ unpaidCount }}호</b></div>
-                <div style="display:flex;justify-content:space-between"><span>납부기한</span><b>{{ pd.nextDueFull }}</b></div>
-              </div>
-              <div style="font-size:13px;color:var(--color-neutral-700);line-height:1.6;margin-top:18px">발송하면 입주민 앱에 고지서 발송 알림이 갑니다. 발송 후에는 금액을 수정할 수 없습니다.</div>
-              <div style="display:flex;gap:10px;margin-top:20px">
-                <button class="btn btn-secondary" onClick="{{ stepBack }}" style="min-height:48px">이전</button>
-                <button class="btn btn-primary" onClick="{{ doSend }}" style="flex:1;min-height:48px;font-size:15px">31호에 발송</button>
-              </div>
-            </sc-if>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ isANotices }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:18px 22px 40px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">공지 관리</span>
-              <button class="btn btn-primary" onClick="{{ goCompose }}" style="min-height:40px"><i class="icon-pencil"></i>작성</button>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:22px;margin-top:24px">
-              <sc-for list="{{ adminNotices }}" as="n" hint-placeholder-count="6">
-                <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px">
-                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ n.cat }} · {{ n.date }}</div>
-                  <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
-                  <div style="display:flex;align-items:center;gap:10px">
-                    <div style="flex:1;height:4px;background:var(--color-surface)"><div style="height:4px;width:{{ n.pct }};background:var(--color-accent)"></div></div>
-                    <span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700)">{{ n.readCount }}/31 읽음</span>
-                  </div>
-                </div>
-              </sc-for>
-            </div>
           </div>
         </sc-if>
 
         <sc-if value="{{ isASettings }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">설정</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">비밀번호 관리</div>
 
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600;margin-top:28px">관리인 비밀번호</div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">관리인 화면에 들어갈 때 쓰는 4자리 번호입니다.</div>
-            <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+            <div style="margin-top:22px;padding:16px 0;border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+                <span style="font-size:15px;font-weight:600">passwords.json</span>
+                <span style="font-size:12px;color:var(--color-neutral-700)">{{ pwFileStatus }}</span>
+              </div>
+              <div style="font-size:13px;line-height:1.6;color:var(--color-neutral-700)">{{ pendingNote }}</div>
+              <button class="btn btn-primary" onClick="{{ exportPw }}" style="align-self:flex-start;min-height:44px;margin-top:4px"><i class="icon-download"></i>파일 내보내기{{ pendingBadge }}</button>
+              <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700)">내려받은 passwords.json을 GitHub 저장소의 <b>uploads</b> 폴더에 덮어쓰면 1~2분 뒤 모든 폰에 적용됩니다.</div>
+            </div>
+
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600;margin-top:32px">관리인 비밀번호</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
               <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">현재 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ apCur }}" onChange="{{ onApCur }}" placeholder="숫자 4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
                 <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ apNew }}" onChange="{{ onApNew }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
                 <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호 확인</span><input class="input" type="password" inputMode="numeric" value="{{ apNew2 }}" onChange="{{ onApNew2 }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
               </div>
               <sc-if value="{{ apErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-2-700)">{{ apErr }}</div></sc-if>
-              <button class="btn btn-primary" onClick="{{ saveAdminPw }}" style="align-self:flex-start;min-height:44px">비밀번호 변경</button>
+              <button class="btn btn-secondary" onClick="{{ saveAdminPw }}" style="align-self:flex-start;min-height:44px">변경</button>
             </div>
 
-            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:44px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:40px">
               <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;font-weight:600">호수별 비밀번호</span>
               <button class="btn btn-ghost" onClick="{{ toggleShowPw }}"><i class="{{ showPwIcon }}"></i>{{ showPwLabel }}</button>
             </div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">입주민이 동·호수와 함께 입력하는 번호입니다. 이사한 세대는 새 번호로 바꿔주세요.</div>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">저장된 번호는 암호화되어 있어 다시 볼 수 없습니다. 새로 정한 번호만 내보내기 전까지 이 화면에 표시됩니다.</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
               <div class="seg">
                 <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="pdong" checked="{{ p101 }}" onChange="{{ pickP101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
@@ -580,44 +446,15 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             </div>
             <div style="display:flex;flex-direction:column;margin-top:10px">
               <sc-for list="{{ pwUnits }}" as="pu" hint-placeholder-count="15">
-                <div style="display:grid;grid-template-columns:minmax(0,1fr) 60px auto;gap:10px;align-items:center;padding:4px 0">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 64px auto;gap:10px;align-items:center;padding:4px 0">
                   <span style="font-size:15px">{{ pu.ho }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ pu.res }}</span></span>
-                  <span style="font-size:15px;font-variant-numeric:tabular-nums;letter-spacing:.12em">{{ pu.pw }}</span>
+                  <span style="font-size:14px;font-variant-numeric:tabular-nums;letter-spacing:.1em;color:{{ pu.color }}">{{ pu.pw }}</span>
                   <button class="btn btn-ghost" onClick="{{ pu.edit }}" style="min-height:40px">변경</button>
                 </div>
               </sc-for>
             </div>
 
             <button class="btn btn-ghost" onClick="{{ adminLogout }}" style="margin-top:36px;margin-left:-6px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ isACompose }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:8px 22px 40px">
-            <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-x" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>취소</button>
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:10px">새 공지</div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin:22px 0 8px">분류</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px">
-              <sc-for list="{{ composeCats }}" as="c" hint-placeholder-count="5">
-                <button onClick="{{ c.go }}" style="border:1px solid var(--color-divider);border-radius:2px;padding:8px 12px;font-size:13px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
-              </sc-for>
-            </div>
-            <label style="display:flex;flex-direction:column;gap:6px;margin-top:20px">
-              <span style="font-size:13px;color:var(--color-neutral-700)">제목</span>
-              <input class="input" value="{{ cTitle }}" onChange="{{ onCTitle }}" placeholder="예: 옥상 방수 공사 안내" style="min-height:46px;font-size:16px">
-            </label>
-            <label style="display:flex;flex-direction:column;gap:6px;margin-top:16px">
-              <span style="font-size:13px;color:var(--color-neutral-700)">내용</span>
-              <textarea class="input" value="{{ cBody }}" onChange="{{ onCBody }}" placeholder="일시, 장소, 입주민 협조 사항을 적어주세요" style="min-height:160px;font-size:15px;line-height:1.6"></textarea>
-            </label>
-            <div onClick="{{ toggleCPush }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 6px;cursor:pointer">
-              <div><div style="font-size:15px">푸시 알림 보내기</div><div style="font-size:12px;color:var(--color-neutral-700)">새 공지 알림을 켠 세대에 발송</div></div>
-              <div style="width:44px;height:26px;border-radius:13px;background:{{ cPushBg }};position:relative;flex:none;transition:background .2s"><div style="position:absolute;top:3px;left:{{ cPushX }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div></div>
-            </div>
-            <sc-if value="{{ cErr }}" hint-placeholder-val="{{ false }}">
-              <div style="font-size:13px;color:var(--color-accent-2-700);margin-top:8px">{{ cErr }}</div>
-            </sc-if>
-            <button class="btn btn-primary btn-block" onClick="{{ publish }}" style="min-height:48px;font-size:15px;margin-top:18px">게시하기</button>
           </div>
         </sc-if>
       </div>
@@ -674,18 +511,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </div>
       </sc-if>
-      <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
-          <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px;font-weight:600">{{ pd.nextLabel }}분 고지서를 발송할까요?</div>
-            <div style="font-size:14px;line-height:1.6;color:var(--color-neutral-700);margin-top:8px">31호에 주거 {{ perRes }}원, 상가 {{ perShop }}원으로 발송하고 미납 {{ unpaidCount }}호는 전월 미납액을 합산합니다. 발송 후에는 수정할 수 없습니다.</div>
-            <div style="display:flex;gap:10px;margin-top:20px">
-              <button class="btn btn-secondary" onClick="{{ closeConfirm }}" style="min-height:48px">취소</button>
-              <button class="btn btn-primary" onClick="{{ doSend }}" style="flex:1;min-height:48px;font-size:15px">발송</button>
-            </div>
-          </div>
-        </div>
-      </sc-if>
+      
     </div>
   </div>
 </div>
@@ -739,17 +565,25 @@ function applyAll(found){
 const srcAt=(u,mi)=>u.srcs&&MONTHS[mi]?u.srcs[MONTHS[mi][2]]:null;
 function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':' (예시)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
 const initPws=()=>{const p={};UNITS.forEach((u,i)=>p[u.key]=u.key==='101-202'?'1234':String(1000+((i*3719+2417)%9000)));return p;};
+function sha256(s){const u=unescape(encodeURIComponent(s));const K=[],H=[];let p=2,n=0;const isP=x=>{for(let f=2;f*f<=x;f++)if(x%f===0)return false;return true;};const frac=x=>((x-Math.floor(x))*4294967296)|0;while(n<64){if(isP(p)){if(n<8)H[n]=frac(Math.pow(p,1/2));K[n]=frac(Math.pow(p,1/3));n++;}p++;}const by=[];for(let i=0;i<u.length;i++)by.push(u.charCodeAt(i));const l=u.length*8;by.push(128);while(by.length%64!==56)by.push(0);const hi=Math.floor(l/4294967296),lo=l>>>0;for(let i=3;i>=0;i--)by.push((hi>>>(i*8))&255);for(let i=3;i>=0;i--)by.push((lo>>>(i*8))&255);const r=(x,c)=>(x>>>c)|(x<<(32-c));const w=[];for(let i=0;i<by.length;i+=64){for(let j=0;j<16;j++)w[j]=(by[i+j*4]<<24)|(by[i+j*4+1]<<16)|(by[i+j*4+2]<<8)|by[i+j*4+3];for(let j=16;j<64;j++){const s0=r(w[j-15],7)^r(w[j-15],18)^(w[j-15]>>>3),s1=r(w[j-2],17)^r(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)|0;}let [a,b,c,d,e,f,g,h]=H;for(let j=0;j<64;j++){const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+w[j])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;}return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');}
+const PW_URL='uploads/passwords.json',PW_LS='dohwa-pw-pending';
+const hashPw=(k,pw)=>sha256('dohwa-elysia:'+k+':'+pw);
+const defaultPw=k=>k==='101-202'?'1234':k==='admin'?'0000':String(1000+((parseInt(k.replace(/\D/g,''),10)*3719+2417)%9000));
+const loadPending=()=>{try{return JSON.parse(localStorage.getItem(PW_LS)||'{}')||{};}catch(e){return {};}};
+const savePending=p=>{try{localStorage.setItem(PW_LS,JSON.stringify(p));}catch(e){}};
+const rnd4=()=>String(1000+Math.floor(Math.random()*9000));
 const defTotals=()=>{const t={};ITEMS9.forEach(([n,a,r])=>t[n]=String(a*(r?29:31)));return t;};
 const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-400)','var(--color-neutral-700)','var(--color-neutral-500)','var(--color-neutral-300)'];
 
 class Component extends DCLogic {
   scRef=React.createRef();
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pws:initPws(),adminPw:'0000',apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
   componentDidMount(){
     this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
     this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
     try{history.replaceState({dohwa:this.state.screen},'');}catch(e){}
     if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+    this.loadPwFile();
     this.applyStart();
     const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
     Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{
@@ -757,17 +591,20 @@ class Component extends DCLogic {
       if(!found.length)return this.setState({dataSrc:'bills-data-yyyy-mm.json 파일이 없어 내장 데이터로 표시 중'});
       const {body,issue}=applyAll(found);const [y,m]=found[0].ym.split('-').map(Number);
       const notices=this.state.notices.map(n=>n.id==='n1'?{...n,title:m+'월분 관리비 고지 및 변경 사항 안내',body:body||n.body,date:issue?issue.replace(/-/g,'.'):n.date}:n);
-      this.setState({reads:initReads(),pws:initPws(),notices,billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
+      this.setState({reads:initReads(),notices,billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
     });
   }
   componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
   componentWillUnmount(){window.removeEventListener('popstate',this.onPop);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);clearTimeout(this.tt);clearTimeout(this.bt);}
+  hashOf(k){const s=this.state;if(s.pwPending[k])return hashPw(k,s.pwPending[k]);const f=s.pwFile;if(f){const v=k==='admin'?f.admin:(f.units||{})[k];if(v)return v;}return hashPw(k,defaultPw(k));}
+  setPending(p){savePending(p);this.setState({pwPending:p});}
+  loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
   go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
-  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(s.lPw!==s.adminPw)return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(s.pws[key]!==s.lPw)return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
+  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
   openNotice(id){const s=this.state;const reads={...s.reads};if(s.role==='tenant'&&!reads[id].includes(s.unit))reads[id]=[...reads[id],s.unit];this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
@@ -853,20 +690,24 @@ class Component extends DCLogic {
       publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
       showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
       tenantTabs:tabs([['home','홈','icon-house'],['bill','고지서','icon-receipt'],['notices','공지','icon-megaphone',anyUnread],['settings','내 정보','icon-circle-user']]),
-      adminTabs:tabs([['ahome','현황','icon-chart-column'],['abill','관리비 입력','icon-calculator'],['anotices','공지 관리','icon-megaphone'],['asettings','설정','icon-settings']]),
+      adminTabs:tabs([['ahome','현황','icon-chart-column'],['asettings','비밀번호','icon-key-round']]),
       isASettings:s.screen==='asettings',
       apCur:s.apCur,apNew:s.apNew,apNew2:s.apNew2,apErr:s.apErr,
       onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
-      saveAdminPw:()=>{if(s.apCur!==s.adminPw)return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.adminPw)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setState({adminPw:s.apNew,apCur:'',apNew:'',apNew2:''});this.toast('관리인 비밀번호를 변경했습니다');},
+      saveAdminPw:()=>{if(this.hashOf('admin')!==hashPw('admin',s.apCur))return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.apCur)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});this.setPending({...s.pwPending,admin:s.apNew});this.setState({apCur:'',apNew:'',apNew2:''});this.toast('변경했습니다 · 파일 내보내기를 해야 다른 폰에 적용됩니다');},
       p101:s.apDong==='101',p102:s.apDong==='102',pickP101:()=>this.setState({apDong:'101'}),pickP102:()=>this.setState({apDong:'102'}),
-      showPwLabel:s.showPw?'번호 숨기기':'번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
-      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>({ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':''),pw:s.showPw?s.pws[x.key]:'••••',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})})),
+      showPwLabel:s.showPw?'새 번호 숨기기':'새 번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
+      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>{const pn=s.pwPending[x.key];return {ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':''),pw:pn?(s.showPw?pn:'변경됨'):'••••',color:pn?'var(--color-accent-700)':'var(--color-neutral-700)',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})};}),
+      pwFileStatus:s.pwFileStatus,
+      pendingNote:Object.keys(s.pwPending).length?'이 폰에서 바꾼 번호 '+Object.keys(s.pwPending).length+'건이 아직 파일에 반영되지 않았습니다. 내보내기 후 GitHub에 올려주세요.':'모든 폰이 같은 비밀번호 파일을 사용합니다. 번호를 바꾼 뒤 내보내기 하세요.',
+      pendingBadge:Object.keys(s.pwPending).length?' ('+Object.keys(s.pwPending).length+'건)':'',
+      exportPw:()=>{const units={};UNITS.forEach(u=>units[u.key]=this.hashOf(u.key));const f={version:1,updatedAt:new Date().toISOString(),note:'sha256("dohwa-elysia:"+동-호+":"+비밀번호). 관리자 앱에서 생성',admin:this.hashOf('admin'),units};const blob=new Blob([JSON.stringify(f,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passwords.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);this.toast('passwords.json을 내려받았습니다');},
       pwSheet:!!s.pwEdit,pwSheetTitle:s.pwEdit?s.pwEdit.replace('-','동 ')+'호 비밀번호':'',pwNew:s.pwNew,pwErr:s.pwErr,
       onPwNew:e=>this.setState({pwNew:e.target.value.replace(/\D/g,'').slice(0,4),pwErr:''}),
-      pwRandom:()=>this.setState({pwNew:String(1000+Math.floor(Math.random()*9000)),pwErr:''}),
+      pwRandom:()=>this.setState({pwNew:rnd4(),pwErr:''}),
       pwCancel:()=>this.setState({pwEdit:null}),
-      pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const label=s.pwEdit.replace('-','동 ')+'호';this.setState({pws:{...s.pws,[s.pwEdit]:s.pwNew},pwEdit:null});this.toast(label+' 비밀번호를 변경했습니다');},
-      resetAllPw:()=>{const np={...s.pws};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>np[x.key]=String(1000+Math.floor(Math.random()*9000)));this.setState({pws:np,showPw:true});this.toast(s.apDong+'동 전체 비밀번호를 새로 만들었습니다');},
+      pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const label=s.pwEdit.replace('-','동 ')+'호';this.setPending({...s.pwPending,[s.pwEdit]:s.pwNew});this.setState({pwEdit:null,showPw:true});this.toast(label+' 변경 · 내보내기 필요');},
+      resetAllPw:()=>{const np={...s.pwPending};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>np[x.key]=rnd4());this.setPending(np);this.setState({showPw:true});this.toast(s.apDong+'동 새 번호를 만들었습니다 · 내보내기 필요');},
       adminLogout:()=>this.go('login',{role:null,banner:null,lMode:'tenant',lPw:'1234'}),
       banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
       scRef:this.scRef,
