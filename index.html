@@ -369,7 +369,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 
         <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">내 정보</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">내 정보</div>
+              <button class="btn btn-ghost" onClick="{{ logout }}" style="margin:0;padding:6px 8px;min-height:0;font-size:14px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
+            </div>
             <div style="margin-top:24px">
               <div style="font-size:13px;color:var(--color-neutral-700)">{{ unitType }} · 전용 {{ area }}㎡</div>
               <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;margin-top:2px">{{ unitLabel }}</div>
@@ -390,7 +393,6 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <a class="btn btn-secondary" href="tel:01037691962" style="min-height:42px"><i class="icon-phone"></i>010-3769-1962</a>
               <a class="btn btn-secondary" href="sms:01037691962" style="min-height:42px"><i class="icon-message-square"></i>문자</a>
             </div>
-            <button class="btn btn-ghost" onClick="{{ logout }}" style="margin-top:40px;margin-left:-6px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
           </div>
         </sc-if>
 
@@ -469,7 +471,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 
         <sc-if value="{{ isASettings }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">비밀번호 관리</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">비밀번호 관리</div>
+              <button class="btn btn-ghost" onClick="{{ adminLogout }}" style="margin:0;padding:6px 8px;min-height:0;font-size:14px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
+            </div>
 
             <div style="margin-top:22px;padding:16px 0;border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);display:flex;flex-direction:column;gap:8px">
               <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
@@ -546,8 +551,6 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </div>
               </sc-for>
             </div>
-
-            <button class="btn btn-ghost" onClick="{{ adminLogout }}" style="margin-top:36px;margin-left:-6px;color:var(--color-accent-2-700)"><i class="icon-log-out"></i>로그아웃</button>
           </div>
         </sc-if>
       </div>
@@ -787,7 +790,7 @@ class Component extends DCLogic {
       unitLabel:ho(u),unitType:u.shop?'상가':'세대',resident:u.resident,area:u.area,depositName:u.dong+'-'+u.ho,
       cur,hasPrev:u.prev>0,deltaFmt:fmt(cur.subtotal-sub(u,4)),
       goBill:()=>this.go('bill',{billMonth:5}),goNotices:()=>this.go('notices'),
-      copyAcct:()=>{try{navigator.clipboard.writeText('44440101505592').catch(()=>{});}catch(e){}this.toast('계좌번호를 복사했습니다');},
+      copyAcct:()=>{try{navigator.clipboard.writeText('국민은행 444401-01-505592').catch(()=>{});}catch(e){}this.toast('계좌번호를 복사했습니다');},
       latest3:sorted.slice(0,3).map(nv),
       feed:[{date:s.issueShort||'09.26',kind:'고지서',icon:'icon-receipt',kColor:'var(--color-accent-2-700)',title:PD.label+'분 관리비 '+cur.totalFmt+'원이 청구되었습니다',unread:false,open:()=>this.go('bill',{billMonth:5})},...s.notices.slice(0,5).map(n=>({date:n.date.slice(5),kind:n.cat,icon:'icon-megaphone',kColor:'var(--color-accent-700)',title:n.title,unread:unread(n),open:()=>this.openNotice(n.id)}))],
       trend:MONTHS.map((m,i)=>({label:m[0],short:(trendVals[i]/10000).toFixed(1)+'만',h:(trendVals[i]/tMax*120)+'px',color:i===5?'var(--color-accent)':cur.unpaid.has(i)?'var(--color-neutral-800)':'var(--color-neutral-300)',w:i===5?700:400,open:()=>this.go('bill',{billMonth:i})})),
@@ -824,7 +827,7 @@ class Component extends DCLogic {
       isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),noAdminNotices:!s.notices.length,notesStatus:s.notesStatus||'공지 불러오는 중…',nextNoteId:this.nextNoteId(),
       composeCancel:()=>this.go('anotices',{cErr:''}),cPinBg:s.cPin?'var(--color-accent)':'var(--color-neutral-300)',cPinX:s.cPin?'21px':'3px',toggleCPin:()=>this.setState({cPin:!s.cPin}),
       saveNote:()=>this.saveNote(),noteBusy:!!s.noteBusy,saveNoteLabel:s.noteBusy?'저장 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 비밀번호 탭에서 GitHub를 연결하면 바로 저장됩니다.',
-      billNotes:((srcAt(u,s.billMonth)||{}).notices||[]).map(t=>{const head=/^특이사항$/.test(t.trim());const star=/^※/.test(t.trim());return {t:t.trim(),size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};}),hasBillNotes:!!(((srcAt(u,s.billMonth)||{}).notices||[]).length),
+      billNotes:(()=>{const arr=((srcAt(u,s.billMonth)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,s.billMonth)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
       cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
