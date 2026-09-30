@@ -732,7 +732,7 @@ const loadPending=()=>{try{return JSON.parse(localStorage.getItem(PW_LS)||'{}')|
 const savePending=p=>{try{localStorage.setItem(PW_LS,JSON.stringify(p));}catch(e){}};
 const GH={owner:'abbyjy80',repo:'dohwa',branch:'main',path:'uploads/passwords.json'},GH_LS='dohwa-gh-token';
 // 관리인 카카오톡 오픈채팅 링크 — 나중에 이 줄의 주소만 바꾸면 '카카오톡 보내기' 버튼이 그 방으로 연결됩니다.
-const KAKAO_URL='https://open.kakao.com/o/sAAOafig';
+const KAKAO_URL='https://open.kakao.com/o/sov81aQi';
 const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
 const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
 const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
