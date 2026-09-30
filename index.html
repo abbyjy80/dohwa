@@ -350,7 +350,15 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 
         <sc-if value="{{ isNotice }}" hint-placeholder-val="{{ false }}">
           <div style="padding:8px 22px 40px">
-            <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-arrow-left" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>{{ backLabel }}</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-arrow-left" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>{{ backLabel }}</button>
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;gap:4px">
+                  <button class="btn btn-ghost" onClick="{{ noteEdit }}" style="min-height:40px;padding:6px 10px"><i class="icon-pencil"></i>수정</button>
+                  <button class="btn btn-ghost" onClick="{{ noteAskDel }}" style="min-height:40px;padding:6px 10px;color:var(--color-accent-2-700)"><i class="icon-trash-2"></i>삭제</button>
+                </div>
+              </sc-if>
+            </div>
             <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700);margin-top:14px">{{ nd.cat }}</div>
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:27px;line-height:1.25;font-weight:600;margin-top:6px;text-wrap:pretty">{{ nd.title }}</div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin-top:10px">{{ nd.date }} · 관리인 박은혜</div>
@@ -398,10 +406,11 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               </div>
             </sc-for>
             <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">관리인</div>
-            <div style="font-size:16px;font-weight:600">박은혜</div>
-            <div style="display:flex;gap:10px;margin-top:10px">
-              <a class="btn btn-secondary" href="tel:01037691962" style="min-height:42px"><i class="icon-phone"></i>010-3769-1962</a>
-              <a class="btn btn-secondary" href="sms:01037691962" style="min-height:42px"><i class="icon-message-square"></i>문자</a>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:16px;font-weight:600">박은혜</span><span style="font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">010-3769-1962</span></div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <a class="btn btn-secondary" href="tel:01037691962" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-phone" style="font-size:14px"></i>전화</a>
+              <a class="btn btn-secondary" href="sms:01037691962" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-message-square" style="font-size:14px"></i>문자</a>
+              <a class="btn btn-secondary" href="{{ kakaoUrl }}" target="_blank" rel="noopener" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-message-circle" style="font-size:14px"></i>카카오톡</a>
             </div>
           </div>
         </sc-if>
@@ -456,8 +465,8 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
         <sc-if value="{{ isACompose }}" hint-placeholder-val="{{ false }}">
           <div style="padding:8px 22px 40px">
             <button class="btn btn-ghost" onClick="{{ composeCancel }}" style="margin-left:-6px;min-height:44px"><i class="icon-x" style="font-size:18px"></i>취소</button>
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:10px">새 공지</div>
-            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;font-variant-numeric:tabular-nums">저장 파일 · uploads/{{ nextNoteId }}.json</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:10px">{{ composeTitle }}</div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px;font-variant-numeric:tabular-nums">저장 파일 · {{ composeFile }}</div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin:22px 0 8px">분류</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px">
               <sc-for list="{{ composeCats }}" as="c" hint-placeholder-count="5">
@@ -644,7 +653,20 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           <button onClick="{{ closeImg }}" aria-label="닫기" style="position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:14px;width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;font-size:20px"><i class="icon-x"></i></button>
         </div>
       </sc-if>
-      
+
+      <sc-if value="{{ noteDelOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ noteDelCancel }}" style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:9">
+          <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px;font-weight:600">공지를 삭제할까요?</div>
+            <div style="font-size:14px;color:var(--color-neutral-700);margin-top:8px;line-height:1.6">"{{ noteDelTitle }}"<br>삭제하면 되돌릴 수 없고, 모든 입주민 폰에서 사라집니다.</div>
+            <div style="display:flex;gap:10px;margin-top:22px">
+              <button class="btn btn-secondary" onClick="{{ noteDelCancel }}" disabled="{{ delBusy }}" style="flex:1;min-height:48px">취소</button>
+              <button class="btn btn-primary" onClick="{{ noteDelConfirm }}" disabled="{{ delBusy }}" style="flex:1;min-height:48px;background:var(--color-accent-2-700);border-color:var(--color-accent-2-700)">{{ delLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
     </div>
   </div>
 </div>
@@ -678,6 +700,7 @@ function shrinkImage(file){return new Promise((res,rej)=>{const url=URL.createOb
   im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('decode'));};im.src=url;});}
 async function ghPutFile(tok,path,b64content,message){let sha;const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.ok)sha=(await g.json()).sha;else if(g.status!==404)throw g.status;
   const r=await ghApi(tok,'/contents/'+path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,content:b64content,branch:GH.branch,...(sha?{sha}:{})})});if(!r.ok)throw r.status;}
+async function ghDelFile(tok,path,message){const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.status===404)return;if(!g.ok)throw g.status;const sha=(await g.json()).sha;const r=await ghApi(tok,'/contents/'+path,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,sha,branch:GH.branch})});if(!r.ok)throw r.status;}
 const noteDate=id=>{const m=/note_(\d{4})(\d{2})(\d{2})/.exec(id);return m?m[1]+'.'+m[2]+'.'+m[3]:'';};
 const todayYmd=()=>{const t=new Date();return t.getFullYear()+String(t.getMonth()+1).padStart(2,'0')+String(t.getDate()).padStart(2,'0');};
 const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned});
@@ -708,6 +731,8 @@ const defaultPw=k=>k==='101-202'?'1234':k==='admin'?'0000':String(1000+((parseIn
 const loadPending=()=>{try{return JSON.parse(localStorage.getItem(PW_LS)||'{}')||{};}catch(e){return {};}};
 const savePending=p=>{try{localStorage.setItem(PW_LS,JSON.stringify(p));}catch(e){}};
 const GH={owner:'abbyjy80',repo:'dohwa',branch:'main',path:'uploads/passwords.json'},GH_LS='dohwa-gh-token';
+// 관리인 카카오톡 오픈채팅 링크 — 나중에 이 줄의 주소만 바꾸면 '카카오톡 보내기' 버튼이 그 방으로 연결됩니다.
+const KAKAO_URL='https://open.kakao.com/o/sAAOafig';
 const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
 const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
 const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
@@ -725,7 +750,7 @@ const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-
 class Component extends DCLogic {
   scRef=React.createRef();
   localImgs={};
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),ghToken:lsGet(GH_LS),plainPw:null,vaultMsg:'',ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',cEdit:null,noteDelId:null,delBusy:false,pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),ghToken:lsGet(GH_LS),plainPw:null,vaultMsg:'',ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
   componentDidMount(){
     this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
     this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
@@ -779,22 +804,34 @@ class Component extends DCLogic {
     const over=Math.max(0,files.length-room);
     this.setState({cImgs:[...this.state.cImgs,...added],imgBusy:false,cErr:bad?bad+'장은 열 수 없는 형식이라 빠졌습니다. JPG나 PNG 사진으로 다시 골라주세요.':over?'사진은 최대 '+IMG_MAX+'장이라 '+over+'장은 빠졌습니다.':''});}
   async saveNote(){const s=this.state;if(s.noteBusy||s.imgBusy)return;if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});
-    const imgs=s.cImgs||[];
-    if(imgs.length&&!s.ghToken)return this.setState({cErr:'사진이 있는 공지는 GitHub 연결 후 게시할 수 있습니다. 비밀번호 탭에서 GitHub를 연결하거나, 사진을 빼고 게시하세요.'});
-    const id=this.nextNoteId();const t=new Date();const imgPaths=imgs.map((_,i)=>IMG_DIR+id+'_'+(i+1)+'.jpg');
+    const editing=!!s.cEdit;const imgs=s.cImgs||[];const newImgs=imgs.filter(im=>im.data);
+    if(newImgs.length&&!s.ghToken)return this.setState({cErr:'사진이 있는 공지는 GitHub 연결 후 게시할 수 있습니다. 비밀번호 탭에서 GitHub를 연결하거나, 사진을 빼고 게시하세요.'});
+    const id=editing?s.cEdit:this.nextNoteId();const t=new Date();
+    let seq=0;const imgPaths=imgs.map(im=>im.path?im.path:IMG_DIR+id+'_'+t.getTime().toString(36)+'_'+(++seq)+'.jpg');
+    const uploads=imgs.map((im,i)=>({im,path:imgPaths[i]})).filter(x=>x.im.data);
     const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),...(imgPaths.length?{images:imgPaths}:{}),date:noteDate(id),pinned:!!s.cPin,author:'관리인 박은혜',createdAt:t.toISOString()};
     const text=JSON.stringify(note,null,1);const n=normNote(id,note);
-    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cTitle:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
+    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cEdit:null,cTitle:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
     if(!s.ghToken){const blob=new Blob([text],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);return done(id+'.json을 내려받았습니다 · uploads 폴더에 올려주세요');}
     this.setState({noteBusy:true,cErr:''});const tok=s.ghToken;
-    try{for(let i=0;i<imgs.length;i++){this.setState({noteProg:'사진 올리는 중… ('+(i+1)+'/'+imgs.length+')'});await ghPutFile(tok,imgPaths[i],imgs[i].data.split(',')[1],'공지 사진: '+note.title+' ('+(i+1)+'/'+imgs.length+')');this.localImgs[imgPaths[i]]=imgs[i].data;}
-      this.setState({noteProg:'공지 저장 중…'});
-      const r=await ghApi(tok,'/contents/uploads/'+id+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 등록: '+note.title,content:b64utf8(text),branch:GH.branch})});if(!r.ok)throw r.status;
+    try{for(let i=0;i<uploads.length;i++){this.setState({noteProg:'사진 올리는 중… ('+(i+1)+'/'+uploads.length+')'});await ghPutFile(tok,uploads[i].path,uploads[i].im.data.split(',')[1],'공지 사진: '+note.title+' ('+(i+1)+'/'+uploads.length+')');this.localImgs[uploads[i].path]=uploads[i].im.data;}
+      this.setState({noteProg:editing?'공지 수정 중…':'공지 저장 중…'});
+      await ghPutFile(tok,'uploads/'+id+'.json',b64utf8(text),(editing?'공지 수정: ':'공지 등록: ')+note.title);
       try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
         const all=[...new Set([id+'.json',...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)).sort().reverse();
         await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:t.toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
-      done('GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
+      done(editing?'공지를 수정했습니다 · 1~2분 뒤 모든 폰에 반영':'GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
     catch(st){this.setState({noteBusy:false,noteProg:'',cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
+  editNote(id){const note=this.state.notices.find(x=>x.id===id);if(!note)return;const imgs=(note.images||[]).map(p=>({id:p,path:p}));this.go('acompose',{prevScreen:this.state.screen,cEdit:id,cCat:CATS.includes(note.cat)?note.cat:'일반',cTitle:note.title||'',cBody:(note.body||[]).join('\n'),cPin:!!note.pinned,cImgs:imgs,cErr:''});}
+  async deleteNote(id){const s=this.state;if(s.delBusy)return;if(!s.ghToken){this.setState({noteDelId:null});return this.toast('GitHub 연결 후 삭제할 수 있습니다 · 비밀번호 탭에서 연결하세요');}
+    const note=s.notices.find(x=>x.id===id),tok=s.ghToken;this.setState({delBusy:true});
+    try{await ghDelFile(tok,'uploads/'+id+'.json','공지 삭제: '+((note&&note.title)||id));
+      for(const p of ((note&&note.images)||[])){try{await ghDelFile(tok,p,'공지 사진 삭제: '+id);}catch(e){}}
+      try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
+        const all=[...new Set([...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)&&f!==id+'.json').sort().reverse();
+        await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 삭제 · 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:new Date().toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
+      this.go('anotices',{delBusy:false,noteDelId:null,notices:s.notices.filter(x=>x.id!==id)});this.toast('공지를 삭제했습니다 · 1~2분 뒤 모든 폰에 반영');}
+    catch(st){this.setState({delBusy:false});this.toast(typeof st==='number'?ghErrMsg(st):ghErrMsg(0));}}
   setPending(p){savePending(p);this.setState({pwPending:p});}
   loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'},()=>{if(this.state.role==='admin')this.unlockVault();});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
@@ -860,15 +897,17 @@ class Component extends DCLogic {
       catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c})})),
       noticeList:filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
       isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
+      noteEdit:()=>this.editNote(nd.id),noteAskDel:()=>this.setState({noteDelId:nd.id}),
+      noteDelOpen:!!s.noteDelId,noteDelTitle:(s.notices.find(x=>x.id===s.noteDelId)||{}).title||'',noteDelCancel:()=>{if(!s.delBusy)this.setState({noteDelId:null});},noteDelConfirm:()=>this.deleteNote(s.noteDelId),delBusy:!!s.delBusy,delLabel:s.delBusy?'삭제 중…':'삭제',
       imgView:s.imgView,closeImg:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:null});},
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>this.go('login',{role:null,banner:null}),
+      logout:()=>this.go('login',{role:null,banner:null}),kakaoUrl:KAKAO_URL,
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
       latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
-      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cCat:'일반'}),
+      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cEdit:null,cCat:'일반',cTitle:'',cBody:'',cPin:false,cImgs:[]}),
       isABill:s.screen==='abill',sent:s.sent,showStepper:!s.sent&&aflow==='단계별',
       steps:stepsDef.map((l,i)=>{const on=s.step===i+1,done=s.step>i+1;return {n:done?'✓':String(i+1),label:l,fg:on?'var(--color-text)':'var(--color-neutral-700)',w:on?700:400,bg:on||done?'var(--color-accent)':'var(--color-neutral-300)',nfg:on||done?'var(--color-bg)':'var(--color-text)'};}),
       showItems:!s.sent&&(aflow==='한 화면'||s.step===1),showPreview:!s.sent&&aflow==='단계별'&&s.step===2,showConfirm:!s.sent&&aflow==='단계별'&&s.step===3,
@@ -884,10 +923,11 @@ class Component extends DCLogic {
       resetSend:()=>this.setState({sent:false,step:1}),
       isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),noAdminNotices:!s.notices.length,notesStatus:s.notesStatus||'공지 불러오는 중…',nextNoteId:this.nextNoteId(),
       composeCancel:()=>this.go('anotices',{cErr:''}),cPinBg:s.cPin?'var(--color-accent)':'var(--color-neutral-300)',cPinX:s.cPin?'21px':'3px',toggleCPin:()=>this.setState({cPin:!s.cPin}),
-      cImgs:s.cImgs.map((im,i)=>({src:im.data,alt:'첨부 사진 '+(i+1),remove:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({cImgs:this.state.cImgs.filter(x=>x.id!==im.id),cErr:''});}})),
+      composeTitle:s.cEdit?'공지 수정':'새 공지',composeFile:s.cEdit?('uploads/'+s.cEdit+'.json'):('uploads/'+this.nextNoteId()+'.json'),
+      cImgs:s.cImgs.map((im,i)=>({src:im.data||imgSrc(im.path),alt:'첨부 사진 '+(i+1),remove:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({cImgs:this.state.cImgs.filter(x=>x.id!==im.id),cErr:''});}})),
       cImgCount:s.cImgs.length?s.cImgs.length+'/'+IMG_MAX:'',canAddImg:s.cImgs.length<IMG_MAX&&!s.noteBusy,addImgLabel:s.imgBusy?'준비 중…':'사진 추가',
       onPickImgs:e=>{if(!this.state.imgBusy)this.pickImgs(e);},
-      saveNote:()=>this.saveNote(),noteBusy:!!(s.noteBusy||s.imgBusy),saveNoteLabel:s.noteBusy?(s.noteProg||'저장 중…'):s.imgBusy?'사진 준비 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
+      saveNote:()=>this.saveNote(),noteBusy:!!(s.noteBusy||s.imgBusy),saveNoteLabel:s.noteBusy?(s.noteProg||'저장 중…'):s.imgBusy?'사진 준비 중…':s.cEdit?(s.ghToken?'수정 저장 · GitHub':'수정 저장 · 파일로 받기'):(s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기'),saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
       billNotes:(()=>{const arr=((srcAt(u,bmIdx)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,bmIdx)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
