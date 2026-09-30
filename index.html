@@ -808,7 +808,7 @@ class Component extends DCLogic {
     const s=this.state,p=this.props;
     const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
     const u=UNITS.find(x=>x.key===s.unit)||UNITS[1];
-    const cur=billFor(u,5),bm=billFor(u,s.billMonth);
+    const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);
     const isT=s.role==='tenant',isA=s.role==='admin';
     const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
     const excerpt=n=>{const b=n.body[0]||'';return b.length>90?b.slice(0,88)+'…':b;};
@@ -853,7 +853,7 @@ class Component extends DCLogic {
       trend:MONTHS.map((m,i)=>({label:m[0],short:(trendVals[i]/10000).toFixed(1)+'만',h:(trendVals[i]/tMax*120)+'px',color:i===5?'var(--color-accent)':cur.unpaid.has(i)?'var(--color-neutral-800)':'var(--color-neutral-300)',w:i===5?700:400,open:()=>this.go('bill',{billMonth:i})})),
       pinned:sorted[0]?nv(sorted[0]):null,noLatest:!s.notices.length,
       isBill:s.screen==='bill',isBillA:billL==='영수증',isBillB:billL==='구성비',bm,
-      monthChips:MONTHS.map((m,i)=>({label:m[0],...chip(i===s.billMonth),go:()=>this.setState({billMonth:i})})),
+      monthChips:realMonths.map(i=>({label:MONTHS[i][0],...chip(i===bmIdx),go:()=>this.setState({billMonth:i})})),
       billItems:itemsNZ.map(i=>({name:i.name,amtFmt:fmt(i.amount)})),
       billSegs:segs,billSorted:bsorted.map((it,i)=>({name:it.name,amtFmt:fmt(it.amount),pct:Math.round(it.amount/bm.subtotal*100)+'%',w:(it.amount/maxI*100)+'%',color:colorOf(i)})),
       isNotices:s.screen==='notices',isNoticeA:noticeL==='목록',isNoticeB:noticeL==='1면',
@@ -888,7 +888,7 @@ class Component extends DCLogic {
       cImgCount:s.cImgs.length?s.cImgs.length+'/'+IMG_MAX:'',canAddImg:s.cImgs.length<IMG_MAX&&!s.noteBusy,addImgLabel:s.imgBusy?'준비 중…':'사진 추가',
       onPickImgs:e=>{if(!this.state.imgBusy)this.pickImgs(e);},
       saveNote:()=>this.saveNote(),noteBusy:!!(s.noteBusy||s.imgBusy),saveNoteLabel:s.noteBusy?(s.noteProg||'저장 중…'):s.imgBusy?'사진 준비 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
-      billNotes:(()=>{const arr=((srcAt(u,s.billMonth)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,s.billMonth)||{}).notices||[]).length),
+      billNotes:(()=>{const arr=((srcAt(u,bmIdx)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,bmIdx)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
       cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
