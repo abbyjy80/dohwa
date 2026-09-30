@@ -307,6 +307,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                     <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
                       <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:13px"></i></sc-if>
                       <span>{{ n.cat }}</span>
+                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:3px;align-items:center;color:var(--color-neutral-700)"><i class="icon-image" style="font-size:13px"></i>{{ n.imgCount }}</span></sc-if>
                       <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
                     </div>
                     <div style="font-size:17px;line-height:1.4;font-weight:{{ n.weight }};text-wrap:pretty">{{ n.title }}</div>
@@ -319,6 +320,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <sc-if value="{{ isNoticeB }}" hint-placeholder-val="{{ false }}">
               <sc-if value="{{ lead }}" hint-placeholder-val="{{ true }}">
                 <div onClick="{{ lead.open }}" style="cursor:pointer;margin-top:26px;display:flex;flex-direction:column;gap:8px">
+                  <sc-if value="{{ lead.hasImages }}" hint-placeholder-val="{{ false }}"><img src="{{ lead.cover }}" alt="" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:4px;display:block;background:var(--color-surface)"></sc-if>
                   <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ lead.cat }} · {{ lead.date }}</div>
                   <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;line-height:1.25;font-weight:600;text-wrap:pretty">{{ lead.title }}</div>
                   <div style="font-size:14px;line-height:1.65;color:var(--color-neutral-700);text-wrap:pretty">{{ lead.excerpt }}</div>
@@ -330,6 +332,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                   <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px">
                     <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
                       <span>{{ n.cat }}</span>
+                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><i class="icon-image" style="font-size:12px;color:var(--color-neutral-700)"></i></sc-if>
                       <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
                     </div>
                     <div style="font-size:15px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
@@ -363,7 +366,14 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 <p style="margin:0;font-size:16px;line-height:1.75;text-align:justify;word-break:keep-all">{{ para }}</p>
               </sc-for>
             </div>
-            
+            <sc-if value="{{ nd.hasImages }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+                <sc-for list="{{ nd.imgs }}" as="im" hint-placeholder-count="2">
+                  <img src="{{ im.src }}" alt="{{ im.alt }}" loading="lazy" onClick="{{ im.open }}" style="width:100%;height:auto;min-height:80px;border-radius:4px;display:block;cursor:zoom-in;background:var(--color-surface)">
+                </sc-for>
+                <div style="font-size:12px;color:var(--color-neutral-700)">사진을 누르면 크게 볼 수 있습니다.</div>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -430,7 +440,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="display:flex;flex-direction:column;gap:20px;margin-top:22px">
               <sc-for list="{{ adminNotices }}" as="n" hint-placeholder-count="4">
                 <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
-                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ n.cat }} · {{ n.date }}</div>
+                  <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                    <span>{{ n.cat }} · {{ n.date }}</span>
+                    <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:3px;align-items:center;color:var(--color-neutral-700)"><i class="icon-image" style="font-size:13px"></i>{{ n.imgCount }}</span></sc-if>
+                  </div>
                   <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
                   <div style="font-size:11px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">uploads/{{ n.id }}.json</div>
                 </div>
@@ -459,6 +472,24 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <span style="font-size:13px;color:var(--color-neutral-700)">내용</span>
               <textarea class="input" value="{{ cBody }}" onChange="{{ onCBody }}" placeholder="줄을 바꾸면 문단이 나뉩니다" style="min-height:180px;font-size:15px;line-height:1.6"></textarea>
             </label>
+            <div style="margin-top:16px">
+              <div style="font-size:13px;color:var(--color-neutral-700)">사진 {{ cImgCount }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+                <sc-for list="{{ cImgs }}" as="im" hint-placeholder-count="2">
+                  <div style="position:relative;width:84px;height:84px;flex:none">
+                    <img src="{{ im.src }}" alt="{{ im.alt }}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;display:block;background:var(--color-surface)">
+                    <button onClick="{{ im.remove }}" aria-label="사진 빼기" style="position:absolute;top:4px;right:4px;width:26px;height:26px;border:0;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;font-size:15px"><i class="icon-x"></i></button>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ canAddImg }}" hint-placeholder-val="{{ true }}">
+                  <label style="width:84px;height:84px;flex:none;box-sizing:border-box;border:1px dashed var(--color-neutral-500);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;color:var(--color-neutral-700);font-size:12px">
+                    <input type="file" accept="image/*" multiple onChange="{{ onPickImgs }}" style="position:absolute;opacity:0;width:0;height:0">
+                    <i class="icon-image-plus" style="font-size:22px"></i>{{ addImgLabel }}
+                  </label>
+                </sc-if>
+              </div>
+              <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:8px">최대 6장. 올리기 전에 크기를 줄이고 촬영 위치 정보는 지웁니다. 사진은 앱 주소만 알면 누구나 볼 수 있으니 차량 번호나 얼굴은 가리고 올려주세요.</div>
+            </div>
             <div onClick="{{ toggleCPin }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 6px;cursor:pointer">
               <div><div style="font-size:15px">맨 위에 고정</div><div style="font-size:12px;color:var(--color-neutral-700)">중요한 공지를 목록 맨 위에 둡니다</div></div>
               <div style="width:44px;height:26px;border-radius:13px;background:{{ cPinBg }};position:relative;flex:none;transition:background .2s"><div style="position:absolute;top:3px;left:{{ cPinX }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div></div>
@@ -607,6 +638,12 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </div>
       </sc-if>
+      <sc-if value="{{ imgView }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeImg }}" style="position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:8;cursor:zoom-out">
+          <img src="{{ imgView }}" alt="공지 사진 크게 보기" style="max-width:100%;max-height:100%;object-fit:contain;display:block">
+          <button onClick="{{ closeImg }}" aria-label="닫기" style="position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:14px;width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;font-size:20px"><i class="icon-x"></i></button>
+        </div>
+      </sc-if>
       
     </div>
   </div>
@@ -634,9 +671,16 @@ const fmt=n=>Math.round(n).toLocaleString('ko-KR');
 const CATS=['일반','공사·점검','분리수거','주차','회의·투표'];
 const NOTICES=[];
 const NOTE_RE=/^note_(\d{8})_(\d{3})\.json$/,NOTE_INDEX='uploads/notes-index.json',READ_LS='dohwa-reads';
+// 공지 사진: uploads/img/note_YYYYMMDD_NNN_1.jpg 형식으로 저장
+const IMG_DIR='uploads/img/',IMG_MAX=6,IMG_EDGE=1280,IMG_Q=0.82,IMG_RE=/^uploads\/img\/[\w.-]+\.(jpe?g|png|webp)$/i;
+function shrinkImage(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const im=new Image();
+  im.onload=()=>{try{let w=im.naturalWidth,h=im.naturalHeight;if(!w||!h)throw 0;const sc=Math.min(1,IMG_EDGE/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',IMG_Q));}catch(e){URL.revokeObjectURL(url);rej(e);}};
+  im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('decode'));};im.src=url;});}
+async function ghPutFile(tok,path,b64content,message){let sha;const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.ok)sha=(await g.json()).sha;else if(g.status!==404)throw g.status;
+  const r=await ghApi(tok,'/contents/'+path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,content:b64content,branch:GH.branch,...(sha?{sha}:{})})});if(!r.ok)throw r.status;}
 const noteDate=id=>{const m=/note_(\d{4})(\d{2})(\d{2})/.exec(id);return m?m[1]+'.'+m[2]+'.'+m[3]:'';};
 const todayYmd=()=>{const t=new Date();return t.getFullYear()+String(t.getMonth()+1).padStart(2,'0')+String(t.getDate()).padStart(2,'0');};
-const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),date:j.date||noteDate(id),pinned:!!j.pinned});
+const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned});
 function initReads(){try{return JSON.parse(localStorage.getItem(READ_LS)||'{}')||{};}catch(e){return {};}}
 function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
 function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:r&&u.shop?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
@@ -680,7 +724,8 @@ const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-
 
 class Component extends DCLogic {
   scRef=React.createRef();
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),ghToken:lsGet(GH_LS),plainPw:null,vaultMsg:'',ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  localImgs={};
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'1234',lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',pwFile:null,pwFileStatus:'확인 중…',pwPending:loadPending(),ghToken:lsGet(GH_LS),plainPw:null,vaultMsg:'',ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
   componentDidMount(){
     this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
     this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
@@ -727,22 +772,33 @@ class Component extends DCLogic {
     const list=(await Promise.all([...names].map(f=>fetch('uploads/'+f,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>j?normNote(f.replace('.json',''),j):null).catch(()=>null)))).filter(Boolean).sort((a,b)=>b.id.localeCompare(a.id));
     this.setState({notices:list,notesStatus:list.length?'uploads 폴더의 공지 '+list.length+'건':'uploads 폴더에 공지 파일이 없습니다'});}
   nextNoteId(){const d=todayYmd();const used=this.state.notices.filter(n=>n.id.startsWith('note_'+d+'_')).map(n=>+n.id.slice(-3));return 'note_'+d+'_'+String((used.length?Math.max(...used):0)+1).padStart(3,'0');}
-  async saveNote(){const s=this.state;if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});
-    const id=this.nextNoteId();const t=new Date();const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),date:noteDate(id),pinned:!!s.cPin,author:'관리인 박은혜',createdAt:t.toISOString()};
+  async pickImgs(e){const files=[...((e.target&&e.target.files)||[])];try{e.target.value='';}catch(x){}if(!files.length)return;
+    const room=IMG_MAX-this.state.cImgs.length;if(room<=0)return this.setState({cErr:'사진은 최대 '+IMG_MAX+'장까지 붙일 수 있습니다'});
+    this.setState({imgBusy:true,cErr:''});const added=[];let bad=0;
+    for(const f of files.slice(0,room)){try{added.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),data:await shrinkImage(f)});}catch(err){bad++;}}
+    const over=Math.max(0,files.length-room);
+    this.setState({cImgs:[...this.state.cImgs,...added],imgBusy:false,cErr:bad?bad+'장은 열 수 없는 형식이라 빠졌습니다. JPG나 PNG 사진으로 다시 골라주세요.':over?'사진은 최대 '+IMG_MAX+'장이라 '+over+'장은 빠졌습니다.':''});}
+  async saveNote(){const s=this.state;if(s.noteBusy||s.imgBusy)return;if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});
+    const imgs=s.cImgs||[];
+    if(imgs.length&&!s.ghToken)return this.setState({cErr:'사진이 있는 공지는 GitHub 연결 후 게시할 수 있습니다. 비밀번호 탭에서 GitHub를 연결하거나, 사진을 빼고 게시하세요.'});
+    const id=this.nextNoteId();const t=new Date();const imgPaths=imgs.map((_,i)=>IMG_DIR+id+'_'+(i+1)+'.jpg');
+    const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),...(imgPaths.length?{images:imgPaths}:{}),date:noteDate(id),pinned:!!s.cPin,author:'관리인 박은혜',createdAt:t.toISOString()};
     const text=JSON.stringify(note,null,1);const n=normNote(id,note);
-    const done=msg=>{this.go('anotices',{notices:[n,...s.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cTitle:'',cBody:'',cErr:'',cPin:false,noteBusy:false});this.toast(msg);};
+    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cTitle:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
     if(!s.ghToken){const blob=new Blob([text],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);return done(id+'.json을 내려받았습니다 · uploads 폴더에 올려주세요');}
     this.setState({noteBusy:true,cErr:''});const tok=s.ghToken;
-    try{const r=await ghApi(tok,'/contents/uploads/'+id+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 등록: '+note.title,content:b64utf8(text),branch:GH.branch})});if(!r.ok)throw r.status;
+    try{for(let i=0;i<imgs.length;i++){this.setState({noteProg:'사진 올리는 중… ('+(i+1)+'/'+imgs.length+')'});await ghPutFile(tok,imgPaths[i],imgs[i].data.split(',')[1],'공지 사진: '+note.title+' ('+(i+1)+'/'+imgs.length+')');this.localImgs[imgPaths[i]]=imgs[i].data;}
+      this.setState({noteProg:'공지 저장 중…'});
+      const r=await ghApi(tok,'/contents/uploads/'+id+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 등록: '+note.title,content:b64utf8(text),branch:GH.branch})});if(!r.ok)throw r.status;
       try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
         const all=[...new Set([id+'.json',...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)).sort().reverse();
         await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:t.toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
       done('GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
-    catch(st){this.setState({noteBusy:false,cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
+    catch(st){this.setState({noteBusy:false,noteProg:'',cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
   setPending(p){savePending(p);this.setState({pwPending:p});}
   loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'},()=>{if(this.state.role==='admin')this.unlockVault();});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
-  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
+  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,imgView:null,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});setTimeout(()=>this.unlockVault(),0);}
@@ -756,7 +812,8 @@ class Component extends DCLogic {
     const isT=s.role==='tenant',isA=s.role==='admin';
     const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
     const excerpt=n=>{const b=n.body[0]||'';return b.length>90?b.slice(0,88)+'…':b;};
-    const nv=n=>({...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:(s.reads[n.id]||[]).length,pct:'0%'});
+    const imgSrc=p=>this.localImgs[p]||p;
+    const nv=n=>{const ims=n.images||[];return {...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:(s.reads[n.id]||[]).length,pct:'0%',hasImages:ims.length>0,imgCount:ims.length,cover:ims.length?imgSrc(ims[0]):'',imgs:ims.map((pth,i)=>({src:imgSrc(pth),alt:'공지 사진 '+(i+1),open:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:imgSrc(pth)});}}))};};
     const sorted=[...s.notices].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
     const filtered=sorted.filter(n=>s.cat==='전체'||n.cat===s.cat).map(nv);
     const chip=(on)=>({bg:on?'var(--color-accent-100)':'transparent',fg:on?'var(--color-accent-800)':'var(--color-text)'});
@@ -803,6 +860,7 @@ class Component extends DCLogic {
       catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c})})),
       noticeList:filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
       isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
+      imgView:s.imgView,closeImg:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:null});},
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
@@ -826,7 +884,10 @@ class Component extends DCLogic {
       resetSend:()=>this.setState({sent:false,step:1}),
       isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),noAdminNotices:!s.notices.length,notesStatus:s.notesStatus||'공지 불러오는 중…',nextNoteId:this.nextNoteId(),
       composeCancel:()=>this.go('anotices',{cErr:''}),cPinBg:s.cPin?'var(--color-accent)':'var(--color-neutral-300)',cPinX:s.cPin?'21px':'3px',toggleCPin:()=>this.setState({cPin:!s.cPin}),
-      saveNote:()=>this.saveNote(),noteBusy:!!s.noteBusy,saveNoteLabel:s.noteBusy?'저장 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 비밀번호 탭에서 GitHub를 연결하면 바로 저장됩니다.',
+      cImgs:s.cImgs.map((im,i)=>({src:im.data,alt:'첨부 사진 '+(i+1),remove:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({cImgs:this.state.cImgs.filter(x=>x.id!==im.id),cErr:''});}})),
+      cImgCount:s.cImgs.length?s.cImgs.length+'/'+IMG_MAX:'',canAddImg:s.cImgs.length<IMG_MAX&&!s.noteBusy,addImgLabel:s.imgBusy?'준비 중…':'사진 추가',
+      onPickImgs:e=>{if(!this.state.imgBusy)this.pickImgs(e);},
+      saveNote:()=>this.saveNote(),noteBusy:!!(s.noteBusy||s.imgBusy),saveNoteLabel:s.noteBusy?(s.noteProg||'저장 중…'):s.imgBusy?'사진 준비 중…':s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기',saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
       billNotes:(()=>{const arr=((srcAt(u,s.billMonth)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,s.billMonth)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
