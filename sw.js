@@ -1,4 +1,4 @@
-const CACHE = 'dohwa-v6';
+const CACHE = 'dohwa-v7';
 const SHELL = ['./', 'index.html', 'support.js', 'manifest.webmanifest',
   '_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/styles.css',
   '_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/_ds_bundle.js',
@@ -15,6 +15,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.hostname === 'api.github.com') return; // GitHub 저장은 항상 네트워크로
+  if (url.hostname.endsWith('script.google.com') || url.hostname.endsWith('googleusercontent.com')) return; // 입금 내역 조회는 캐시 없이
   // 고지서 데이터와 페이지: 네트워크 우선 (항상 최신), 오프라인이면 캐시
   if (req.mode === 'navigate' || url.pathname.includes('/uploads/')) {
     e.respondWith(fetch(req).then(r => {

@@ -101,6 +101,12 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>전월 미납액 {{ cur.prevFmt }}원이 합산되었습니다. 이미 납부하셨다면 이체확인증을 관리인에게 보내주세요.</span></div>
             </sc-if>
+            <sc-if value="{{ hasPay }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:18px;padding-top:12px;border-top:1px solid var(--color-divider);display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px">
+                <span style="color:var(--color-neutral-700)">마지막 입금</span><span style="font-variant-numeric:tabular-nums">{{ payDate }}</span>
+                <span style="color:var(--color-neutral-700)">미수 잔액</span><span style="font-weight:600;font-variant-numeric:tabular-nums;color:{{ payColor }}">{{ payUnpaid }}</span>
+              </div>
+            </sc-if>
             <div style="display:flex;gap:10px;margin-top:22px">
               <button class="btn btn-primary" onClick="{{ goBill }}" style="flex:1;min-height:46px;font-size:15px">고지서 보기</button>
               <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="min-height:46px;font-size:15px"><i class="icon-copy"></i>계좌 복사</button>
@@ -733,6 +739,8 @@ const savePending=p=>{try{localStorage.setItem(PW_LS,JSON.stringify(p));}catch(e
 const GH={owner:'abbyjy80',repo:'dohwa',branch:'main',path:'uploads/passwords.json'},GH_LS='dohwa-gh-token';
 // 관리인 카카오톡 오픈채팅 링크 — 나중에 이 줄의 주소만 바꾸면 '카카오톡 보내기' 버튼이 그 방으로 연결됩니다.
 const KAKAO_URL='https://open.kakao.com/o/sov81aQi';
+// 입금 내역 조회용 Apps Script 웹앱 주소 (…/exec) — 비워두면 홈 화면의 '마지막 입금 · 미수 잔액'이 표시되지 않습니다.
+const PAY_URL='';
 const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
 const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
 const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
@@ -839,7 +847,8 @@ class Component extends DCLogic {
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});setTimeout(()=>this.unlockVault(),0);}
-  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);}
+  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);this.loadPay(key,s.lPw);}
+  loadPay(key,pw){this.setState({pay:null});if(!PAY_URL)return;fetch(PAY_URL+'?unit='+encodeURIComponent(key)+'&pw='+encodeURIComponent(pw),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.ok&&j.unit===this.state.unit)this.setState({pay:j});}).catch(()=>{});}
   openNotice(id){const s=this.state;const reads={...s.reads};const rl=reads[id]||[];if(s.role==='tenant'&&!rl.includes(s.unit)){reads[id]=[...rl,s.unit];try{localStorage.setItem(READ_LS,JSON.stringify(reads));}catch(e){}}this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
@@ -882,7 +891,8 @@ class Component extends DCLogic {
       lHo:s.lHo,lPw:s.lPw,lErr:s.lErr,onHo:e=>this.setState({lHo:e.target.value,lErr:''}),onPw:e=>this.setState({lPw:e.target.value.replace(/\D/g,'').slice(0,4),lErr:''}),doLogin:()=>this.doLogin(),
       isHomeA:s.screen==='home'&&home==='1면',isHomeB:s.screen==='home'&&home==='피드',isHomeC:s.screen==='home'&&home==='추이',
       unitLabel:ho(u),unitType:u.shop?'상가':'세대',resident:u.resident,area:u.area,depositName:u.dong+'-'+u.ho,
-      cur,hasPrev:u.prev>0,deltaFmt:fmt(cur.subtotal-sub(u,4)),
+      cur,hasPrev:u.prev>0,
+      hasPay:!!(isT&&s.pay),payDate:s.pay&&s.pay.lastDate?s.pay.lastDate.replace(/-/g,'.')+' · '+fmt(s.pay.lastAmount)+'원':'입금 내역 없음',payUnpaid:s.pay?(s.pay.unpaid>0?fmt(s.pay.unpaid)+'원':s.pay.unpaid<0?'완납 (선납 '+fmt(-s.pay.unpaid)+'원)':'완납'):'',payColor:s.pay&&s.pay.unpaid>0?'var(--color-accent-2-700)':'var(--color-accent-700)',deltaFmt:fmt(cur.subtotal-sub(u,4)),
       goBill:()=>this.go('bill',{billMonth:5}),goNotices:()=>this.go('notices'),
       copyAcct:()=>{try{navigator.clipboard.writeText('국민은행 444401-01-505592').catch(()=>{});}catch(e){}this.toast('계좌번호를 복사했습니다');},
       latest3:sorted.slice(0,3).map(nv),
@@ -903,7 +913,7 @@ class Component extends DCLogic {
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>this.go('login',{role:null,banner:null}),kakaoUrl:KAKAO_URL,
+      logout:()=>this.go('login',{role:null,banner:null,pay:null}),kakaoUrl:KAKAO_URL,
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
       latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
