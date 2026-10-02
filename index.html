@@ -854,7 +854,7 @@ class Component extends DCLogic {
     const s=this.state,p=this.props;
     const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
     const u=UNITS.find(x=>x.key===s.unit)||UNITS[1];
-    const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);
+    const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);if(bmIdx===5&&s.role==='tenant'&&s.pay&&s.pay.unpaid<=0)Object.assign(bm,{status:'납부 완료',tagClass:'tag-neutral'});
     const isT=s.role==='tenant',isA=s.role==='admin';
     const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
     const excerpt=n=>{const b=n.body[0]||'';return b.length>90?b.slice(0,88)+'…':b;};
