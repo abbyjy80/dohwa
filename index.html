@@ -307,7 +307,40 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             </div>
 
             <sc-if value="{{ isNoticeA }}" hint-placeholder-val="{{ true }}">
-              <div style="display:flex;flex-direction:column;gap:24px;margin-top:26px">
+              <sc-if value="{{ hasCarousel }}" hint-placeholder-val="{{ false }}">
+                <div onScroll="{{ onCarScroll }}" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:22px -22px 0;padding:2px 22px 4px;scroll-padding-inline:22px">
+                  <sc-for list="{{ carousel }}" as="n" hint-placeholder-count="3">
+                    <div onClick="{{ n.open }}" style="flex:none;width:84%;scroll-snap-align:start;cursor:pointer;border:1px solid var(--color-divider);border-radius:6px;overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
+                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}">
+                        <div style="position:relative">
+                          <img src="{{ n.cover }}" alt="" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--color-surface)">
+                          <sc-if value="{{ n.multiImg }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:8px;bottom:8px;display:flex;gap:3px;align-items:center;padding:2px 8px;border-radius:10px;font-size:11px;background:rgba(0,0,0,.55);color:#fff"><i class="icon-image" style="font-size:12px"></i>{{ n.imgCount }}</span></sc-if>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ n.noImages }}" hint-placeholder-val="{{ true }}">
+                        <div style="aspect-ratio:16/10;box-sizing:border-box;padding:18px 18px 0;background:var(--color-accent-100);overflow:hidden">
+                          <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:16px;line-height:1.6;color:var(--color-accent-800);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div>
+                        </div>
+                      </sc-if>
+                      <div style="padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px">
+                        <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                          <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:12px"></i></sc-if>
+                          <span>{{ n.cat }} · {{ n.date }}</span>
+                          <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                        </div>
+                        <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;line-height:1.35;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.title }}</div>
+                        <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div></sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="position:relative;display:flex;justify-content:center;align-items:center;gap:6px;margin-top:12px;min-height:16px">
+                  <sc-for list="{{ carDots }}" as="d" hint-placeholder-count="3"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.bg }}"></span></sc-for>
+                  <span style="position:absolute;right:0;font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ carCounter }}</span>
+                </div>
+                <sc-if value="{{ hasCarRest }}" hint-placeholder-val="{{ false }}"><div style="font-size:17px;font-weight:600;margin-top:30px">지난 공지</div></sc-if>
+              </sc-if>
+              <div style="display:flex;flex-direction:column;gap:24px;margin-top:{{ listMt }}">
                 <sc-for list="{{ noticeList }}" as="n" hint-placeholder-count="6">
                   <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
                     <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
@@ -504,6 +537,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <label style="display:flex;flex-direction:column;gap:6px;margin-top:20px">
               <span style="font-size:13px;color:var(--color-neutral-700)">제목</span>
               <input class="input" value="{{ cTitle }}" onChange="{{ onCTitle }}" placeholder="예: 옥상 방수 공사 안내" style="min-height:46px;font-size:16px">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;margin-top:16px">
+              <span style="font-size:13px;color:var(--color-neutral-700)">한 줄 요약 <span style="font-size:12px">(선택 · 공지 미리보기에 표시)</span></span>
+              <input class="input" value="{{ cSummary }}" onChange="{{ onCSummary }}" placeholder="비워두면 내용 첫 부분이 자동으로 표시됩니다" style="min-height:46px;font-size:15px">
             </label>
             <label style="display:flex;flex-direction:column;gap:6px;margin-top:16px">
               <span style="font-size:13px;color:var(--color-neutral-700)">내용</span>
@@ -731,7 +768,10 @@ async function ghPutFile(tok,path,b64content,message){let sha;const g=await ghAp
 async function ghDelFile(tok,path,message){const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.status===404)return;if(!g.ok)throw g.status;const sha=(await g.json()).sha;const r=await ghApi(tok,'/contents/'+path,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,sha,branch:GH.branch})});if(!r.ok)throw r.status;}
 const noteDate=id=>{const m=/note_(\d{4})(\d{2})(\d{2})/.exec(id);return m?m[1]+'.'+m[2]+'.'+m[3]:'';};
 const todayYmd=()=>{const t=new Date();return t.getFullYear()+String(t.getMonth()+1).padStart(2,'0')+String(t.getDate()).padStart(2,'0');};
-const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned});
+// 미리보기: 한 줄 요약(summary)이 있으면 그것, 없으면 본문에서 [머리줄]과 1️⃣·※ 같은 기호를 빼고 이어 붙임
+const HEAD_RE=/^\s*[\[【]|[\]】]\s*$/,BULLET_RE=/^(?:\s|\d\uFE0F?\u20E3|[※▶►•·*#>-]|\p{Extended_Pictographic}\uFE0F?)+/u;
+const previewOf=n=>n.summary||n.body.filter(l=>!HEAD_RE.test(l)).map(l=>l.replace(BULLET_RE,'').trim()).filter(Boolean).join(' ').slice(0,200);
+const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned,summary:String(j.summary||'').trim()});
 function initReads(){try{return JSON.parse(localStorage.getItem(READ_LS)||'{}')||{};}catch(e){return {};}}
 function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
 function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:r&&u.shop?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
@@ -839,9 +879,9 @@ class Component extends DCLogic {
     const id=editing?s.cEdit:this.nextNoteId();const t=new Date();
     let seq=0;const imgPaths=imgs.map(im=>im.path?im.path:IMG_DIR+id+'_'+t.getTime().toString(36)+'_'+(++seq)+'.jpg');
     const uploads=imgs.map((im,i)=>({im,path:imgPaths[i]})).filter(x=>x.im.data);
-    const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),...(imgPaths.length?{images:imgPaths}:{}),date:noteDate(id),pinned:!!s.cPin,author:'관리인 박은혜',createdAt:t.toISOString()};
+    const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),...(imgPaths.length?{images:imgPaths}:{}),date:noteDate(id),pinned:!!s.cPin,...(s.cSummary&&s.cSummary.trim()?{summary:s.cSummary.trim()}:{}),author:'관리인 박은혜',createdAt:t.toISOString()};
     const text=JSON.stringify(note,null,1);const n=normNote(id,note);
-    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cEdit:null,cTitle:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
+    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cEdit:null,cTitle:'',cSummary:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
     if(!s.ghToken){const blob=new Blob([text],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);return done(id+'.json을 내려받았습니다 · uploads 폴더에 올려주세요');}
     this.setState({noteBusy:true,cErr:''});const tok=s.ghToken;
     try{for(let i=0;i<uploads.length;i++){this.setState({noteProg:'사진 올리는 중… ('+(i+1)+'/'+uploads.length+')'});await ghPutFile(tok,uploads[i].path,uploads[i].im.data.split(',')[1],'공지 사진: '+note.title+' ('+(i+1)+'/'+uploads.length+')');this.localImgs[uploads[i].path]=uploads[i].im.data;}
@@ -852,7 +892,7 @@ class Component extends DCLogic {
         await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:t.toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
       done(editing?'공지를 수정했습니다 · 1~2분 뒤 모든 폰에 반영':'GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
     catch(st){this.setState({noteBusy:false,noteProg:'',cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
-  editNote(id){const note=this.state.notices.find(x=>x.id===id);if(!note)return;const imgs=(note.images||[]).map(p=>({id:p,path:p}));this.go('acompose',{prevScreen:this.state.screen,cEdit:id,cCat:CATS.includes(note.cat)?note.cat:'일반',cTitle:note.title||'',cBody:(note.body||[]).join('\n'),cPin:!!note.pinned,cImgs:imgs,cErr:''});}
+  editNote(id){const note=this.state.notices.find(x=>x.id===id);if(!note)return;const imgs=(note.images||[]).map(p=>({id:p,path:p}));this.go('acompose',{prevScreen:this.state.screen,cEdit:id,cCat:CATS.includes(note.cat)?note.cat:'일반',cTitle:note.title||'',cSummary:note.summary||'',cBody:(note.body||[]).join('\n'),cPin:!!note.pinned,cImgs:imgs,cErr:''});}
   async deleteNote(id){const s=this.state;if(s.delBusy)return;if(!s.ghToken){this.setState({noteDelId:null});return this.toast('GitHub 연결 후 삭제할 수 있습니다 · 비밀번호 탭에서 연결하세요');}
     const note=s.notices.find(x=>x.id===id),tok=s.ghToken;this.setState({delBusy:true});
     try{await ghDelFile(tok,'uploads/'+id+'.json','공지 삭제: '+((note&&note.title)||id));
@@ -865,13 +905,15 @@ class Component extends DCLogic {
   setPending(p){savePending(p);this.setState({pwPending:p});}
   loadPwFile(){fetch(PW_URL,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(f=>{if(!f||!f.units){this.setState({pwFile:null,pwFileStatus:'파일 없음 · 기본 번호 사용'});return;}const p={...this.state.pwPending};Object.keys(p).forEach(k=>{const v=k==='admin'?f.admin:f.units[k];if(v===hashPw(k,p[k]))delete p[k];});savePending(p);const d=f.updatedAt?new Date(f.updatedAt):null;this.setState({pwFile:f,pwPending:p,pwFileStatus:d?d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' 저장본 적용 중':'적용 중'},()=>{if(this.state.role==='admin')this.unlockVault();});}).catch(()=>this.setState({pwFileStatus:'파일 없음 · 기본 번호 사용'}));}
   applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
-  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,imgView:null,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
+  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,imgView:null,carIdx:0,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
-  enterTenant(key){this.go('home',{role:'tenant',unit:key,lErr:''});if(this.state.pushBill){clearTimeout(this.bt);setTimeout(()=>this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}}),500);this.bt=setTimeout(()=>this.setState({banner:null}),4200);}}
+  enterTenant(key,viaLogin){this.go('home',{role:'tenant',unit:key,lErr:''});if(!viaLogin)setTimeout(()=>this.billBanner(),500);}
+  // 고지서 알림: 로그인 시에는 입금 조회 결과를 보고 미수가 남아 있을 때만 띄움 (조회 실패·미설정이면 띄움)
+  billBanner(){if(!this.state.pushBill||this.state.role!=='tenant')return;clearTimeout(this.bt);this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}});this.bt=setTimeout(()=>this.setState({banner:null}),3700);}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});setTimeout(()=>{this.unlockVault();this.loadPayAll();},0);}
   loadPayAll(){if(!PAY_URL||!this.adminPlain)return this.setState({payAll:null,payAllStatus:PAY_URL?'관리인 비밀번호로 다시 로그인하면 불러옵니다':''});this.setState({payAllStatus:'구글시트에서 불러오는 중…'});fetch(PAY_URL+'?unit=admin&pw='+encodeURIComponent(this.adminPlain),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(!j.ok)throw j.error;const t=new Date();this.setState({payAll:j.list,payAllStatus:'구글시트 세대정보 · '+t.getHours()+':'+String(t.getMinutes()).padStart(2,'0')+' 조회'});}).catch(e=>this.setState({payAllStatus:e==='locked'?'비밀번호 오류가 많아 10분간 잠겼습니다':e==='auth'?'관리인 비밀번호가 시트 조회에 맞지 않습니다':'불러오지 못했습니다. 새로고침을 눌러 다시 시도하세요'}));}
-  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key);this.loadPay(key,s.lPw);}
-  loadPay(key,pw){this.setState({pay:null});if(!PAY_URL)return;fetch(PAY_URL+'?unit='+encodeURIComponent(key)+'&pw='+encodeURIComponent(pw),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.ok&&j.unit===this.state.unit)this.setState({pay:j});}).catch(()=>{});}
+  doLogin(){const s=this.state;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});if(s.lMode==='admin'){if(this.hashOf('admin')!==hashPw('admin',s.lPw))return this.setState({lErr:'관리인 비밀번호가 맞지 않습니다'});this.adminPlain=s.lPw;return this.enterAdmin();}const ho=s.lHo.trim().toUpperCase().replace('호','');const key=s.lDong+'-'+ho;if(!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});if(this.hashOf(key)!==hashPw(key,s.lPw))return this.setState({lErr:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요'});this.enterTenant(key,true);this.loadPay(key,s.lPw);}
+  loadPay(key,pw){this.setState({pay:null});if(!PAY_URL)return setTimeout(()=>this.billBanner(),500);fetch(PAY_URL+'?unit='+encodeURIComponent(key)+'&pw='+encodeURIComponent(pw),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j.ok&&j.unit===this.state.unit){this.setState({pay:j});if(j.unpaid>0)this.billBanner();}else this.billBanner();}).catch(()=>this.billBanner());}
   openNotice(id){const s=this.state;const reads={...s.reads};const rl=reads[id]||[];if(s.role==='tenant'&&!rl.includes(s.unit)){reads[id]=[...rl,s.unit];try{localStorage.setItem(READ_LS,JSON.stringify(reads));}catch(e){}}this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
@@ -880,10 +922,13 @@ class Component extends DCLogic {
     const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);if(bmIdx===5&&s.role==='tenant'&&s.pay&&s.pay.unpaid<=0)Object.assign(bm,{status:'납부 완료',tagClass:'tag-neutral'});
     const isT=s.role==='tenant',isA=s.role==='admin';
     const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
-    const excerpt=n=>{const b=n.body[0]||'';return b.length>90?b.slice(0,88)+'…':b;};
+    const excerpt=n=>{const b=previewOf(n);return b.length>90?b.slice(0,88)+'…':b;};
     const imgSrc=p=>this.localImgs[p]||p;
     const nv=n=>{const ims=n.images||[];return {...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:(s.reads[n.id]||[]).length,pct:'0%',hasImages:ims.length>0,imgCount:ims.length,cover:ims.length?imgSrc(ims[0]):'',imgs:ims.map((pth,i)=>({src:imgSrc(pth),alt:'공지 사진 '+(i+1),open:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:imgSrc(pth)});}}))};};
     const sorted=[...s.notices].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+    // 공지 캐러셀: '전체' + 목록형일 때 고정 → 안 읽음 → 최신순 최대 5개 (공지가 2개 이상일 때만), 아래 목록에서는 제외
+    const carSrc=noticeL==='목록'&&s.cat==='전체'&&sorted.length>1?[...sorted.filter(n=>n.pinned),...sorted.filter(n=>!n.pinned&&unread(n)),...sorted.filter(n=>!n.pinned&&!unread(n))].slice(0,5):[];
+    const carIds=new Set(carSrc.map(n=>n.id)),carIdx=Math.min(s.carIdx||0,Math.max(0,carSrc.length-1));
     const filtered=sorted.filter(n=>s.cat==='전체'||n.cat===s.cat).map(nv);
     const chip=(on)=>({bg:on?'var(--color-accent-100)':'transparent',fg:on?'var(--color-accent-800)':'var(--color-text)'});
     const ndRaw=s.notices.find(n=>n.id===s.noticeId)||s.notices[0]||{id:'',cat:'',title:'',body:[],date:''};
@@ -927,8 +972,12 @@ class Component extends DCLogic {
       billItems:itemsNZ.map(i=>({name:i.name,amtFmt:fmt(i.amount)})),
       billSegs:segs,billSorted:bsorted.map((it,i)=>({name:it.name,amtFmt:fmt(it.amount),pct:Math.round(it.amount/bm.subtotal*100)+'%',w:(it.amount/maxI*100)+'%',color:colorOf(i)})),
       isNotices:s.screen==='notices',isNoticeA:noticeL==='목록',isNoticeB:noticeL==='1면',
-      catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c})})),
-      noticeList:filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
+      hasCarousel:carSrc.length>0,hasCarRest:carSrc.length>0&&filtered.length>carSrc.length,listMt:carSrc.length?'14px':'26px',
+      carousel:carSrc.map(n=>{const v=nv(n);return {...v,noImages:!v.hasImages,multiImg:v.imgCount>1,preview:previewOf(n)};}),
+      carDots:carSrc.map((_,i)=>({bg:i===carIdx?'var(--color-accent)':'var(--color-neutral-300)'})),carCounter:(carIdx+1)+' / '+carSrc.length,
+      onCarScroll:e=>{const el=e.currentTarget,c=el.firstElementChild,w=c?c.getBoundingClientRect().width+12:el.clientWidth,i=Math.max(0,Math.min(carSrc.length-1,Math.round(el.scrollLeft/w)));if(i!==carIdx)this.setState({carIdx:i});},
+      catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c,carIdx:0})})),
+      noticeList:carIds.size?filtered.filter(n=>!carIds.has(n.id)):filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
       isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
       noteEdit:()=>this.editNote(nd.id),noteAskDel:()=>this.setState({noteDelId:nd.id}),
       noteDelOpen:!!s.noteDelId,noteDelTitle:(s.notices.find(x=>x.id===s.noteDelId)||{}).title||'',noteDelCancel:()=>{if(!s.delBusy)this.setState({noteDelId:null});},noteDelConfirm:()=>this.deleteNote(s.noteDelId),delBusy:!!s.delBusy,delLabel:s.delBusy?'삭제 중…':'삭제',
@@ -943,7 +992,7 @@ class Component extends DCLogic {
       payRows:(s.payAll||[]).map(x=>({label:x.label,owner:x.owner,last:x.lastDate?x.lastDate.slice(5).replace('-','.')+' · '+fmt(x.lastAmount)+'원':'입금 내역 없음',unpaid:x.unpaid>0?fmt(x.unpaid)+'원':x.unpaid<0?'선납 '+fmt(-x.unpaid)+'원':'완납',color:x.unpaid>0?'var(--color-accent-2-700)':'var(--color-accent-700)'})),
       topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
       latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
-      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cEdit:null,cCat:'일반',cTitle:'',cBody:'',cPin:false,cImgs:[]}),
+      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cEdit:null,cCat:'일반',cTitle:'',cSummary:'',cBody:'',cPin:false,cImgs:[]}),
       isABill:s.screen==='abill',sent:s.sent,showStepper:!s.sent&&aflow==='단계별',
       steps:stepsDef.map((l,i)=>{const on=s.step===i+1,done=s.step>i+1;return {n:done?'✓':String(i+1),label:l,fg:on?'var(--color-text)':'var(--color-neutral-700)',w:on?700:400,bg:on||done?'var(--color-accent)':'var(--color-neutral-300)',nfg:on||done?'var(--color-bg)':'var(--color-text)'};}),
       showItems:!s.sent&&(aflow==='한 화면'||s.step===1),showPreview:!s.sent&&aflow==='단계별'&&s.step===2,showConfirm:!s.sent&&aflow==='단계별'&&s.step===3,
@@ -967,7 +1016,7 @@ class Component extends DCLogic {
       billNotes:(()=>{const arr=((srcAt(u,bmIdx)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,bmIdx)||{}).notices||[]).length),
       isACompose:s.screen==='acompose',
       composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
-      cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
+      cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),cSummary:s.cSummary||'',onCSummary:e=>this.setState({cSummary:e.target.value}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
       cPushBg:s.cPush?'var(--color-accent)':'var(--color-neutral-300)',cPushX:s.cPush?'21px':'3px',toggleCPush:()=>this.setState({cPush:!s.cPush}),cErr:s.cErr,
       publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
       showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
