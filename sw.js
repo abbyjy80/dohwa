@@ -1,4 +1,4 @@
-const CACHE = 'dohwa-v7';
+const CACHE = 'dohwa-v8';
 const SHELL = ['./', 'index.html', 'support.js', 'manifest.webmanifest',
   '_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/styles.css',
   '_ds/classical-02ee6020-9814-4570-a364-ee00e6c45dfd/_ds_bundle.js',

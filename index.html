@@ -786,8 +786,13 @@ function buildPeriod(y,m,dueDay){const t=new Date();const t0=new Date(t.getFullY
     nextLabel:nm+'월',nextDue:mm2+'월 '+dueDay+'일',nextDueFull:my+'년 '+mm2+'월 '+dueDay+'일',nextFile:'bills-data-'+ymStr(ny,nm)+'.json',
     todayFull:t.getFullYear()+'년 '+(t.getMonth()+1)+'월 '+t.getDate()+'일 '+WD[t.getDay()]+'요일'};}
 buildPeriod(2026,9,5);
-const RAW='101,201,김**,41.08,0;101,202,임**,29.09,44130;101,203,송**,45.07,44130;101,301,미**,41.08,0;101,302,미**,29.09,599670;101,303,류**,45.07,0;101,401,미**,29.76,88050;101,402,정**,29.09,263930;101,403,이**,45.07,394090;101,501,곽**,29.02,0;101,502,미**,29.09,226100;101,503,성**,38.02,332590;101,601,미**,23.26,0,이사로 8일 일할 계산된 금액입니다;101,602,김**,29.02,0;101,603,이**,38.02,231760;101,B01,박**,43.37,0;102,201,한**,40.33,0;102,202,미**,29.09,2145720;102,203,강**,45.07,0;102,301,한**,40.33,88050;102,302,박**,29.09,0;102,303,김**,45.07,0;102,401,미**,29.76,44130;102,402,미**,29.09,744090;102,403,윤**,45.07,44130;102,501,권**,29.02,0;102,502,김**,29.99,0;102,503,미**,38.02,226100;102,601,김**,45.06,44130;102,602,권**,40.79,0;102,B02,박**,103.27,88050';
-let UNITS=RAW.split(';').map(s=>{const [d,h,r,a,p,m]=s.split(',');return {dong:d,ho:h,key:d+'-'+h,resident:r,area:a,prev:+p,move:m||'',shop:h[0]==='B'};});
+// 동,호,전용면적 — 로그인 화면에서 호수를 확인하는 데만 쓰는 목록. 이름·금액은 이 파일에 두지 않고 로그인 응답의 고지서에서 채운다
+const RAW='101,201,41.08;101,202,29.09;101,203,45.07;101,301,41.08;101,302,29.09;101,303,45.07;101,401,29.76;101,402,29.09;101,403,45.07;101,501,29.02;101,502,29.09;101,503,38.02;101,601,23.26;101,602,29.02;101,603,38.02;101,B01,43.37;102,201,40.33;102,202,29.09;102,203,45.07;102,301,40.33;102,302,29.09;102,303,45.07;102,401,29.76;102,402,29.09;102,403,45.07;102,501,29.02;102,502,29.99;102,503,38.02;102,601,45.06;102,602,40.79;102,B02,103.27';
+const baseUnits=()=>RAW.split(';').map(s=>{const [d,h,a]=s.split(',');return {dong:d,ho:h,key:d+'-'+h,resident:'',area:a,prev:0,move:'',shop:h[0]==='B'};});
+let UNITS=baseUnits();
+const BASE_KEYS=new Set(UNITS.map(u=>u.key));
+// 고지서가 없을 때(로그아웃 포함)의 상태로 되돌림
+function resetData(){UNITS=baseUnits();buildMonths(2026,9);buildPeriod(2026,9,5);}
 const fmt=n=>Math.round(n).toLocaleString('ko-KR');
 const CATS=['일반','공사·점검','분리수거','주차','회의·투표'];
 const NOTICES=[];
@@ -808,7 +813,9 @@ const previewOf=n=>n.summary||n.body.filter(l=>!HEAD_RE.test(l)).map(l=>l.replac
 const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned,summary:String(j.summary||'').trim()});
 function initReads(){try{return JSON.parse(localStorage.getItem(READ_LS)||'{}')||{};}catch(e){return {};}}
 function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
-function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:r&&u.shop?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
+// 고지서가 없는 달의 값: 디자인 미리보기(DEMO)에서만 예시 금액을 보여 주고, 실제 앱에서는 0원으로 둔다 (가짜 금액이 청구액처럼 보이지 않게)
+let DEMO=false;
+function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:!DEMO||(r&&u.shop)?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
 const DATA_DIR='uploads/';
 const fileFor=ym=>'bills-data-'+ym+'.json';
 const keyOf=b=>b.dong.replace('동','')+'-'+b.ho.replace('호','');
@@ -823,7 +830,7 @@ function applyAll(found){
   return {body:body.length?body:null,issue:(j.building&&j.building.issueDate)||''};
 }
 const srcAt=(u,mi)=>u.srcs&&MONTHS[mi]?u.srcs[MONTHS[mi][2]]:null;
-function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':' (예시)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
+function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':DEMO?' (예시)':' (고지서 없음)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
 let SHA_C=null;
 function sha256(s){const u=unescape(encodeURIComponent(s));if(!SHA_C){const K0=[],H0=[];let p=2,n=0;const isP=x=>{for(let f=2;f*f<=x;f++)if(x%f===0)return false;return true;};const frac=x=>((x-Math.floor(x))*4294967296)|0;while(n<64){if(isP(p)){if(n<8)H0[n]=frac(Math.pow(p,1/2));K0[n]=frac(Math.pow(p,1/3));n++;}p++;}SHA_C={K:K0,H:H0};}const K=SHA_C.K,H=SHA_C.H.slice();const by=[];for(let i=0;i<u.length;i++)by.push(u.charCodeAt(i));const l=u.length*8;by.push(128);while(by.length%64!==56)by.push(0);const hi=Math.floor(l/4294967296),lo=l>>>0;for(let i=3;i>=0;i--)by.push((hi>>>(i*8))&255);for(let i=3;i>=0;i--)by.push((lo>>>(i*8))&255);const r=(x,c)=>(x>>>c)|(x<<(32-c));const w=[];for(let i=0;i<by.length;i+=64){for(let j=0;j<16;j++)w[j]=(by[i+j*4]<<24)|(by[i+j*4+1]<<16)|(by[i+j*4+2]<<8)|by[i+j*4+3];for(let j=16;j<64;j++){const s0=r(w[j-15],7)^r(w[j-15],18)^(w[j-15]>>>3),s1=r(w[j-2],17)^r(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)|0;}let [a,b,c,d,e,f,g,h]=H;for(let j=0;j<64;j++){const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+w[j])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;}return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');}
 const hashPw=(k,pw)=>sha256('dohwa-elysia:'+k+':'+pw);
@@ -838,6 +845,11 @@ const api=q=>fetch(PAY_URL+'?'+Object.entries(q).map(([k,v])=>k+'='+encodeURICom
 const LOGIN_LS='dohwa-login',LOGIN_ERR={auth:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요',locked:'여러 번 틀려 1시간 동안 잠겼습니다. 잠시 후 다시 시도하세요'};
 const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
 const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
+// 고지서: 로그인 응답의 bills = [{ym:'2026-10',title,bills:[…]}] (구글시트 '고지서' 시트. 세대는 자기 것만, 관리인은 전 세대)
+// → applyAll 이 읽는 [{ym,json}] 꼴(최신 달 먼저)로 바꾼다. 형식이 맞지 않는 달·건은 버림
+const BILLS_LS='dohwa-bills';
+const billOk=b=>b&&typeof b.dong==='string'&&typeof b.ho==='string'&&['dueAmount','afterDueAmount','subtotal','total'].every(k=>typeof b[k]==='number')&&Array.isArray(b.items)&&b.items.every(i=>i&&typeof i.amount==='number');
+const toFound=list=>(Array.isArray(list)?list:[]).filter(m=>m&&/^\d{4}-\d{2}$/.test(m.ym)&&Array.isArray(m.bills)).map(m=>({ym:m.ym,json:{bills:m.bills.filter(billOk).map(b=>({...b,resident:String(b.resident||''),items:b.items.map(i=>({name:String(i.name),amount:i.amount})),notices:Array.isArray(b.notices)?b.notices.map(String):[]})),building:{title:m.title||'',issueDate:''}}})).filter(f=>f.json.bills.length).sort((a,b)=>b.ym.localeCompare(a.ym));
 const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
 const ghApi=(tok,path,opt)=>fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+path,{...(opt||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+tok,'X-GitHub-Api-Version':'2022-11-28',...((opt&&opt.headers)||{})}});
 const ghErrMsg=st=>st===401?'토큰이 올바르지 않거나 만료되었습니다. 새 토큰으로 다시 연결하세요.':st===403?'토큰에 이 저장소의 쓰기 권한(Contents: Read and write)이 없습니다.':st===404?'저장소를 찾을 수 없습니다. 토큰의 저장소 선택에 dohwa가 포함됐는지 확인하세요.':st===409||st===422?'저장 중 충돌이 났습니다. 잠시 후 다시 시도하세요.':'GitHub 저장에 실패했습니다 (오류 '+st+'). 인터넷 연결을 확인하세요.';
@@ -856,14 +868,23 @@ class Component extends DCLogic {
     if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
     this.loadNotes();
     this.applyStart();
-    const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
-    Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{
-      const found=res.filter(Boolean);
-      if(!found.length)return this.setState({dataSrc:'bills-data-yyyy-mm.json 파일이 없어 내장 데이터로 표시 중'});
-      const {body,issue}=applyAll(found);const [y,m]=found[0].ym.split('-').map(Number);
-      this.setState({billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:fileFor(found[0].ym)+' · '+UNITS.length+'호 · 읽은 파일 '+found.length+'개 ('+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·')+')'});
-    });
   }
+  // ── 고지서 데이터 ──
+  // 로그인 응답의 고지서(list)를 쓰고, 응답에 없을 때만 예전 방식의 공개 파일(uploads/bills-data-*.json)을 읽는다.
+  // 세대의 고지서는 오프라인 로그인 때 쓰도록 이 폰에 저장해 둔다 (cached=true 는 그 저장본을 쓰는 경우). after 는 고지서가 정해진 뒤 한 번 호출
+  useBills(key,list,after,cached){const found=toFound(list);const seq=this.billSeq=(this.billSeq||0)+1;const done=()=>{if(this.billSeq===seq&&after)after();};
+    if(key!=='admin'&&!cached)lsSet(BILLS_LS,found.length?JSON.stringify({unit:key,bills:list}):'');
+    if(found.length){this.showBills(found,cached?'이 폰에 저장된 고지서':'구글시트 고지서');return done();}
+    this.loadFileBills(seq).then(done);}
+  loadFileBills(seq){const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
+    return Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{if(seq===undefined||this.billSeq===seq)this.showBills(res.filter(Boolean),'uploads 파일');});}
+  // found 가 비었거나 읽다가 문제가 생기면 고지서 없는 상태(금액 0원)로 둔다 — 고지서 때문에 로그인이 막히지 않게
+  showBills(found,label){let issue='',ok=found.length>0;
+    if(ok){try{issue=applyAll(found).issue;}catch(e){ok=false;}}
+    if(!ok)resetData();
+    this.setState({billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:ok?label+' · '+UNITS.length+'호 · '+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·'):'고지서 데이터가 없습니다'});}
+  // 로그아웃: 받아 둔 고지서를 화면 데이터에서 지움
+  clearBills(){this.billSeq=(this.billSeq||0)+1;resetData();}
   componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
   componentWillUnmount(){window.removeEventListener('popstate',this.onPop);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);clearTimeout(this.tt);clearTimeout(this.bt);}
   async ghConnect(){const tok=this.state.ghInput.trim();if(!tok)return this.setState({ghErr:'토큰을 붙여넣어 주세요'});this.setState({ghBusy:true,ghErr:''});try{const r=await ghApi(tok,'');if(!r.ok)throw r.status;const j=await r.json();if(j.permissions&&!j.permissions.push)throw 403;lsSet(GH_LS,tok);this.setState({ghToken:tok,ghInput:'',ghBusy:false,ghHelp:false});this.toast('GitHub에 연결했습니다');}catch(st){this.setState({ghBusy:false,ghErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
@@ -908,30 +929,32 @@ class Component extends DCLogic {
         await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 삭제 · 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:new Date().toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
       this.go('anotices',{delBusy:false,noteDelId:null,notices:s.notices.filter(x=>x.id!==id)});this.toast('공지를 삭제했습니다 · 1~2분 뒤 모든 폰에 반영');}
     catch(st){this.setState({delBusy:false});this.toast(typeof st==='number'?ghErrMsg(st):ghErrMsg(0));}}
-  applyStart(){const s=this.props.startAs??'로그인';if(s==='세입자')this.enterTenant('101-202');else if(s==='관리자')this.enterAdmin();else this.setState({screen:'login',role:null});}
+  // 시작 화면을 세입자·관리자로 바로 여는 것은 디자인 미리보기용 — 로그인을 거치지 않으므로 공개 파일이 있을 때만 고지서가 보인다
+  applyStart(){const s=this.props.startAs??'로그인';DEMO=s!=='로그인';if(s==='세입자'){this.enterTenant('101-202',true);this.useBills('101-202',null,()=>this.billBanner(),true);}else if(s==='관리자'){this.enterAdmin();this.useBills('admin',null);}else this.setState({screen:'login',role:null});}
   go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,imgView:null,carIdx:0,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
   toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
   enterTenant(key,quiet){this.go('home',{role:'tenant',unit:key,lErr:''});if(!quiet)setTimeout(()=>this.billBanner(),500);}
-  // 고지서 알림: 로그인 응답의 미수 잔액이 0 이하(완납)면 띄우지 않음
-  billBanner(){if(!this.state.pushBill||this.state.role!=='tenant')return;clearTimeout(this.bt);this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}});this.bt=setTimeout(()=>this.setState({banner:null}),3700);}
+  // 고지서 알림: 로그인 응답의 미수 잔액이 0 이하(완납)면 띄우지 않음. 이번 달 고지서가 실제로 있을 때만 띄움
+  billBanner(){if(!this.state.pushBill||this.state.role!=='tenant')return;const bu=UNITS.find(x=>x.key===this.state.unit);if(!bu||!srcAt(bu,5))return;clearTimeout(this.bt);this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}});this.bt=setTimeout(()=>this.setState({banner:null}),3700);}
   enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
-  // 관리인: 전 세대 입금 현황(list)과 호수별 비밀번호(pws)를 한 번에 받아 옴
-  setAdminData(j){const t=new Date();this.setState({payAll:j.list||[],pws:j.pws||{},payAllStatus:'구글시트 세대정보 · '+t.getHours()+':'+String(t.getMinutes()).padStart(2,'0')+' 조회'});}
+  // 관리인: 전 세대 입금 현황(list), 호수별 비밀번호(pws), 전 세대 고지서(bills)를 한 번에 받아 옴
+  setAdminData(j,after){const t=new Date();this.setState({payAll:j.list||[],pws:j.pws||{},payAllStatus:'구글시트 세대정보 · '+t.getHours()+':'+String(t.getMinutes()).padStart(2,'0')+' 조회'});this.useBills('admin',j.bills,after);}
   loadPayAll(){if(!this.adminPlain)return this.setState({payAllStatus:'관리인 비밀번호로 다시 로그인하면 불러옵니다'});this.setState({payAllStatus:'구글시트에서 불러오는 중…'});api({unit:'admin',pw:this.adminPlain}).then(j=>{if(!j.ok)throw j.error;this.setAdminData(j);}).catch(e=>this.setState({payAllStatus:e==='locked'?LOGIN_ERR.locked:e==='auth'?'관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요':'불러오지 못했습니다. 새로고침을 눌러 다시 시도하세요'}));}
-  // 로그인: 비밀번호는 Apps Script(구글시트)에서만 확인. 세대는 응답에 입금 내역이 같이 옴
+  // 로그인: 비밀번호는 Apps Script(구글시트)에서만 확인. 세대는 응답에 입금 내역과 그 세대의 고지서(bills)가 같이 옴
   doLogin(){const s=this.state;if(s.lBusy)return;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});
     const admin=s.lMode==='admin',ho=s.lHo.trim().toUpperCase().replace('호',''),key=admin?'admin':s.lDong+'-'+ho,pw=s.lPw;
-    if(!admin&&!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});
+    if(!admin&&!BASE_KEYS.has(key)&&!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});
     this.setState({lBusy:true,lErr:''});
     api({unit:key,pw}).then(j=>{
       if(!j.ok)return this.setState({lBusy:false,lErr:admin&&j.error==='auth'?'관리인 비밀번호가 맞지 않습니다':LOGIN_ERR[j.error]||'로그인하지 못했습니다. 잠시 후 다시 시도하세요'});
-      this.setState({lBusy:false,lPw:''});
-      if(admin){this.adminPlain=pw;this.enterAdmin();this.setAdminData(j);return;}
+      // 고지서가 정해진 뒤에 다음 화면으로 들어간다 (응답에 고지서가 없어 공개 파일을 읽는 동안 0원이 잠깐 보이지 않게)
+      if(admin){this.adminPlain=pw;this.setAdminData(j,()=>{this.setState({lBusy:false,lPw:''});this.enterAdmin();});return;}
       lsSet(LOGIN_LS,key+':'+hashPw(key,pw));
-      const pay='unpaid' in j?j:null;this.enterTenant(key,!!pay&&pay.unpaid<=0);this.setState({pay});
+      const {bills,...info}=j;const pay='unpaid' in info?info:null;
+      this.useBills(key,bills,()=>{this.setState({lBusy:false,lPw:'',pay});this.enterTenant(key,!!pay&&pay.unpaid<=0);});
     }).catch(()=>{
-      // 인터넷이 안 될 때: 이 폰에서 마지막으로 로그인에 성공한 세대·번호면 저장된 화면으로 들어감 (입금 내역은 표시 안 됨)
-      if(!admin&&lsGet(LOGIN_LS)===key+':'+hashPw(key,pw)){this.setState({lBusy:false,lPw:'',pay:null});this.enterTenant(key);return;}
+      // 인터넷이 안 될 때: 이 폰에서 마지막으로 로그인에 성공한 세대·번호면 저장된 화면으로 들어감 (입금 내역은 표시 안 되고, 고지서는 이 폰에 저장해 둔 것)
+      if(!admin&&lsGet(LOGIN_LS)===key+':'+hashPw(key,pw)){let c=null;try{c=JSON.parse(lsGet(BILLS_LS)||'null');}catch(e){}this.useBills(key,c&&c.unit===key?c.bills:null,()=>{this.setState({lBusy:false,lPw:'',pay:null});this.enterTenant(key);},true);return;}
       this.setState({lBusy:false,lErr:'서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요'});});}
   // 비밀번호 변경: 구글시트에 바로 저장되어 즉시 적용됨. ch = {세대키 또는 'admin': 새 번호}
   setPws(ch,msg,onOk,onErr){if(this.state.pwBusy)return;if(!this.adminPlain)return onErr('관리인 비밀번호로 다시 로그인하세요');this.setState({pwBusy:true});
@@ -947,7 +970,7 @@ class Component extends DCLogic {
   renderVals(){
     const s=this.state,p=this.props;
     const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
-    const u=UNITS.find(x=>x.key===s.unit)||UNITS[1];
+    const u=UNITS.find(x=>x.key===s.unit)||UNITS[1]||UNITS[0];
     const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);if(bmIdx===5&&s.role==='tenant'&&s.pay&&s.pay.unpaid<=0)Object.assign(bm,{status:'납부 완료',tagClass:'tag-neutral'});
     const isT=s.role==='tenant',isA=s.role==='admin';
     const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
@@ -968,7 +991,7 @@ class Component extends DCLogic {
     const colorOf=i=>SEGC[Math.min(i,5)];
     const segs=bsorted.slice(0,5).map((it,i)=>({w:(it.amount/bm.subtotal*100)+'%',color:colorOf(i)}));
     const restAmt=bsorted.slice(5).reduce((a,b)=>a+b.amount,0);if(restAmt)segs.push({w:(restAmt/bm.subtotal*100)+'%',color:SEGC[5]});
-    const trendVals=MONTHS.map((m,i)=>sub(u,i));const tMax=Math.max(...trendVals);
+    const trendVals=MONTHS.map((m,i)=>sub(u,i));const tMax=Math.max(1,...trendVals);
     const tabs=(defs)=>defs.map(([k,label,icon,badge])=>{const on=s.screen===k||(k==='notices'&&s.screen==='notice'&&s.prevScreen==='notices')||(k==='anotices'&&(s.screen==='acompose'||(s.screen==='notice'&&isA)));return {label,icon,badge:!!badge,color:on?'var(--color-accent-700)':'var(--color-neutral-700)',w:on?700:400,go:()=>this.go(k)};});
     const anyUnread=s.notices.some(unread);
     const aVals={};ITEMS9.forEach(([n])=>aVals[n]=parseInt(String(s.totals[n]).replace(/\D/g,''))||0);
@@ -1018,7 +1041,7 @@ class Component extends DCLogic {
       mpCur:s.mpCur,mpNew:s.mpNew,mpNew2:s.mpNew2,mpErr:s.mpErr,mpLabel:s.mpBusy?'변경 중…':'변경',saveMyPw:()=>this.saveMyPw(),
       onMpCur:e=>this.setState({mpCur:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew:e=>this.setState({mpNew:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew2:e=>this.setState({mpNew2:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>this.go('login',{role:null,banner:null,pay:null,mpCur:'',mpNew:'',mpNew2:'',mpErr:''}),kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
+      logout:()=>{this.clearBills();this.go('login',{role:null,banner:null,pay:null,billMonth:5,mpCur:'',mpNew:'',mpNew2:'',mpErr:''});},kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       hasPayAll:!!s.payAll,payAllStatus:s.payAllStatus||'',reloadPayAll:()=>this.loadPayAll(),
       payDueCount:(s.payAll||[]).filter(x=>x.unpaid>0).length,payDueSum:fmt((s.payAll||[]).reduce((a,x)=>a+Math.max(0,x.unpaid),0)),
@@ -1080,7 +1103,7 @@ class Component extends DCLogic {
       pwSaveLabel:s.pwBusy?'저장 중…':'저장',
       pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const k=s.pwEdit,np=s.pwNew;this.setPws({[k]:np},k.replace('-','동 ')+'호 비밀번호를 변경했습니다',()=>this.setState({pwEdit:null,showPw:true}),m=>this.setState({pwErr:m}));},
       resetAllPw:()=>{if(!window.confirm(s.apDong+'동 전체 세대의 비밀번호를 새로 만듭니다.\n바로 적용되어 기존 번호로는 로그인할 수 없게 됩니다. 계속할까요?'))return;const ch={};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>ch[x.key]=rnd4());this.setPws(ch,s.apDong+'동 새 번호를 만들었습니다',()=>this.setState({showPw:true}),m=>this.toast(m));},
-      adminLogout:()=>{this.adminPlain='';this.go('login',{role:null,banner:null,payAll:null,lMode:'tenant',lPw:'',pws:null,showPw:false});},
+      adminLogout:()=>{this.adminPlain='';this.clearBills();this.go('login',{role:null,banner:null,payAll:null,lMode:'tenant',lPw:'',pws:null,showPw:false});},
       banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
       scRef:this.scRef,
       isMobile:!!s.isMobile,showDesk:!s.isMobile,outerPad:s.isMobile?'0':'40px 24px',
