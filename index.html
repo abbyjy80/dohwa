@@ -44,6 +44,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 
       <div class="scr" ref="{{ scRef }}" style="flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none">
 
+        <!-- ── 로그인 ── -->
         <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
           <div style="padding:28px 24px 32px;display:flex;flex-direction:column;min-height:100%;box-sizing:border-box">
             <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
@@ -85,6 +86,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 세대: 홈 (기본 '1면') ── -->
         <sc-if value="{{ isHomeA }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
@@ -101,10 +103,21 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>전월 미납액 {{ cur.prevFmt }}원이 합산되었습니다. 이미 납부하셨다면 이체확인증을 관리인에게 보내주세요.</span></div>
             </sc-if>
-            <sc-if value="{{ hasPay }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:18px;padding-top:12px;border-top:1px solid var(--color-divider);display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px">
-                <span style="color:var(--color-neutral-700)">마지막 입금</span><span style="font-variant-numeric:tabular-nums">{{ payDate }}</span>
-                <span style="color:var(--color-neutral-700)">미수 잔액</span><span style="font-weight:600;font-variant-numeric:tabular-nums;color:{{ payColor }}">{{ payUnpaid }}</span>
+            <sc-if value="{{ payBox }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:18px;padding-top:6px;border-top:1px solid var(--color-divider)">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+                  <span style="font-size:13px;color:var(--color-neutral-700)">입금 확인 <span style="font-size:12px;font-variant-numeric:tabular-nums">{{ payAt }}</span></span>
+                  <button class="btn btn-ghost" onClick="{{ reloadPay }}" style="min-height:36px;margin-right:-6px;font-size:13px"><i class="icon-refresh-cw"></i>{{ payReloadLabel }}</button>
+                </div>
+                <sc-if value="{{ hasPay }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin-top:2px">
+                    <span style="color:var(--color-neutral-700)">마지막 입금</span><span style="font-variant-numeric:tabular-nums">{{ payDate }}</span>
+                    <span style="color:var(--color-neutral-700)">미수 잔액</span><span style="font-weight:600;font-variant-numeric:tabular-nums;color:{{ payColor }}">{{ payUnpaid }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ noPay }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:13px;line-height:1.5;color:var(--color-neutral-700);margin-top:2px">입금 내역을 아직 불러오지 못했습니다. 새로고침을 눌러 보세요.</div>
+                </sc-if>
               </div>
             </sc-if>
             <div style="display:flex;gap:10px;margin-top:22px">
@@ -133,6 +146,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 세대: 홈 ('피드' 시안) ── -->
         <sc-if value="{{ isHomeB }}" hint-placeholder-val="{{ false }}">
           <div style="padding:22px 22px 40px">
             <div style="font-size:13px;color:var(--color-neutral-700)">도화엘리시아 · {{ unitLabel }}</div>
@@ -166,6 +180,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 세대: 홈 ('추이' 시안) ── -->
         <sc-if value="{{ isHomeC }}" hint-placeholder-val="{{ false }}">
           <div style="padding:22px 22px 40px">
             <div style="font-size:13px;color:var(--color-neutral-700)">{{ unitLabel }} · {{ pd.label }}분</div>
@@ -204,6 +219,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 세대: 고지서 ── -->
         <sc-if value="{{ isBill }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">관리비 고지서</div>
@@ -297,6 +313,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 공지 목록 ── -->
         <sc-if value="{{ isNotices }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">공지사항</div>
@@ -387,6 +404,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 공지 상세 ── -->
         <sc-if value="{{ isNotice }}" hint-placeholder-val="{{ false }}">
           <div style="padding:8px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
@@ -424,6 +442,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 세대: 내 정보 ── -->
         <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -468,6 +487,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 현황 ── -->
         <sc-if value="{{ isAHome }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
@@ -514,6 +534,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 공지 관리 ── -->
         <sc-if value="{{ isANotices }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center">
@@ -537,6 +558,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 공지 작성 ── -->
         <sc-if value="{{ isACompose }}" hint-placeholder-val="{{ false }}">
           <div style="padding:8px 22px 40px">
             <button class="btn btn-ghost" onClick="{{ composeCancel }}" style="margin-left:-6px;min-height:44px"><i class="icon-x" style="font-size:18px"></i>취소</button>
@@ -588,6 +610,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 차량 ── -->
         <sc-if value="{{ isACars }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -615,6 +638,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 비밀번호 · GitHub 연결 ── -->
         <sc-if value="{{ isASettings }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -694,6 +718,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
         </sc-if>
       </div>
 
+      <!-- ── 하단 메뉴 (세대 / 관리인) ── -->
       <sc-if value="{{ showTenantNav }}" hint-placeholder-val="{{ false }}">
         <div style="flex:none;display:flex;background:var(--color-bg);box-shadow:0 -1px 0 var(--color-divider)">
           <sc-for list="{{ tenantTabs }}" as="t" hint-placeholder-count="4">
@@ -720,6 +745,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
       <div style="height:env(safe-area-inset-bottom);flex:none;background:var(--color-bg)"></div>
       </sc-if>
 
+      <!-- ── 알림 배너 · 토스트 ── -->
       <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
         <div onClick="{{ bannerTap }}" style="position:absolute;top:38px;left:10px;right:10px;background:var(--color-bg);box-shadow:var(--shadow-lg);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;z-index:5">
           <i class="icon-building-2" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;color:var(--color-accent-700)"></i>
@@ -729,6 +755,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
       <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--color-text);color:var(--color-bg);font-size:13px;padding:10px 16px;border-radius:2px;white-space:nowrap;z-index:6">{{ toast }}</div>
       </sc-if>
+      <!-- ── 팝업: 호수 비밀번호 변경 / 사진 크게 보기 / 공지 삭제 확인 ── -->
       <sc-if value="{{ pwSheet }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
           <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
@@ -771,343 +798,1899 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;startAs&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;로그인&quot;,&quot;세입자&quot;,&quot;관리자&quot;],&quot;default&quot;:&quot;로그인&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;시작 화면&quot;},&quot;homeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1면&quot;,&quot;피드&quot;,&quot;추이&quot;],&quot;default&quot;:&quot;1면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;billLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;영수증&quot;,&quot;구성비&quot;],&quot;default&quot;:&quot;영수증&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;noticeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;목록&quot;,&quot;1면&quot;],&quot;default&quot;:&quot;목록&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;adminFlow&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;한 화면&quot;,&quot;단계별&quot;],&quot;default&quot;:&quot;한 화면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;}}">
-const ITEMS9=[['공용전기',6916,0],['관리회사용역비',4839,0],['소방관리대행료',3549,0],['승강기보험',242,1],['승강기유지비',12138,1],['전기안전관리비',2484,0],['정화조청소',871,0],['청소비',5162,0],['화재보험',473,0],['수선유지비',10000,0],['교육비(소방관리)',4968,0],['관리단설립(등기,우편)',4924,0]];
-const ITEMSPAST=[['공용전기',0,0],['관리회사용역비',10000,0],['소방관리대행료',3549,0],['승강기보험',242,1],['승강기유지비',12138,1],['전기안전관리비',2484,0],['정화조청소',871,0],['청소비',5162,0],['화재보험',473,0],['수선유지비',4300,0]];
-const ELEC=[4310,4680,5120,4700,4911];
-const WD='일월화수목금토';
-const ymStr=(y,m)=>y+'-'+String(m).padStart(2,'0');
-const addM=(y,m,k)=>{const d=new Date(y,m-1+k,1);return [d.getFullYear(),d.getMonth()+1];};
-let MONTHS=[];
-function buildMonths(y,m){MONTHS=[];for(let k=-5;k<=0;k++){const [yy,mm]=addM(y,m,k);MONTHS.push([mm+'월',ELEC[(k+5)%5],ymStr(yy,mm)]);}}
-buildMonths(2026,9);
-let PD=null;
-function buildPeriod(y,m,dueDay){const t=new Date();const t0=new Date(t.getFullYear(),t.getMonth(),t.getDate());const [ny,nm]=addM(y,m,1),[my,mm2]=addM(y,m,2);const due=new Date(ny,nm-1,dueDay);const dd=Math.round((due-t0)/864e5);const due2=new Date(my,mm2-1,dueDay);
-  PD={label:m+'월',ym:ymStr(y,m),dueFull:nm+'월 '+dueDay+'일('+WD[due.getDay()]+')',dueShort:nm+'월 '+dueDay+'일',dday:dd>0?'D-'+dd:dd===0?'오늘 마감':'기한 '+(-dd)+'일 경과',
-    nextLabel:nm+'월',nextDue:mm2+'월 '+dueDay+'일',nextDueFull:my+'년 '+mm2+'월 '+dueDay+'일',nextFile:'bills-data-'+ymStr(ny,nm)+'.json',
-    todayFull:t.getFullYear()+'년 '+(t.getMonth()+1)+'월 '+t.getDate()+'일 '+WD[t.getDay()]+'요일'};}
-buildPeriod(2026,9,5);
-// 동,호,전용면적 — 로그인 화면에서 호수를 확인하는 데만 쓰는 목록. 이름·금액은 이 파일에 두지 않고 로그인 응답의 고지서에서 채운다
-const RAW='101,201,41.08;101,202,29.09;101,203,45.07;101,301,41.08;101,302,29.09;101,303,45.07;101,401,29.76;101,402,29.09;101,403,45.07;101,501,29.02;101,502,29.09;101,503,38.02;101,601,23.26;101,602,29.02;101,603,38.02;101,B01,43.37;102,201,40.33;102,202,29.09;102,203,45.07;102,301,40.33;102,302,29.09;102,303,45.07;102,401,29.76;102,402,29.09;102,403,45.07;102,501,29.02;102,502,29.99;102,503,38.02;102,601,45.06;102,602,40.79;102,B02,103.27';
-const baseUnits=()=>RAW.split(';').map(s=>{const [d,h,a]=s.split(',');return {dong:d,ho:h,key:d+'-'+h,resident:'',area:a,prev:0,move:'',shop:h[0]==='B'};});
-let UNITS=baseUnits();
-const BASE_KEYS=new Set(UNITS.map(u=>u.key));
-// 고지서가 없을 때(로그아웃 포함)의 상태로 되돌림
-function resetData(){UNITS=baseUnits();buildMonths(2026,9);buildPeriod(2026,9,5);}
-const fmt=n=>Math.round(n).toLocaleString('ko-KR');
-const CATS=['일반','공사·점검','분리수거','주차','회의·투표'];
-const NOTICES=[];
-const NOTE_RE=/^note_(\d{8})_(\d{3})\.json$/,NOTE_INDEX='uploads/notes-index.json',READ_LS='dohwa-reads';
-// 공지 사진: uploads/img/note_YYYYMMDD_NNN_1.jpg 형식으로 저장
-const IMG_DIR='uploads/img/',IMG_MAX=6,IMG_EDGE=1280,IMG_Q=0.82,IMG_RE=/^uploads\/img\/[\w.-]+\.(jpe?g|png|webp)$/i;
-function shrinkImage(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const im=new Image();
-  im.onload=()=>{try{let w=im.naturalWidth,h=im.naturalHeight;if(!w||!h)throw 0;const sc=Math.min(1,IMG_EDGE/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',IMG_Q));}catch(e){URL.revokeObjectURL(url);rej(e);}};
-  im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('decode'));};im.src=url;});}
-async function ghPutFile(tok,path,b64content,message){let sha;const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.ok)sha=(await g.json()).sha;else if(g.status!==404)throw g.status;
-  const r=await ghApi(tok,'/contents/'+path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,content:b64content,branch:GH.branch,...(sha?{sha}:{})})});if(!r.ok)throw r.status;}
-async function ghDelFile(tok,path,message){const g=await ghApi(tok,'/contents/'+path+'?ref='+GH.branch,{cache:'no-store'});if(g.status===404)return;if(!g.ok)throw g.status;const sha=(await g.json()).sha;const r=await ghApi(tok,'/contents/'+path,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,sha,branch:GH.branch})});if(!r.ok)throw r.status;}
-const noteDate=id=>{const m=/note_(\d{4})(\d{2})(\d{2})/.exec(id);return m?m[1]+'.'+m[2]+'.'+m[3]:'';};
-const todayYmd=()=>{const t=new Date();return t.getFullYear()+String(t.getMonth()+1).padStart(2,'0')+String(t.getDate()).padStart(2,'0');};
-// 미리보기: 한 줄 요약(summary)이 있으면 그것, 없으면 본문에서 [머리줄]과 1️⃣·※ 같은 기호를 빼고 이어 붙임
-const HEAD_RE=/^\s*[\[【]|[\]】]\s*$/,BULLET_RE=/^(?:\s|\d\uFE0F?\u20E3|[※▶►•·*#>-]|\p{Extended_Pictographic}\uFE0F?)+/u;
-const previewOf=n=>n.summary||n.body.filter(l=>!HEAD_RE.test(l)).map(l=>l.replace(BULLET_RE,'').trim()).filter(Boolean).join(' ').slice(0,200);
-const normNote=(id,j)=>({id,cat:CATS.includes(j.cat)?j.cat:'일반',title:String(j.title||'(제목 없음)'),body:Array.isArray(j.body)?j.body.map(String):String(j.body||'').split(/\n+/).filter(Boolean),images:Array.isArray(j.images)?j.images.map(String).filter(p=>IMG_RE.test(p)).slice(0,IMG_MAX):[],date:j.date||noteDate(id),pinned:!!j.pinned,summary:String(j.summary||'').trim()});
-function initReads(){try{return JSON.parse(localStorage.getItem(READ_LS)||'{}')||{};}catch(e){return {};}}
-function sub(u,mi){const sb=srcAt(u,mi);if(sb)return sb.subtotal;return Math.ceil(items(u,mi).reduce((a,b)=>a+b.amount,0)/10)*10;}
-// 고지서가 없는 달의 값: 디자인 미리보기(DEMO)에서만 예시 금액을 보여 주고, 실제 앱에서는 0원으로 둔다 (가짜 금액이 청구액처럼 보이지 않게)
-let DEMO=false;
-function items(u,mi){const src=mi===5?ITEMS9:ITEMSPAST;let it=src.map(([n,a,r])=>({name:n,amount:!DEMO||(r&&u.shop)?0:(n==='공용전기'&&mi<5?MONTHS[mi][1]:a)}));if(mi===5&&u.move)it=it.map(i=>({...i,amount:Math.round(i.amount*8/30)}));return it;}
-const DATA_DIR='uploads/';
-const fileFor=ym=>'bills-data-'+ym+'.json';
-const keyOf=b=>b.dong.replace('동','')+'-'+b.ho.replace('호','');
-// found: [{ym, json}] newest first
-function applyAll(found){
-  const latest=found[0],j=latest.json;const [y,m]=latest.ym.split('-').map(Number);
-  const dm=/(\d+)\s*일/.exec((j.bills[0]&&j.bills[0].dueDateNote)||'');buildPeriod(y,m,dm?+dm[1]:5);buildMonths(y,m);
-  const byYm={};found.forEach(f=>{const mp={};f.json.bills.forEach(b=>mp[keyOf(b)]=b);byYm[f.ym]=mp;});
-  UNITS=j.bills.map(b=>{const k=keyOf(b),d=k.split('-')[0],h=k.split('-')[1];const srcs={};Object.keys(byYm).forEach(ym=>{if(byYm[ym][k])srcs[ym]=byYm[ym][k];});return {dong:d,ho:h,key:k,resident:b.resident.replace(/\s/g,''),area:b.area,prev:b.prevUnpaid||0,shop:b.type==='상가',move:b.dueAmount!==b.total?'일할 계산이 적용된 청구액입니다 (월 전체 '+fmt(b.total)+'원)':'',srcs};}).sort((a,b)=>a.key.localeCompare(b.key));
-  const lines=(j.bills[0]&&j.bills[0].notices)||[];const si=lines.indexOf('특이사항');
-  const body=si>0?[lines.slice(0,si).join(' ').replace(/^※\s*/,''),...lines.slice(si+1)]:lines;
-  return {body:body.length?body:null,issue:(j.building&&j.building.issueDate)||''};
+// ── 예시 금액: 디자인 미리보기와 '고지서 발송' 시안에서만 쓴다 ──
+const ITEMS9 = [
+  ['공용전기', 6916, 0],
+  ['관리회사용역비', 4839, 0],
+  ['소방관리대행료', 3549, 0],
+  ['승강기보험', 242, 1],
+  ['승강기유지비', 12138, 1],
+  ['전기안전관리비', 2484, 0],
+  ['정화조청소', 871, 0],
+  ['청소비', 5162, 0],
+  ['화재보험', 473, 0],
+  ['수선유지비', 10000, 0],
+  ['교육비(소방관리)', 4968, 0],
+  ['관리단설립(등기,우편)', 4924, 0],
+];
+const ITEMSPAST = [
+  ['공용전기', 0, 0],
+  ['관리회사용역비', 10000, 0],
+  ['소방관리대행료', 3549, 0],
+  ['승강기보험', 242, 1],
+  ['승강기유지비', 12138, 1],
+  ['전기안전관리비', 2484, 0],
+  ['정화조청소', 871, 0],
+  ['청소비', 5162, 0],
+  ['화재보험', 473, 0],
+  ['수선유지비', 4300, 0],
+];
+const ELEC = [4310, 4680, 5120, 4700, 4911];
+
+// ── 날짜·청구 기간 ──
+const WD = '일월화수목금토';
+const ymStr = (y, m) => y + '-' + String(m).padStart(2, '0');
+const addM = (y, m, k) => {
+  const d = new Date(y, m - 1 + k, 1);
+  return [d.getFullYear(), d.getMonth() + 1];
+};
+// 최근 6개월: [표시 이름, 예시 전기료, 'YYYY-MM']
+let MONTHS = [];
+function buildMonths(y, m) {
+  MONTHS = [];
+  for (let k = -5; k <= 0; k++) {
+    const [yy, mm] = addM(y, m, k);
+    MONTHS.push([mm + '월', ELEC[(k + 5) % 5], ymStr(yy, mm)]);
+  }
 }
-const srcAt=(u,mi)=>u.srcs&&MONTHS[mi]?u.srcs[MONTHS[mi][2]]:null;
-function billFor(u,mi){const sb=srcAt(u,mi);const it=sb?sb.items.map(i=>({name:i.name,amount:i.amount})):items(u,mi);const subtotal=sb?sb.subtotal:Math.ceil(it.reduce((a,b)=>a+b.amount,0)/10)*10;let unpaid=new Set(),rem=u.prev;for(let i=4;i>=0&&rem>0;i--){unpaid.add(i);rem-=sub(u,i);}const prev=sb?(sb.prevUnpaid||0):mi===5?u.prev:0,total=sb?sb.dueAmount:subtotal+prev,after=sb?sb.afterDueAmount:Math.ceil(total*1.05/10)*10;const status=mi===5?'납부 대기':unpaid.has(mi)?'미납':'납부 완료';return {items:it,subtotal,prev,total,after,status,unpaid,move:mi===5?u.move:'',monthTitle:MONTHS[mi][2].slice(0,4)+'년 '+MONTHS[mi][0]+'분'+(sb?'':DEMO?' (예시)':' (고지서 없음)'),tagClass:status==='미납'?'tag-accent-2':status==='납부 대기'?'tag-accent':'tag-neutral',totalFmt:fmt(total),afterFmt:fmt(after),prevFmt:fmt(prev),subtotalFmt:fmt(subtotal)};}
-let SHA_C=null;
-function sha256(s){const u=unescape(encodeURIComponent(s));if(!SHA_C){const K0=[],H0=[];let p=2,n=0;const isP=x=>{for(let f=2;f*f<=x;f++)if(x%f===0)return false;return true;};const frac=x=>((x-Math.floor(x))*4294967296)|0;while(n<64){if(isP(p)){if(n<8)H0[n]=frac(Math.pow(p,1/2));K0[n]=frac(Math.pow(p,1/3));n++;}p++;}SHA_C={K:K0,H:H0};}const K=SHA_C.K,H=SHA_C.H.slice();const by=[];for(let i=0;i<u.length;i++)by.push(u.charCodeAt(i));const l=u.length*8;by.push(128);while(by.length%64!==56)by.push(0);const hi=Math.floor(l/4294967296),lo=l>>>0;for(let i=3;i>=0;i--)by.push((hi>>>(i*8))&255);for(let i=3;i>=0;i--)by.push((lo>>>(i*8))&255);const r=(x,c)=>(x>>>c)|(x<<(32-c));const w=[];for(let i=0;i<by.length;i+=64){for(let j=0;j<16;j++)w[j]=(by[i+j*4]<<24)|(by[i+j*4+1]<<16)|(by[i+j*4+2]<<8)|by[i+j*4+3];for(let j=16;j<64;j++){const s0=r(w[j-15],7)^r(w[j-15],18)^(w[j-15]>>>3),s1=r(w[j-2],17)^r(w[j-2],19)^(w[j-2]>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)|0;}let [a,b,c,d,e,f,g,h]=H;for(let j=0;j<64;j++){const S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+w[j])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;}return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');}
-const hashPw=(k,pw)=>sha256('dohwa-elysia:'+k+':'+pw);
-const GH={owner:'abbyjy80',repo:'dohwa',branch:'main'},GH_LS='dohwa-gh-token';
-// 관리인 카카오톡 오픈채팅 링크 — 나중에 이 줄의 주소만 바꾸면 '카카오톡 보내기' 버튼이 그 방으로 연결됩니다.
-const KAKAO_URL='https://open.kakao.com/o/sov81aQi';
-// 입금 내역 조회용 Apps Script 웹앱 주소 (…/exec) — 비워두면 홈 화면의 '마지막 입금 · 미수 잔액'이 표시되지 않습니다.
+buildMonths(2026, 9);
+// 청구 기간과 납기일 문구 (y년 m월분, 납기일 dueDay)
+let PD = null;
+function buildPeriod(y, m, dueDay) {
+  const t = new Date();
+  const t0 = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  const [ny, nm] = addM(y, m, 1),
+    [my, mm2] = addM(y, m, 2);
+  const due = new Date(ny, nm - 1, dueDay);
+  const dd = Math.round((due - t0) / 864e5);
+  const due2 = new Date(my, mm2 - 1, dueDay);
+  PD = {
+    label: m + '월',
+    ym: ymStr(y, m),
+    dueFull: nm + '월 ' + dueDay + '일(' + WD[due.getDay()] + ')',
+    dueShort: nm + '월 ' + dueDay + '일',
+    dday: dd > 0 ? 'D-' + dd : dd === 0 ? '오늘 마감' : '기한 ' + -dd + '일 경과',
+    nextLabel: nm + '월',
+    nextDue: mm2 + '월 ' + dueDay + '일',
+    nextDueFull: my + '년 ' + mm2 + '월 ' + dueDay + '일',
+    nextFile: 'bills-data-' + ymStr(ny, nm) + '.json',
+    todayFull: t.getFullYear() + '년 ' + (t.getMonth() + 1) + '월 ' + t.getDate() + '일 ' + WD[t.getDay()] + '요일',
+  };
+}
+buildPeriod(2026, 9, 5);
+
+// ── 세대 목록 ──
+// 동,호,전용면적. 로그인 전 호수 확인용 (이름·금액은 로그인 응답으로 채운다)
+const RAW =
+  '101,201,41.08;101,202,29.09;101,203,45.07;101,301,41.08;101,302,29.09;101,303,45.07;101,401,29.76;101,402,29.09;101,403,45.07;101,501,29.02;101,502,29.09;101,503,38.02;101,601,23.26;101,602,29.02;101,603,38.02;101,B01,43.37;102,201,40.33;102,202,29.09;102,203,45.07;102,301,40.33;102,302,29.09;102,303,45.07;102,401,29.76;102,402,29.09;102,403,45.07;102,501,29.02;102,502,29.99;102,503,38.02;102,601,45.06;102,602,40.79;102,B02,103.27';
+const baseUnits = () =>
+  RAW.split(';').map(s => {
+    const [d, h, a] = s.split(',');
+    return { dong: d, ho: h, key: d + '-' + h, resident: '', area: a, prev: 0, move: '', shop: h[0] === 'B' };
+  });
+let UNITS = baseUnits();
+const BASE_KEYS = new Set(UNITS.map(u => u.key));
+// 고지서 없는 상태로 초기화 (로그아웃 포함)
+function resetData() {
+  UNITS = baseUnits();
+  buildMonths(2026, 9);
+  buildPeriod(2026, 9, 5);
+}
+
+// 금액 표시 (1,234)
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+
+// ── 공지 ──
+const CATS = ['일반', '공사·점검', '분리수거', '주차', '회의·투표'];
+const NOTICES = [];
+const NOTE_RE = /^note_(\d{8})_(\d{3})\.json$/,
+  NOTE_INDEX = 'uploads/notes-index.json',
+  READ_LS = 'dohwa-reads';
+// 공지 사진: uploads/img/note_YYYYMMDD_NNN_1.jpg
+const IMG_DIR = 'uploads/img/',
+  IMG_MAX = 6,
+  IMG_EDGE = 1280,
+  IMG_Q = 0.82,
+  IMG_RE = /^uploads\/img\/[\w.-]+\.(jpe?g|png|webp)$/i;
+// 사진을 긴 변 IMG_EDGE 이하의 JPEG 로 줄인다 → data URL
+function shrinkImage(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      try {
+        let w = im.naturalWidth,
+          h = im.naturalHeight;
+        if (!w || !h) throw 0;
+        const sc = Math.min(1, IMG_EDGE / Math.max(w, h));
+        w = Math.round(w * sc);
+        h = Math.round(h * sc);
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        const x = c.getContext('2d');
+        x.fillStyle = '#fff';
+        x.fillRect(0, 0, w, h);
+        x.drawImage(im, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        res(c.toDataURL('image/jpeg', IMG_Q));
+      } catch (e) {
+        URL.revokeObjectURL(url);
+        rej(e);
+      }
+    };
+    im.onerror = () => {
+      URL.revokeObjectURL(url);
+      rej(new Error('decode'));
+    };
+    im.src = url;
+  });
+}
+// GitHub 저장소에 파일 올리기 / 지우기
+async function ghPutFile(tok, path, b64content, message) {
+  let sha;
+  const g = await ghApi(tok, '/contents/' + path + '?ref=' + GH.branch, { cache: 'no-store' });
+  if (g.ok) sha = (await g.json()).sha;
+  else if (g.status !== 404) throw g.status;
+  const r = await ghApi(tok, '/contents/' + path, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content: b64content, branch: GH.branch, ...(sha ? { sha } : {}) }),
+  });
+  if (!r.ok) throw r.status;
+}
+async function ghDelFile(tok, path, message) {
+  const g = await ghApi(tok, '/contents/' + path + '?ref=' + GH.branch, { cache: 'no-store' });
+  if (g.status === 404) return;
+  if (!g.ok) throw g.status;
+  const sha = (await g.json()).sha;
+  const r = await ghApi(tok, '/contents/' + path, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, sha, branch: GH.branch }),
+  });
+  if (!r.ok) throw r.status;
+}
+// 공지 id(note_YYYYMMDD_NNN) → 날짜
+const noteDate = id => {
+  const m = /note_(\d{4})(\d{2})(\d{2})/.exec(id);
+  return m ? m[1] + '.' + m[2] + '.' + m[3] : '';
+};
+const todayYmd = () => {
+  const t = new Date();
+  return t.getFullYear() + String(t.getMonth() + 1).padStart(2, '0') + String(t.getDate()).padStart(2, '0');
+};
+// 미리보기: summary 가 있으면 그것, 없으면 본문에서 머리줄·기호를 뺀 글
+const HEAD_RE = /^\s*[\[【]|[\]】]\s*$/,
+  BULLET_RE = /^(?:\s|\d\uFE0F?\u20E3|[※▶►•·*#>-]|\p{Extended_Pictographic}\uFE0F?)+/u;
+const previewOf = n =>
+  n.summary ||
+  n.body
+    .filter(l => !HEAD_RE.test(l))
+    .map(l => l.replace(BULLET_RE, '').trim())
+    .filter(Boolean)
+    .join(' ')
+    .slice(0, 200);
+// 공지 JSON → 화면에서 쓰는 모양 (빠진 값은 기본값)
+const normNote = (id, j) => ({
+  id,
+  cat: CATS.includes(j.cat) ? j.cat : '일반',
+  title: String(j.title || '(제목 없음)'),
+  body: Array.isArray(j.body)
+    ? j.body.map(String)
+    : String(j.body || '')
+        .split(/\n+/)
+        .filter(Boolean),
+  images: Array.isArray(j.images)
+    ? j.images
+        .map(String)
+        .filter(p => IMG_RE.test(p))
+        .slice(0, IMG_MAX)
+    : [],
+  date: j.date || noteDate(id),
+  pinned: !!j.pinned,
+  summary: String(j.summary || '').trim(),
+});
+// 읽은 공지 기록 (폰에 저장)
+function initReads() {
+  try {
+    return JSON.parse(localStorage.getItem(READ_LS) || '{}') || {};
+  } catch (e) {
+    return {};
+  }
+}
+
+// ── 고지서 계산 ──
+// mi: MONTHS 의 순번 (5 = 이번 달). 고지서가 없는 달은 items() 값으로 대신한다
+function sub(u, mi) {
+  const sb = srcAt(u, mi);
+  if (sb) return sb.subtotal;
+  return Math.ceil(items(u, mi).reduce((a, b) => a + b.amount, 0) / 10) * 10;
+}
+// 고지서 없는 달: 미리보기(DEMO)는 예시 금액, 실제 앱은 0원
+let DEMO = false;
+function items(u, mi) {
+  const src = mi === 5 ? ITEMS9 : ITEMSPAST;
+  let it = src.map(([n, a, r]) => ({
+    name: n,
+    amount: !DEMO || (r && u.shop) ? 0 : n === '공용전기' && mi < 5 ? MONTHS[mi][1] : a,
+  }));
+  if (mi === 5 && u.move) it = it.map(i => ({ ...i, amount: Math.round((i.amount * 8) / 30) }));
+  return it;
+}
+// 예전 방식의 공개 파일 (전환용)
+const DATA_DIR = 'uploads/';
+const fileFor = ym => 'bills-data-' + ym + '.json';
+const keyOf = b => b.dong.replace('동', '') + '-' + b.ho.replace('호', '');
+// 고지서 적용: found = [{ym, json}] 최신 달 먼저 → UNITS·MONTHS·PD 를 채운다
+function applyAll(found) {
+  const latest = found[0],
+    j = latest.json;
+  const [y, m] = latest.ym.split('-').map(Number);
+  const dm = /(\d+)\s*일/.exec((j.bills[0] && j.bills[0].dueDateNote) || '');
+  buildPeriod(y, m, dm ? +dm[1] : 5);
+  buildMonths(y, m);
+  const byYm = {};
+  found.forEach(f => {
+    const mp = {};
+    f.json.bills.forEach(b => (mp[keyOf(b)] = b));
+    byYm[f.ym] = mp;
+  });
+  UNITS = j.bills
+    .map(b => {
+      const k = keyOf(b),
+        d = k.split('-')[0],
+        h = k.split('-')[1];
+      const srcs = {};
+      Object.keys(byYm).forEach(ym => {
+        if (byYm[ym][k]) srcs[ym] = byYm[ym][k];
+      });
+      return {
+        dong: d,
+        ho: h,
+        key: k,
+        resident: b.resident.replace(/\s/g, ''),
+        area: b.area,
+        prev: b.prevUnpaid || 0,
+        shop: b.type === '상가',
+        move: b.dueAmount !== b.total ? '일할 계산이 적용된 청구액입니다 (월 전체 ' + fmt(b.total) + '원)' : '',
+        srcs,
+      };
+    })
+    .sort((a, b) => a.key.localeCompare(b.key));
+  const lines = (j.bills[0] && j.bills[0].notices) || [];
+  const si = lines.indexOf('특이사항');
+  const body = si > 0 ? [lines.slice(0, si).join(' ').replace(/^※\s*/, ''), ...lines.slice(si + 1)] : lines;
+  return { body: body.length ? body : null, issue: (j.building && j.building.issueDate) || '' };
+}
+// u 세대의 mi 번째 달 고지서 (없으면 null)
+const srcAt = (u, mi) => (u.srcs && MONTHS[mi] ? u.srcs[MONTHS[mi][2]] : null);
+// 화면에 보여 줄 한 달 고지서: 항목·합계·납기후 금액·납부 상태
+function billFor(u, mi) {
+  const sb = srcAt(u, mi);
+  const it = sb ? sb.items.map(i => ({ name: i.name, amount: i.amount })) : items(u, mi);
+  const subtotal = sb ? sb.subtotal : Math.ceil(it.reduce((a, b) => a + b.amount, 0) / 10) * 10;
+  let unpaid = new Set(),
+    rem = u.prev;
+  for (let i = 4; i >= 0 && rem > 0; i--) {
+    unpaid.add(i);
+    rem -= sub(u, i);
+  }
+  const prev = sb ? sb.prevUnpaid || 0 : mi === 5 ? u.prev : 0,
+    total = sb ? sb.dueAmount : subtotal + prev,
+    after = sb ? sb.afterDueAmount : Math.ceil((total * 1.05) / 10) * 10;
+  const status = mi === 5 ? '납부 대기' : unpaid.has(mi) ? '미납' : '납부 완료';
+  return {
+    items: it,
+    subtotal,
+    prev,
+    total,
+    after,
+    status,
+    unpaid,
+    move: mi === 5 ? u.move : '',
+    monthTitle:
+      MONTHS[mi][2].slice(0, 4) + '년 ' + MONTHS[mi][0] + '분' + (sb ? '' : DEMO ? ' (예시)' : ' (고지서 없음)'),
+    tagClass: status === '미납' ? 'tag-accent-2' : status === '납부 대기' ? 'tag-accent' : 'tag-neutral',
+    totalFmt: fmt(total),
+    afterFmt: fmt(after),
+    prevFmt: fmt(prev),
+    subtotalFmt: fmt(subtotal),
+  };
+}
+
+// ── SHA-256: 오프라인 로그인 때 비밀번호 대조용 ──
+let SHA_C = null;
+function sha256(s) {
+  const u = unescape(encodeURIComponent(s));
+  if (!SHA_C) {
+    const K0 = [],
+      H0 = [];
+    let p = 2,
+      n = 0;
+    const isP = x => {
+      for (let f = 2; f * f <= x; f++) if (x % f === 0) return false;
+      return true;
+    };
+    const frac = x => ((x - Math.floor(x)) * 4294967296) | 0;
+    while (n < 64) {
+      if (isP(p)) {
+        if (n < 8) H0[n] = frac(Math.pow(p, 1 / 2));
+        K0[n] = frac(Math.pow(p, 1 / 3));
+        n++;
+      }
+      p++;
+    }
+    SHA_C = { K: K0, H: H0 };
+  }
+  const K = SHA_C.K,
+    H = SHA_C.H.slice();
+  const by = [];
+  for (let i = 0; i < u.length; i++) by.push(u.charCodeAt(i));
+  const l = u.length * 8;
+  by.push(128);
+  while (by.length % 64 !== 56) by.push(0);
+  const hi = Math.floor(l / 4294967296),
+    lo = l >>> 0;
+  for (let i = 3; i >= 0; i--) by.push((hi >>> (i * 8)) & 255);
+  for (let i = 3; i >= 0; i--) by.push((lo >>> (i * 8)) & 255);
+  const r = (x, c) => (x >>> c) | (x << (32 - c));
+  const w = [];
+  for (let i = 0; i < by.length; i += 64) {
+    for (let j = 0; j < 16; j++)
+      w[j] = (by[i + j * 4] << 24) | (by[i + j * 4 + 1] << 16) | (by[i + j * 4 + 2] << 8) | by[i + j * 4 + 3];
+    for (let j = 16; j < 64; j++) {
+      const s0 = r(w[j - 15], 7) ^ r(w[j - 15], 18) ^ (w[j - 15] >>> 3),
+        s1 = r(w[j - 2], 17) ^ r(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+      w[j] = (w[j - 16] + s0 + w[j - 7] + s1) | 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let j = 0; j < 64; j++) {
+      const S1 = r(e, 6) ^ r(e, 11) ^ r(e, 25),
+        ch = (e & f) ^ (~e & g),
+        t1 = (h + S1 + ch + K[j] + w[j]) | 0,
+        S0 = r(a, 2) ^ r(a, 13) ^ r(a, 22),
+        mj = (a & b) ^ (a & c) ^ (b & c),
+        t2 = (S0 + mj) | 0;
+      h = g;
+      g = f;
+      f = e;
+      e = (d + t1) | 0;
+      d = c;
+      c = b;
+      b = a;
+      a = (t1 + t2) | 0;
+    }
+    H[0] = (H[0] + a) | 0;
+    H[1] = (H[1] + b) | 0;
+    H[2] = (H[2] + c) | 0;
+    H[3] = (H[3] + d) | 0;
+    H[4] = (H[4] + e) | 0;
+    H[5] = (H[5] + f) | 0;
+    H[6] = (H[6] + g) | 0;
+    H[7] = (H[7] + h) | 0;
+  }
+  return H.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
+}
+const hashPw = (k, pw) => sha256('dohwa-elysia:' + k + ':' + pw);
+
+// ── 외부 연결: GitHub · 카카오톡 · Apps Script ──
+const GH = { owner: 'abbyjy80', repo: 'dohwa', branch: 'main' },
+  GH_LS = 'dohwa-gh-token';
+// 관리인 카카오톡 오픈채팅 주소
+const KAKAO_URL = 'https://open.kakao.com/o/sov81aQi';
+// Apps Script 웹앱 주소(…/exec): 로그인·고지서·입금 조회·비밀번호 변경
 //const PAY_URL='https://script.google.com/macros/s/AKfycbwp13MMwbtJUWb5FQO98GiOe5-HSPpCC3H2YdU_LgZoWvHRBc0b5nXDpzNv-YadB3y83g/exec';
-const PAY_URL='https://script.google.com/macros/s/AKfycbwSuU6B99iEv_03nCXe97NXTD5xcLxxudK7sH8W8mtwYXEjm6VXJ-FrPSMLoVbtGOpH/exec';
-// 로그인·입금 조회·비밀번호 변경은 모두 위 Apps Script 가 처리합니다 (비밀번호는 구글시트 '비밀번호' 시트에만 있고 이 저장소에는 없음).
-const api=q=>fetch(PAY_URL+'?'+Object.entries(q).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&'),{cache:'no-store'}).then(r=>r.json());
-const LOGIN_LS='dohwa-login',LOGIN_ERR={auth:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요',locked:'여러 번 틀려 1시간 동안 잠겼습니다. 잠시 후 다시 시도하세요'};
-const lsGet=k=>{try{return localStorage.getItem(k)||'';}catch(e){return '';}};
-const lsSet=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k);}catch(e){}};
-// 고지서: 로그인 응답의 bills = [{ym:'2026-10',title,bills:[…]}] (구글시트 '고지서' 시트. 세대는 자기 것만, 관리인은 전 세대)
-// → applyAll 이 읽는 [{ym,json}] 꼴(최신 달 먼저)로 바꾼다. 형식이 맞지 않는 달·건은 버림
-const BILLS_LS='dohwa-bills';
-const billOk=b=>b&&typeof b.dong==='string'&&typeof b.ho==='string'&&['dueAmount','afterDueAmount','subtotal','total'].every(k=>typeof b[k]==='number')&&Array.isArray(b.items)&&b.items.every(i=>i&&typeof i.amount==='number');
-const toFound=list=>(Array.isArray(list)?list:[]).filter(m=>m&&/^\d{4}-\d{2}$/.test(m.ym)&&Array.isArray(m.bills)).map(m=>({ym:m.ym,json:{bills:m.bills.filter(billOk).map(b=>({...b,resident:String(b.resident||''),items:b.items.map(i=>({name:String(i.name),amount:i.amount})),notices:Array.isArray(b.notices)?b.notices.map(String):[]})),building:{title:m.title||'',issueDate:''}}})).filter(f=>f.json.bills.length).sort((a,b)=>b.ym.localeCompare(a.ym));
-const b64utf8=s=>btoa(unescape(encodeURIComponent(s)));
-const ghApi=(tok,path,opt)=>fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+path,{...(opt||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+tok,'X-GitHub-Api-Version':'2022-11-28',...((opt&&opt.headers)||{})}});
-const ghErrMsg=st=>st===401?'토큰이 올바르지 않거나 만료되었습니다. 새 토큰으로 다시 연결하세요.':st===403?'토큰에 이 저장소의 쓰기 권한(Contents: Read and write)이 없습니다.':st===404?'저장소를 찾을 수 없습니다. 토큰의 저장소 선택에 dohwa가 포함됐는지 확인하세요.':st===409||st===422?'저장 중 충돌이 났습니다. 잠시 후 다시 시도하세요.':'GitHub 저장에 실패했습니다 (오류 '+st+'). 인터넷 연결을 확인하세요.';
-const rnd4=()=>String(1000+Math.floor(Math.random()*9000));
-const defTotals=()=>{const t={};ITEMS9.forEach(([n,a,r])=>t[n]=String(a*(r?29:31)));return t;};
-const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-400)','var(--color-neutral-700)','var(--color-neutral-500)','var(--color-neutral-300)'];
+const PAY_URL =
+  'https://script.google.com/macros/s/AKfycbwSuU6B99iEv_03nCXe97NXTD5xcLxxudK7sH8W8mtwYXEjm6VXJ-FrPSMLoVbtGOpH/exec';
+// Apps Script 호출 (GET, JSON 응답)
+const api = q =>
+  fetch(
+    PAY_URL +
+      '?' +
+      Object.entries(q)
+        .map(([k, v]) => k + '=' + encodeURIComponent(v))
+        .join('&'),
+    { cache: 'no-store' }
+  ).then(r => r.json());
+
+// ── 폰 저장소(localStorage) ──
+const LOGIN_LS = 'dohwa-login',
+  LOGIN_ERR = {
+    auth: '비밀번호가 맞지 않습니다. 관리인에게 문의하세요',
+    locked: '여러 번 틀려 1시간 동안 잠겼습니다. 잠시 후 다시 시도하세요',
+  };
+const lsGet = k => {
+  try {
+    return localStorage.getItem(k) || '';
+  } catch (e) {
+    return '';
+  }
+};
+const lsSet = (k, v) => {
+  try {
+    v ? localStorage.setItem(k, v) : localStorage.removeItem(k);
+  } catch (e) {}
+};
+const nowHm = () => {
+  const t = new Date();
+  return t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0');
+};
+// 로그인 응답의 bills → applyAll 이 읽는 [{ym, json}] (최신 달 먼저). 형식이 틀린 건은 버린다
+const BILLS_LS = 'dohwa-bills';
+const billOk = b =>
+  b &&
+  typeof b.dong === 'string' &&
+  typeof b.ho === 'string' &&
+  ['dueAmount', 'afterDueAmount', 'subtotal', 'total'].every(k => typeof b[k] === 'number') &&
+  Array.isArray(b.items) &&
+  b.items.every(i => i && typeof i.amount === 'number');
+const toFound = list =>
+  (Array.isArray(list) ? list : [])
+    .filter(m => m && /^\d{4}-\d{2}$/.test(m.ym) && Array.isArray(m.bills))
+    .map(m => ({
+      ym: m.ym,
+      json: {
+        bills: m.bills.filter(billOk).map(b => ({
+          ...b,
+          resident: String(b.resident || ''),
+          items: b.items.map(i => ({ name: String(i.name), amount: i.amount })),
+          notices: Array.isArray(b.notices) ? b.notices.map(String) : [],
+        })),
+        building: { title: m.title || '', issueDate: '' },
+      },
+    }))
+    .filter(f => f.json.bills.length)
+    .sort((a, b) => b.ym.localeCompare(a.ym));
+
+// ── GitHub API ──
+const b64utf8 = s => btoa(unescape(encodeURIComponent(s)));
+const ghApi = (tok, path, opt) =>
+  fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + path, {
+    ...(opt || {}),
+    headers: {
+      'Accept': 'application/vnd.github+json',
+      'Authorization': 'Bearer ' + tok,
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...((opt && opt.headers) || {}),
+    },
+  });
+const ghErrMsg = st =>
+  st === 401
+    ? '토큰이 올바르지 않거나 만료되었습니다. 새 토큰으로 다시 연결하세요.'
+    : st === 403
+      ? '토큰에 이 저장소의 쓰기 권한(Contents: Read and write)이 없습니다.'
+      : st === 404
+        ? '저장소를 찾을 수 없습니다. 토큰의 저장소 선택에 dohwa가 포함됐는지 확인하세요.'
+        : st === 409 || st === 422
+          ? '저장 중 충돌이 났습니다. 잠시 후 다시 시도하세요.'
+          : 'GitHub 저장에 실패했습니다 (오류 ' + st + '). 인터넷 연결을 확인하세요.';
+
+// ── 기타 ──
+const rnd4 = () => String(1000 + Math.floor(Math.random() * 9000));
+// '고지서 발송' 시안의 항목별 총액 기본값
+const defTotals = () => {
+  const t = {};
+  ITEMS9.forEach(([n, a, r]) => (t[n] = String(a * (r ? 29 : 31))));
+  return t;
+};
+// 구성비 막대 색
+const SEGC = [
+  'var(--color-accent)',
+  'var(--color-accent-700)',
+  'var(--color-accent-400)',
+  'var(--color-neutral-700)',
+  'var(--color-neutral-500)',
+  'var(--color-neutral-300)',
+];
 
 class Component extends DCLogic {
-  scRef=React.createRef();
-  localImgs={};
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'',lBusy:false,lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',cEdit:null,noteDelId:null,delBusy:false,ghToken:lsGet(GH_LS),pws:null,pwBusy:false,ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:'',mpCur:'',mpNew:'',mpNew2:'',mpErr:'',mpBusy:false};
-  componentDidMount(){
-    this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
-    this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
-    try{history.replaceState({dohwa:this.state.screen},'');}catch(e){}
-    if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+  scRef = React.createRef();
+  localImgs = {};
+  // 화면 상태 — l*: 로그인, c*: 공지 작성, ap*·pw*: 관리인 비밀번호, mp*: 세대 비밀번호, gh*: GitHub 연결
+  state = {
+    screen: 'login',
+    role: null,
+    unit: '101-202',
+    lMode: 'tenant',
+    lDong: '101',
+    lHo: '202',
+    lPw: '',
+    lBusy: false,
+    lErr: '',
+    billMonth: 5,
+    cat: '전체',
+    noticeId: null,
+    prevScreen: 'notices',
+    notices: NOTICES,
+    reads: initReads(),
+    pushNotice: true,
+    pushBill: true,
+    toast: null,
+    banner: null,
+    totals: defTotals(),
+    step: 1,
+    sent: false,
+    confirmOpen: false,
+    aDong: '101',
+    cCat: '일반',
+    cTitle: '',
+    cBody: '',
+    cPush: true,
+    cErr: '',
+    cImgs: [],
+    imgBusy: false,
+    imgView: null,
+    noteProg: '',
+    cEdit: null,
+    noteDelId: null,
+    delBusy: false,
+    ghToken: lsGet(GH_LS),
+    pws: null,
+    pwBusy: false,
+    ghInput: '',
+    ghBusy: false,
+    ghErr: '',
+    ghHelp: false,
+    apCur: '',
+    apNew: '',
+    apNew2: '',
+    apErr: '',
+    apDong: '101',
+    showPw: false,
+    pwEdit: null,
+    pwNew: '',
+    pwErr: '',
+    mpCur: '',
+    mpNew: '',
+    mpNew2: '',
+    mpErr: '',
+    mpBusy: false,
+    payBusy: false,
+    payAt: '',
+  };
+
+  // ── 시작·종료 ──
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 600px), (pointer: coarse)');
+    this.onMq = () => this.setState({ isMobile: this.mq.matches });
+    this.onMq();
+    this.mq.addEventListener && this.mq.addEventListener('change', this.onMq);
+    this.onPop = e => {
+      const sc = e.state && e.state.dohwa;
+      if (sc) {
+        this.popping = true;
+        this.go(sc);
+        this.popping = false;
+      }
+    };
+    window.addEventListener('popstate', this.onPop);
+    try {
+      history.replaceState({ dohwa: this.state.screen }, '');
+    } catch (e) {}
+    if ('serviceWorker' in navigator && location.protocol === 'https:')
+      navigator.serviceWorker.register('sw.js').catch(() => {});
     this.loadNotes();
     this.applyStart();
   }
+
   // ── 고지서 데이터 ──
-  // 로그인 응답의 고지서(list)를 쓰고, 응답에 없을 때만 예전 방식의 공개 파일(uploads/bills-data-*.json)을 읽는다.
-  // 세대의 고지서는 오프라인 로그인 때 쓰도록 이 폰에 저장해 둔다 (cached=true 는 그 저장본을 쓰는 경우). after 는 고지서가 정해진 뒤 한 번 호출
-  useBills(key,list,after,cached){const found=toFound(list);const seq=this.billSeq=(this.billSeq||0)+1;const done=()=>{if(this.billSeq===seq&&after)after();};
-    if(key!=='admin'&&!cached)lsSet(BILLS_LS,found.length?JSON.stringify({unit:key,bills:list}):'');
-    if(found.length){this.showBills(found,cached?'이 폰에 저장된 고지서':'구글시트 고지서');return done();}
-    this.loadFileBills(seq).then(done);}
-  loadFileBills(seq){const t=new Date();const cands=[];for(let k=1;k>=-12;k--){const [y,m]=addM(t.getFullYear(),t.getMonth()+1,k);cands.push(ymStr(y,m));}
-    return Promise.all(cands.map(ym=>fetch(DATA_DIR+fileFor(ym)).then(r=>r.ok?r.json():null).then(j=>j&&j.bills?{ym,json:j}:null).catch(()=>null))).then(res=>{if(seq===undefined||this.billSeq===seq)this.showBills(res.filter(Boolean),'uploads 파일');});}
-  // found 가 비었거나 읽다가 문제가 생기면 고지서 없는 상태(금액 0원)로 둔다 — 고지서 때문에 로그인이 막히지 않게
-  showBills(found,label){let issue='',ok=found.length>0;
-    if(ok){try{issue=applyAll(found).issue;}catch(e){ok=false;}}
-    if(!ok)resetData();
-    this.setState({billMonth:5,issueShort:issue?issue.slice(5).replace('-','.'):'',dataSrc:ok?label+' · '+UNITS.length+'호 · '+found.map(f=>+f.ym.slice(5)+'월').reverse().join('·'):'고지서 데이터가 없습니다'});}
-  // 로그아웃: 받아 둔 고지서를 화면 데이터에서 지움
-  clearBills(){this.billSeq=(this.billSeq||0)+1;resetData();}
-  componentDidUpdate(pp){if(pp.startAs!==this.props.startAs)this.applyStart();}
-  componentWillUnmount(){window.removeEventListener('popstate',this.onPop);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);clearTimeout(this.tt);clearTimeout(this.bt);}
-  async ghConnect(){const tok=this.state.ghInput.trim();if(!tok)return this.setState({ghErr:'토큰을 붙여넣어 주세요'});this.setState({ghBusy:true,ghErr:''});try{const r=await ghApi(tok,'');if(!r.ok)throw r.status;const j=await r.json();if(j.permissions&&!j.permissions.push)throw 403;lsSet(GH_LS,tok);this.setState({ghToken:tok,ghInput:'',ghBusy:false,ghHelp:false});this.toast('GitHub에 연결했습니다');}catch(st){this.setState({ghBusy:false,ghErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
-  async loadNotes(){const names=new Set();
-    try{const r=await fetch(NOTE_INDEX,{cache:'no-store'});if(r.ok){const j=await r.json();(j.files||[]).forEach(f=>NOTE_RE.test(f)&&names.add(f));}}catch(e){}
-    try{const r=await fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+'/contents/uploads?ref='+GH.branch,{cache:'no-store',headers:{'Accept':'application/vnd.github+json'}});if(r.ok){(await r.json()).forEach(f=>NOTE_RE.test(f.name)&&names.add(f.name));}}catch(e){}
-    const list=(await Promise.all([...names].map(f=>fetch('uploads/'+f,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>j?normNote(f.replace('.json',''),j):null).catch(()=>null)))).filter(Boolean).sort((a,b)=>b.id.localeCompare(a.id));
-    this.setState({notices:list,notesStatus:list.length?'uploads 폴더의 공지 '+list.length+'건':'uploads 폴더에 공지 파일이 없습니다'});}
-  nextNoteId(){const d=todayYmd();const used=this.state.notices.filter(n=>n.id.startsWith('note_'+d+'_')).map(n=>+n.id.slice(-3));return 'note_'+d+'_'+String((used.length?Math.max(...used):0)+1).padStart(3,'0');}
-  async pickImgs(e){const files=[...((e.target&&e.target.files)||[])];try{e.target.value='';}catch(x){}if(!files.length)return;
-    const room=IMG_MAX-this.state.cImgs.length;if(room<=0)return this.setState({cErr:'사진은 최대 '+IMG_MAX+'장까지 붙일 수 있습니다'});
-    this.setState({imgBusy:true,cErr:''});const added=[];let bad=0;
-    for(const f of files.slice(0,room)){try{added.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),data:await shrinkImage(f)});}catch(err){bad++;}}
-    const over=Math.max(0,files.length-room);
-    this.setState({cImgs:[...this.state.cImgs,...added],imgBusy:false,cErr:bad?bad+'장은 열 수 없는 형식이라 빠졌습니다. JPG나 PNG 사진으로 다시 골라주세요.':over?'사진은 최대 '+IMG_MAX+'장이라 '+over+'장은 빠졌습니다.':''});}
-  async saveNote(){const s=this.state;if(s.noteBusy||s.imgBusy)return;if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});
-    const editing=!!s.cEdit;const imgs=s.cImgs||[];const newImgs=imgs.filter(im=>im.data);
-    if(newImgs.length&&!s.ghToken)return this.setState({cErr:'사진이 있는 공지는 GitHub 연결 후 게시할 수 있습니다. 비밀번호 탭에서 GitHub를 연결하거나, 사진을 빼고 게시하세요.'});
-    const id=editing?s.cEdit:this.nextNoteId();const t=new Date();
-    let seq=0;const imgPaths=imgs.map(im=>im.path?im.path:IMG_DIR+id+'_'+t.getTime().toString(36)+'_'+(++seq)+'.jpg');
-    const uploads=imgs.map((im,i)=>({im,path:imgPaths[i]})).filter(x=>x.im.data);
-    const note={id,cat:s.cCat,title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean),...(imgPaths.length?{images:imgPaths}:{}),date:noteDate(id),pinned:!!s.cPin,...(s.cSummary&&s.cSummary.trim()?{summary:s.cSummary.trim()}:{}),author:'관리인 박은혜',createdAt:t.toISOString()};
-    const text=JSON.stringify(note,null,1);const n=normNote(id,note);
-    const done=msg=>{this.go('anotices',{notices:[n,...this.state.notices.filter(x=>x.id!==id)].sort((a,b)=>b.id.localeCompare(a.id)),cEdit:null,cTitle:'',cSummary:'',cBody:'',cErr:'',cPin:false,cImgs:[],noteBusy:false,noteProg:''});this.toast(msg);};
-    if(!s.ghToken){const blob=new Blob([text],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=id+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);return done(id+'.json을 내려받았습니다 · uploads 폴더에 올려주세요');}
-    this.setState({noteBusy:true,cErr:''});const tok=s.ghToken;
-    try{for(let i=0;i<uploads.length;i++){this.setState({noteProg:'사진 올리는 중… ('+(i+1)+'/'+uploads.length+')'});await ghPutFile(tok,uploads[i].path,uploads[i].im.data.split(',')[1],'공지 사진: '+note.title+' ('+(i+1)+'/'+uploads.length+')');this.localImgs[uploads[i].path]=uploads[i].im.data;}
-      this.setState({noteProg:editing?'공지 수정 중…':'공지 저장 중…'});
-      await ghPutFile(tok,'uploads/'+id+'.json',b64utf8(text),(editing?'공지 수정: ':'공지 등록: ')+note.title);
-      try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
-        const all=[...new Set([id+'.json',...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)).sort().reverse();
-        await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:t.toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
-      done(editing?'공지를 수정했습니다 · 1~2분 뒤 모든 폰에 반영':'GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시');}
-    catch(st){this.setState({noteBusy:false,noteProg:'',cErr:typeof st==='number'?ghErrMsg(st):ghErrMsg(0)});}}
-  editNote(id){const note=this.state.notices.find(x=>x.id===id);if(!note)return;const imgs=(note.images||[]).map(p=>({id:p,path:p}));this.go('acompose',{prevScreen:this.state.screen,cEdit:id,cCat:CATS.includes(note.cat)?note.cat:'일반',cTitle:note.title||'',cSummary:note.summary||'',cBody:(note.body||[]).join('\n'),cPin:!!note.pinned,cImgs:imgs,cErr:''});}
-  async deleteNote(id){const s=this.state;if(s.delBusy)return;if(!s.ghToken){this.setState({noteDelId:null});return this.toast('GitHub 연결 후 삭제할 수 있습니다 · 비밀번호 탭에서 연결하세요');}
-    const note=s.notices.find(x=>x.id===id),tok=s.ghToken;this.setState({delBusy:true});
-    try{await ghDelFile(tok,'uploads/'+id+'.json','공지 삭제: '+((note&&note.title)||id));
-      for(const p of ((note&&note.images)||[])){try{await ghDelFile(tok,p,'공지 사진 삭제: '+id);}catch(e){}}
-      try{let sha,files=[];const g=await ghApi(tok,'/contents/'+NOTE_INDEX+'?ref='+GH.branch,{cache:'no-store'});if(g.ok){const gj=await g.json();sha=gj.sha;try{files=JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g,''))))).files||[];}catch(e){}}
-        const all=[...new Set([...files,...s.notices.map(x=>x.id+'.json')])].filter(f=>NOTE_RE.test(f)&&f!==id+'.json').sort().reverse();
-        await ghApi(tok,'/contents/'+NOTE_INDEX,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'공지 삭제 · 목록 갱신',content:b64utf8(JSON.stringify({updatedAt:new Date().toISOString(),files:all},null,1)),branch:GH.branch,...(sha?{sha}:{})})});}catch(e){}
-      this.go('anotices',{delBusy:false,noteDelId:null,notices:s.notices.filter(x=>x.id!==id)});this.toast('공지를 삭제했습니다 · 1~2분 뒤 모든 폰에 반영');}
-    catch(st){this.setState({delBusy:false});this.toast(typeof st==='number'?ghErrMsg(st):ghErrMsg(0));}}
-  // 시작 화면을 세입자·관리자로 바로 여는 것은 디자인 미리보기용 — 로그인을 거치지 않으므로 공개 파일이 있을 때만 고지서가 보인다
-  applyStart(){const s=this.props.startAs??'로그인';DEMO=s!=='로그인';if(s==='세입자'){this.enterTenant('101-202',true);this.useBills('101-202',null,()=>this.billBanner(),true);}else if(s==='관리자'){this.enterAdmin();this.useBills('admin',null);}else this.setState({screen:'login',role:null});}
-  go(screen,extra){if(!this.popping&&screen!==this.state.screen){try{if(screen==='login'||screen==='home'||screen==='ahome')history.replaceState({dohwa:screen},'');else history.pushState({dohwa:screen},'');}catch(e){}}this.setState({screen,imgView:null,carIdx:0,...(extra||{})});const el=this.scRef.current;if(el)el.scrollTop=0;}
-  toast(msg){clearTimeout(this.tt);this.setState({toast:msg});this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
-  enterTenant(key,quiet){this.go('home',{role:'tenant',unit:key,lErr:''});if(!quiet)setTimeout(()=>this.billBanner(),500);}
-  // 고지서 알림: 로그인 응답의 미수 잔액이 0 이하(완납)면 띄우지 않음. 이번 달 고지서가 실제로 있을 때만 띄움
-  billBanner(){if(!this.state.pushBill||this.state.role!=='tenant')return;const bu=UNITS.find(x=>x.key===this.state.unit);if(!bu||!srcAt(bu,5))return;clearTimeout(this.bt);this.setState({banner:{title:PD.label+'분 관리비 고지서가 도착했습니다',body:PD.dueShort+'까지 납부해 주세요.'}});this.bt=setTimeout(()=>this.setState({banner:null}),3700);}
-  enterAdmin(){this.go('ahome',{role:'admin',lErr:'',banner:null});}
-  // 관리인: 전 세대 입금 현황(list), 호수별 비밀번호(pws), 전 세대 고지서(bills)를 한 번에 받아 옴
-  setAdminData(j,after){const t=new Date();this.setState({payAll:j.list||[],pws:j.pws||{},payAllStatus:'구글시트 세대정보 · '+t.getHours()+':'+String(t.getMinutes()).padStart(2,'0')+' 조회'});this.useBills('admin',j.bills,after);}
-  loadPayAll(){if(!this.adminPlain)return this.setState({payAllStatus:'관리인 비밀번호로 다시 로그인하면 불러옵니다'});this.setState({payAllStatus:'구글시트에서 불러오는 중…'});api({unit:'admin',pw:this.adminPlain}).then(j=>{if(!j.ok)throw j.error;this.setAdminData(j);}).catch(e=>this.setState({payAllStatus:e==='locked'?LOGIN_ERR.locked:e==='auth'?'관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요':'불러오지 못했습니다. 새로고침을 눌러 다시 시도하세요'}));}
-  // 로그인: 비밀번호는 Apps Script(구글시트)에서만 확인. 세대는 응답에 입금 내역과 그 세대의 고지서(bills)가 같이 옴
-  doLogin(){const s=this.state;if(s.lBusy)return;if(!/^\d{4}$/.test(s.lPw))return this.setState({lErr:'비밀번호 숫자 4자리를 입력하세요'});
-    const admin=s.lMode==='admin',ho=s.lHo.trim().toUpperCase().replace('호',''),key=admin?'admin':s.lDong+'-'+ho,pw=s.lPw;
-    if(!admin&&!BASE_KEYS.has(key)&&!UNITS.find(u=>u.key===key))return this.setState({lErr:s.lDong+'동에 '+(ho||'?')+'호는 등록되어 있지 않습니다'});
-    this.setState({lBusy:true,lErr:''});
-    api({unit:key,pw}).then(j=>{
-      if(!j.ok)return this.setState({lBusy:false,lErr:admin&&j.error==='auth'?'관리인 비밀번호가 맞지 않습니다':LOGIN_ERR[j.error]||'로그인하지 못했습니다. 잠시 후 다시 시도하세요'});
-      // 고지서가 정해진 뒤에 다음 화면으로 들어간다 (응답에 고지서가 없어 공개 파일을 읽는 동안 0원이 잠깐 보이지 않게)
-      if(admin){this.adminPlain=pw;this.setAdminData(j,()=>{this.setState({lBusy:false,lPw:''});this.enterAdmin();});return;}
-      lsSet(LOGIN_LS,key+':'+hashPw(key,pw));
-      const {bills,...info}=j;const pay='unpaid' in info?info:null;
-      this.useBills(key,bills,()=>{this.setState({lBusy:false,lPw:'',pay});this.enterTenant(key,!!pay&&pay.unpaid<=0);});
-    }).catch(()=>{
-      // 인터넷이 안 될 때: 이 폰에서 마지막으로 로그인에 성공한 세대·번호면 저장된 화면으로 들어감 (입금 내역은 표시 안 되고, 고지서는 이 폰에 저장해 둔 것)
-      if(!admin&&lsGet(LOGIN_LS)===key+':'+hashPw(key,pw)){let c=null;try{c=JSON.parse(lsGet(BILLS_LS)||'null');}catch(e){}this.useBills(key,c&&c.unit===key?c.bills:null,()=>{this.setState({lBusy:false,lPw:'',pay:null});this.enterTenant(key);},true);return;}
-      this.setState({lBusy:false,lErr:'서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요'});});}
-  // 비밀번호 변경: 구글시트에 바로 저장되어 즉시 적용됨. ch = {세대키 또는 'admin': 새 번호}
-  setPws(ch,msg,onOk,onErr){if(this.state.pwBusy)return;if(!this.adminPlain)return onErr('관리인 비밀번호로 다시 로그인하세요');this.setState({pwBusy:true});
-    api({unit:'admin',pw:this.adminPlain,set:Object.entries(ch).map(([k,v])=>k+':'+v).join(',')}).then(j=>{if(!j.ok)throw j.error;const {admin,...units}=ch;this.setState({pwBusy:false,pws:{...(this.state.pws||{}),...units}});onOk();this.toast(msg);})
-    .catch(e=>{this.setState({pwBusy:false});onErr(e==='locked'?LOGIN_ERR.locked:e==='auth'?'관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요':'저장하지 못했습니다. 인터넷 연결을 확인하세요');});}
-  // 세대 본인 비밀번호 변경: 현재 번호는 Apps Script 가 확인하고 구글시트 '비밀번호' 시트에 저장 (관리인 화면의 호수별 비밀번호에도 새 번호가 보임)
-  // changed 가 없는 응답은 newpw 를 모르는 예전 Apps Script 가 로그인으로만 처리한 것이므로 실패로 봄
-  saveMyPw(){const s=this.state;if(s.mpBusy)return;if(!/^\d{4}$/.test(s.mpCur))return this.setState({mpErr:'현재 비밀번호 숫자 4자리를 입력하세요'});if(!/^\d{4}$/.test(s.mpNew))return this.setState({mpErr:'새 비밀번호는 숫자 4자리입니다'});if(s.mpNew===s.mpCur)return this.setState({mpErr:'현재와 다른 번호를 입력하세요'});if(s.mpNew!==s.mpNew2)return this.setState({mpErr:'새 비밀번호가 서로 다릅니다'});
-    const key=s.unit,np=s.mpNew;this.setState({mpBusy:true,mpErr:''});
-    api({unit:key,pw:s.mpCur,newpw:np}).then(j=>{if(!j.ok)throw j.error;if(!j.changed)throw 'old';lsSet(LOGIN_LS,key+':'+hashPw(key,np));this.setState({mpBusy:false,mpCur:'',mpNew:'',mpNew2:''});this.toast('비밀번호를 변경했습니다');})
-    .catch(e=>this.setState({mpBusy:false,mpErr:e==='auth'?'현재 비밀번호가 맞지 않습니다':e==='locked'?LOGIN_ERR.locked:e==='old'?'아직 비밀번호 변경을 쓸 수 없습니다. 관리인에게 문의하세요':'변경하지 못했습니다. 인터넷 연결을 확인하세요'}));}
-  openNotice(id){const s=this.state;const reads={...s.reads};const rl=reads[id]||[];if(s.role==='tenant'&&!rl.includes(s.unit)){reads[id]=[...rl,s.unit];try{localStorage.setItem(READ_LS,JSON.stringify(reads));}catch(e){}}this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
-  renderVals(){
-    const s=this.state,p=this.props;
-    const home=p.homeLayout??'1면',billL=p.billLayout??'영수증',noticeL=p.noticeLayout??'목록',aflow=p.adminFlow??'한 화면';
-    const u=UNITS.find(x=>x.key===s.unit)||UNITS[1]||UNITS[0];
-    const cur=billFor(u,5);const realMonths=MONTHS.map((_,i)=>i).filter(i=>srcAt(u,i));const bmIdx=realMonths.includes(s.billMonth)?s.billMonth:(realMonths.length?realMonths[realMonths.length-1]:5);const bm=billFor(u,bmIdx);if(bmIdx===5&&s.role==='tenant'&&s.pay&&s.pay.unpaid<=0)Object.assign(bm,{status:'납부 완료',tagClass:'tag-neutral'});
-    const isT=s.role==='tenant',isA=s.role==='admin';
-    const unread=n=>isT&&!(s.reads[n.id]||[]).includes(u.key);
-    const excerpt=n=>{const b=previewOf(n);return b.length>90?b.slice(0,88)+'…':b;};
-    const imgSrc=p=>this.localImgs[p]||p;
-    const nv=n=>{const ims=n.images||[];return {...n,unread:unread(n),excerpt:excerpt(n),weight:unread(n)?700:600,open:()=>this.openNotice(n.id),readCount:(s.reads[n.id]||[]).length,pct:'0%',hasImages:ims.length>0,imgCount:ims.length,cover:ims.length?imgSrc(ims[0]):'',imgs:ims.map((pth,i)=>({src:imgSrc(pth),alt:'공지 사진 '+(i+1),open:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:imgSrc(pth)});}}))};};
-    const sorted=[...s.notices].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
-    // 공지 캐러셀: '전체' + 목록형일 때 고정 → 안 읽음 → 최신순 최대 5개 (공지가 2개 이상일 때만), 아래 목록에서는 제외
-    const carSrc=noticeL==='목록'&&s.cat==='전체'&&sorted.length>1?[...sorted.filter(n=>n.pinned),...sorted.filter(n=>!n.pinned&&unread(n)),...sorted.filter(n=>!n.pinned&&!unread(n))].slice(0,5):[];
-    const carIds=new Set(carSrc.map(n=>n.id)),carIdx=Math.min(s.carIdx||0,Math.max(0,carSrc.length-1));
-    const filtered=sorted.filter(n=>s.cat==='전체'||n.cat===s.cat).map(nv);
-    const chip=(on)=>({bg:on?'var(--color-accent-100)':'transparent',fg:on?'var(--color-accent-800)':'var(--color-text)'});
-    const ndRaw=s.notices.find(n=>n.id===s.noticeId)||s.notices[0]||{id:'',cat:'',title:'',body:[],date:''};
-    const nd=nv(ndRaw);
-    const itemsNZ=bm.items.filter(i=>i.amount>0);
-    const bsorted=[...itemsNZ].sort((a,b)=>b.amount-a.amount);
-    const maxI=bsorted[0]?bsorted[0].amount:1;
-    const colorOf=i=>SEGC[Math.min(i,5)];
-    const segs=bsorted.slice(0,5).map((it,i)=>({w:(it.amount/bm.subtotal*100)+'%',color:colorOf(i)}));
-    const restAmt=bsorted.slice(5).reduce((a,b)=>a+b.amount,0);if(restAmt)segs.push({w:(restAmt/bm.subtotal*100)+'%',color:SEGC[5]});
-    const trendVals=MONTHS.map((m,i)=>sub(u,i));const tMax=Math.max(1,...trendVals);
-    const tabs=(defs)=>defs.map(([k,label,icon,badge])=>{const on=s.screen===k||(k==='notices'&&s.screen==='notice'&&s.prevScreen==='notices')||(k==='anotices'&&(s.screen==='acompose'||(s.screen==='notice'&&isA)));return {label,icon,badge:!!badge,color:on?'var(--color-accent-700)':'var(--color-neutral-700)',w:on?700:400,go:()=>this.go(k)};});
-    const anyUnread=s.notices.some(unread);
-    const aVals={};ITEMS9.forEach(([n])=>aVals[n]=parseInt(String(s.totals[n]).replace(/\D/g,''))||0);
-    const perOf=([n,a,r])=>Math.ceil(aVals[n]/(r?29:31));
-    const up10=n=>Math.ceil(n/10)*10;const perRes=up10(ITEMS9.reduce((t,it)=>t+perOf(it),0)),perShop=up10(ITEMS9.filter(it=>!it[2]).reduce((t,it)=>t+perOf(it),0));
-    const unpaidUnits=UNITS.filter(x=>x.prev>0);
-    const latestN=s.notices[0]?nv(s.notices[0]):null;
-    const ho=x=>x.dong+'동 '+x.ho+'호';
-    const stepsDef=['항목 입력','호수별 확인','발송'];
+  // 로그인 응답의 고지서를 쓰고, 없으면 공개 파일(uploads/bills-data-*.json)을 읽는다.
+  // 세대 고지서는 오프라인 로그인용으로 폰에 저장 (cached: 저장본 사용). after: 적용 뒤 한 번 호출
+  useBills(key, list, after, cached) {
+    const found = toFound(list);
+    const seq = (this.billSeq = (this.billSeq || 0) + 1);
+    const done = () => {
+      if (this.billSeq === seq && after) after();
+    };
+    if (key !== 'admin' && !cached) lsSet(BILLS_LS, found.length ? JSON.stringify({ unit: key, bills: list }) : '');
+    if (found.length) {
+      this.showBills(found, cached ? '이 폰에 저장된 고지서' : '구글시트 고지서');
+      return done();
+    }
+    this.loadFileBills(seq).then(done);
+  }
+  loadFileBills(seq) {
+    const t = new Date();
+    const cands = [];
+    for (let k = 1; k >= -12; k--) {
+      const [y, m] = addM(t.getFullYear(), t.getMonth() + 1, k);
+      cands.push(ymStr(y, m));
+    }
+    return Promise.all(
+      cands.map(ym =>
+        fetch(DATA_DIR + fileFor(ym))
+          .then(r => (r.ok ? r.json() : null))
+          .then(j => (j && j.bills ? { ym, json: j } : null))
+          .catch(() => null)
+      )
+    ).then(res => {
+      if (seq === undefined || this.billSeq === seq) this.showBills(res.filter(Boolean), 'uploads 파일');
+    });
+  }
+  // 화면 데이터에 적용. 없거나 읽기 실패면 0원 상태로 둔다 (로그인은 계속)
+  showBills(found, label) {
+    let issue = '',
+      ok = found.length > 0;
+    if (ok) {
+      try {
+        issue = applyAll(found).issue;
+      } catch (e) {
+        ok = false;
+      }
+    }
+    if (!ok) resetData();
+    this.setState({
+      billMonth: 5,
+      issueShort: issue ? issue.slice(5).replace('-', '.') : '',
+      dataSrc: ok
+        ? label +
+          ' · ' +
+          UNITS.length +
+          '호 · ' +
+          found
+            .map(f => +f.ym.slice(5) + '월')
+            .reverse()
+            .join('·')
+        : '고지서 데이터가 없습니다',
+    });
+  }
+  // 로그아웃할 때 고지서를 비운다
+  clearBills() {
+    this.billSeq = (this.billSeq || 0) + 1;
+    resetData();
+  }
+  componentDidUpdate(pp) {
+    if (pp.startAs !== this.props.startAs) this.applyStart();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.onPop);
+    this.mq && this.mq.removeEventListener && this.mq.removeEventListener('change', this.onMq);
+    clearTimeout(this.tt);
+    clearTimeout(this.bt);
+  }
+
+  // ── 공지: 불러오기·작성·삭제 (GitHub 에 저장) ──
+  async ghConnect() {
+    const tok = this.state.ghInput.trim();
+    if (!tok) return this.setState({ ghErr: '토큰을 붙여넣어 주세요' });
+    this.setState({ ghBusy: true, ghErr: '' });
+    try {
+      const r = await ghApi(tok, '');
+      if (!r.ok) throw r.status;
+      const j = await r.json();
+      if (j.permissions && !j.permissions.push) throw 403;
+      lsSet(GH_LS, tok);
+      this.setState({ ghToken: tok, ghInput: '', ghBusy: false, ghHelp: false });
+      this.toast('GitHub에 연결했습니다');
+    } catch (st) {
+      this.setState({ ghBusy: false, ghErr: typeof st === 'number' ? ghErrMsg(st) : ghErrMsg(0) });
+    }
+  }
+  // 공지 목록: notes-index.json 과 GitHub 폴더 목록을 합쳐 읽는다
+  async loadNotes() {
+    const names = new Set();
+    try {
+      const r = await fetch(NOTE_INDEX, { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        (j.files || []).forEach(f => NOTE_RE.test(f) && names.add(f));
+      }
+    } catch (e) {}
+    try {
+      const r = await fetch(
+        'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/uploads?ref=' + GH.branch,
+        { cache: 'no-store', headers: { 'Accept': 'application/vnd.github+json' } }
+      );
+      if (r.ok) {
+        (await r.json()).forEach(f => NOTE_RE.test(f.name) && names.add(f.name));
+      }
+    } catch (e) {}
+    const list = (
+      await Promise.all(
+        [...names].map(f =>
+          fetch('uploads/' + f, { cache: 'no-store' })
+            .then(r => (r.ok ? r.json() : null))
+            .then(j => (j ? normNote(f.replace('.json', ''), j) : null))
+            .catch(() => null)
+        )
+      )
+    )
+      .filter(Boolean)
+      .sort((a, b) => b.id.localeCompare(a.id));
+    this.setState({
+      notices: list,
+      notesStatus: list.length ? 'uploads 폴더의 공지 ' + list.length + '건' : 'uploads 폴더에 공지 파일이 없습니다',
+    });
+  }
+  nextNoteId() {
+    const d = todayYmd();
+    const used = this.state.notices.filter(n => n.id.startsWith('note_' + d + '_')).map(n => +n.id.slice(-3));
+    return 'note_' + d + '_' + String((used.length ? Math.max(...used) : 0) + 1).padStart(3, '0');
+  }
+  // 사진 고르기 (최대 IMG_MAX 장, 줄여서 보관)
+  async pickImgs(e) {
+    const files = [...((e.target && e.target.files) || [])];
+    try {
+      e.target.value = '';
+    } catch (x) {}
+    if (!files.length) return;
+    const room = IMG_MAX - this.state.cImgs.length;
+    if (room <= 0) return this.setState({ cErr: '사진은 최대 ' + IMG_MAX + '장까지 붙일 수 있습니다' });
+    this.setState({ imgBusy: true, cErr: '' });
+    const added = [];
+    let bad = 0;
+    for (const f of files.slice(0, room)) {
+      try {
+        added.push({ id: Date.now() + '_' + Math.random().toString(36).slice(2, 7), data: await shrinkImage(f) });
+      } catch (err) {
+        bad++;
+      }
+    }
+    const over = Math.max(0, files.length - room);
+    this.setState({
+      cImgs: [...this.state.cImgs, ...added],
+      imgBusy: false,
+      cErr: bad
+        ? bad + '장은 열 수 없는 형식이라 빠졌습니다. JPG나 PNG 사진으로 다시 골라주세요.'
+        : over
+          ? '사진은 최대 ' + IMG_MAX + '장이라 ' + over + '장은 빠졌습니다.'
+          : '',
+    });
+  }
+  // 공지 저장: 사진 → 공지 JSON → 목록 순으로 GitHub 에 올린다 (연결이 없으면 파일로 내려받기)
+  async saveNote() {
+    const s = this.state;
+    if (s.noteBusy || s.imgBusy) return;
+    if (!s.cTitle.trim()) return this.setState({ cErr: '제목을 입력하세요' });
+    if (!s.cBody.trim()) return this.setState({ cErr: '내용을 입력하세요' });
+    const editing = !!s.cEdit;
+    const imgs = s.cImgs || [];
+    const newImgs = imgs.filter(im => im.data);
+    if (newImgs.length && !s.ghToken)
+      return this.setState({
+        cErr: '사진이 있는 공지는 GitHub 연결 후 게시할 수 있습니다. 비밀번호 탭에서 GitHub를 연결하거나, 사진을 빼고 게시하세요.',
+      });
+    const id = editing ? s.cEdit : this.nextNoteId();
+    const t = new Date();
+    let seq = 0;
+    const imgPaths = imgs.map(im =>
+      im.path ? im.path : IMG_DIR + id + '_' + t.getTime().toString(36) + '_' + ++seq + '.jpg'
+    );
+    const uploads = imgs.map((im, i) => ({ im, path: imgPaths[i] })).filter(x => x.im.data);
+    const note = {
+      id,
+      cat: s.cCat,
+      title: s.cTitle.trim(),
+      body: s.cBody
+        .trim()
+        .split(/\n+/)
+        .map(x => x.trim())
+        .filter(Boolean),
+      ...(imgPaths.length ? { images: imgPaths } : {}),
+      date: noteDate(id),
+      pinned: !!s.cPin,
+      ...(s.cSummary && s.cSummary.trim() ? { summary: s.cSummary.trim() } : {}),
+      author: '관리인 박은혜',
+      createdAt: t.toISOString(),
+    };
+    const text = JSON.stringify(note, null, 1);
+    const n = normNote(id, note);
+    const done = msg => {
+      this.go('anotices', {
+        notices: [n, ...this.state.notices.filter(x => x.id !== id)].sort((a, b) => b.id.localeCompare(a.id)),
+        cEdit: null,
+        cTitle: '',
+        cSummary: '',
+        cBody: '',
+        cErr: '',
+        cPin: false,
+        cImgs: [],
+        noteBusy: false,
+        noteProg: '',
+      });
+      this.toast(msg);
+    };
+    if (!s.ghToken) {
+      const blob = new Blob([text], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = id + '.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      }, 500);
+      return done(id + '.json을 내려받았습니다 · uploads 폴더에 올려주세요');
+    }
+    this.setState({ noteBusy: true, cErr: '' });
+    const tok = s.ghToken;
+    try {
+      for (let i = 0; i < uploads.length; i++) {
+        this.setState({ noteProg: '사진 올리는 중… (' + (i + 1) + '/' + uploads.length + ')' });
+        await ghPutFile(
+          tok,
+          uploads[i].path,
+          uploads[i].im.data.split(',')[1],
+          '공지 사진: ' + note.title + ' (' + (i + 1) + '/' + uploads.length + ')'
+        );
+        this.localImgs[uploads[i].path] = uploads[i].im.data;
+      }
+      this.setState({ noteProg: editing ? '공지 수정 중…' : '공지 저장 중…' });
+      await ghPutFile(
+        tok,
+        'uploads/' + id + '.json',
+        b64utf8(text),
+        (editing ? '공지 수정: ' : '공지 등록: ') + note.title
+      );
+      try {
+        let sha,
+          files = [];
+        const g = await ghApi(tok, '/contents/' + NOTE_INDEX + '?ref=' + GH.branch, { cache: 'no-store' });
+        if (g.ok) {
+          const gj = await g.json();
+          sha = gj.sha;
+          try {
+            files = JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g, ''))))).files || [];
+          } catch (e) {}
+        }
+        const all = [...new Set([id + '.json', ...files, ...s.notices.map(x => x.id + '.json')])]
+          .filter(f => NOTE_RE.test(f))
+          .sort()
+          .reverse();
+        await ghApi(tok, '/contents/' + NOTE_INDEX, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: '공지 목록 갱신',
+            content: b64utf8(JSON.stringify({ updatedAt: t.toISOString(), files: all }, null, 1)),
+            branch: GH.branch,
+            ...(sha ? { sha } : {}),
+          }),
+        });
+      } catch (e) {}
+      done(
+        editing ? '공지를 수정했습니다 · 1~2분 뒤 모든 폰에 반영' : 'GitHub에 저장했습니다 · 1~2분 뒤 모든 폰에 표시'
+      );
+    } catch (st) {
+      this.setState({ noteBusy: false, noteProg: '', cErr: typeof st === 'number' ? ghErrMsg(st) : ghErrMsg(0) });
+    }
+  }
+  editNote(id) {
+    const note = this.state.notices.find(x => x.id === id);
+    if (!note) return;
+    const imgs = (note.images || []).map(p => ({ id: p, path: p }));
+    this.go('acompose', {
+      prevScreen: this.state.screen,
+      cEdit: id,
+      cCat: CATS.includes(note.cat) ? note.cat : '일반',
+      cTitle: note.title || '',
+      cSummary: note.summary || '',
+      cBody: (note.body || []).join('\n'),
+      cPin: !!note.pinned,
+      cImgs: imgs,
+      cErr: '',
+    });
+  }
+  // 공지 삭제: 공지 JSON·사진을 지우고 목록을 갱신한다
+  async deleteNote(id) {
+    const s = this.state;
+    if (s.delBusy) return;
+    if (!s.ghToken) {
+      this.setState({ noteDelId: null });
+      return this.toast('GitHub 연결 후 삭제할 수 있습니다 · 비밀번호 탭에서 연결하세요');
+    }
+    const note = s.notices.find(x => x.id === id),
+      tok = s.ghToken;
+    this.setState({ delBusy: true });
+    try {
+      await ghDelFile(tok, 'uploads/' + id + '.json', '공지 삭제: ' + ((note && note.title) || id));
+      for (const p of (note && note.images) || []) {
+        try {
+          await ghDelFile(tok, p, '공지 사진 삭제: ' + id);
+        } catch (e) {}
+      }
+      try {
+        let sha,
+          files = [];
+        const g = await ghApi(tok, '/contents/' + NOTE_INDEX + '?ref=' + GH.branch, { cache: 'no-store' });
+        if (g.ok) {
+          const gj = await g.json();
+          sha = gj.sha;
+          try {
+            files = JSON.parse(decodeURIComponent(escape(atob(gj.content.replace(/\s/g, ''))))).files || [];
+          } catch (e) {}
+        }
+        const all = [...new Set([...files, ...s.notices.map(x => x.id + '.json')])]
+          .filter(f => NOTE_RE.test(f) && f !== id + '.json')
+          .sort()
+          .reverse();
+        await ghApi(tok, '/contents/' + NOTE_INDEX, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: '공지 삭제 · 목록 갱신',
+            content: b64utf8(JSON.stringify({ updatedAt: new Date().toISOString(), files: all }, null, 1)),
+            branch: GH.branch,
+            ...(sha ? { sha } : {}),
+          }),
+        });
+      } catch (e) {}
+      this.go('anotices', { delBusy: false, noteDelId: null, notices: s.notices.filter(x => x.id !== id) });
+      this.toast('공지를 삭제했습니다 · 1~2분 뒤 모든 폰에 반영');
+    } catch (st) {
+      this.setState({ delBusy: false });
+      this.toast(typeof st === 'number' ? ghErrMsg(st) : ghErrMsg(0));
+    }
+  }
+
+  // ── 화면 이동·알림 ──
+  // 디자인 미리보기: 로그인 없이 세입자·관리자 화면으로 시작
+  applyStart() {
+    const s = this.props.startAs ?? '로그인';
+    DEMO = s !== '로그인';
+    if (s === '세입자') {
+      this.enterTenant('101-202', true);
+      this.useBills('101-202', null, () => this.billBanner(), true);
+    } else if (s === '관리자') {
+      this.enterAdmin();
+      this.useBills('admin', null);
+    } else this.setState({ screen: 'login', role: null });
+  }
+  // 화면 전환 (뒤로가기 기록 포함)
+  go(screen, extra) {
+    if (!this.popping && screen !== this.state.screen) {
+      try {
+        if (screen === 'login' || screen === 'home' || screen === 'ahome') history.replaceState({ dohwa: screen }, '');
+        else history.pushState({ dohwa: screen }, '');
+      } catch (e) {}
+    }
+    this.setState({ screen, imgView: null, carIdx: 0, ...(extra || {}) });
+    const el = this.scRef.current;
+    if (el) el.scrollTop = 0;
+  }
+  toast(msg) {
+    clearTimeout(this.tt);
+    this.setState({ toast: msg });
+    this.tt = setTimeout(() => this.setState({ toast: null }), 2200);
+  }
+  enterTenant(key, quiet) {
+    this.go('home', { role: 'tenant', unit: key, lErr: '' });
+    if (!quiet) setTimeout(() => this.billBanner(), 500);
+  }
+  // 고지서 도착 알림 (이번 달 고지서가 있을 때만)
+  billBanner() {
+    if (!this.state.pushBill || this.state.role !== 'tenant') return;
+    const bu = UNITS.find(x => x.key === this.state.unit);
+    if (!bu || !srcAt(bu, 5)) return;
+    clearTimeout(this.bt);
+    this.setState({
+      banner: { title: PD.label + '분 관리비 고지서가 도착했습니다', body: PD.dueShort + '까지 납부해 주세요.' },
+    });
+    this.bt = setTimeout(() => this.setState({ banner: null }), 3700);
+  }
+  enterAdmin() {
+    this.go('ahome', { role: 'admin', lErr: '', banner: null });
+  }
+
+  // ── 로그인·입금 조회 ──
+  // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)
+  setAdminData(j, after) {
+    const t = new Date();
+    this.setState({
+      payAll: j.list || [],
+      pws: j.pws || {},
+      payAllStatus: '구글시트 세대정보 · ' + t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0') + ' 조회',
+    });
+    this.useBills('admin', j.bills, after);
+  }
+  // 관리인 화면의 새로고침
+  loadPayAll() {
+    if (!this.adminPlain) return this.setState({ payAllStatus: '관리인 비밀번호로 다시 로그인하면 불러옵니다' });
+    this.setState({ payAllStatus: '구글시트에서 불러오는 중…' });
+    api({ unit: 'admin', pw: this.adminPlain })
+      .then(j => {
+        if (!j.ok) throw j.error;
+        this.setAdminData(j);
+      })
+      .catch(e =>
+        this.setState({
+          payAllStatus:
+            e === 'locked'
+              ? LOGIN_ERR.locked
+              : e === 'auth'
+                ? '관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요'
+                : '불러오지 못했습니다. 새로고침을 눌러 다시 시도하세요',
+        })
+      );
+  }
+  // 로그인: 비밀번호 확인은 Apps Script 가 한다. 응답에 입금 내역·고지서 포함
+  doLogin() {
+    const s = this.state;
+    if (s.lBusy) return;
+    if (!/^\d{4}$/.test(s.lPw)) return this.setState({ lErr: '비밀번호 숫자 4자리를 입력하세요' });
+    const admin = s.lMode === 'admin',
+      ho = s.lHo.trim().toUpperCase().replace('호', ''),
+      key = admin ? 'admin' : s.lDong + '-' + ho,
+      pw = s.lPw;
+    if (!admin && !BASE_KEYS.has(key) && !UNITS.find(u => u.key === key))
+      return this.setState({ lErr: s.lDong + '동에 ' + (ho || '?') + '호는 등록되어 있지 않습니다' });
+    this.setState({ lBusy: true, lErr: '' });
+    api({ unit: key, pw })
+      .then(j => {
+        if (!j.ok)
+          return this.setState({
+            lBusy: false,
+            lErr:
+              admin && j.error === 'auth'
+                ? '관리인 비밀번호가 맞지 않습니다'
+                : LOGIN_ERR[j.error] || '로그인하지 못했습니다. 잠시 후 다시 시도하세요',
+          });
+        // 고지서 적용이 끝난 뒤 화면 전환 (0원이 잠깐 보이지 않게)
+        if (admin) {
+          this.adminPlain = pw;
+          this.setAdminData(j, () => {
+            this.setState({ lBusy: false, lPw: '' });
+            this.enterAdmin();
+          });
+          return;
+        }
+        lsSet(LOGIN_LS, key + ':' + hashPw(key, pw));
+        this.tenantPw = pw;
+        const { bills, ...info } = j;
+        const pay = 'unpaid' in info ? info : null;
+        this.useBills(key, bills, () => {
+          this.setState({ lBusy: false, lPw: '', pay, payBusy: false, payAt: '· ' + nowHm() + ' 조회' });
+          this.enterTenant(key, !!pay && pay.unpaid <= 0);
+        });
+      })
+      .catch(() => {
+        // 오프라인: 이 폰에서 마지막에 성공한 세대·번호면 저장된 고지서로 들어간다
+        if (!admin && lsGet(LOGIN_LS) === key + ':' + hashPw(key, pw)) {
+          this.tenantPw = pw;
+          let c = null;
+          try {
+            c = JSON.parse(lsGet(BILLS_LS) || 'null');
+          } catch (e) {}
+          this.useBills(
+            key,
+            c && c.unit === key ? c.bills : null,
+            () => {
+              this.setState({ lBusy: false, lPw: '', pay: null, payBusy: false, payAt: '' });
+              this.enterTenant(key);
+            },
+            true
+          );
+          return;
+        }
+        this.setState({ lBusy: false, lErr: '서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요' });
+      });
+  }
+  // 새로고침: 로그인과 같은 요청으로 입금 내역·고지서 갱신.
+  // 비밀번호(tenantPw)는 로그아웃 전까지 메모리에만 둔다
+  reloadPay() {
+    const s = this.state,
+      key = s.unit;
+    if (s.payBusy || s.role !== 'tenant') return;
+    if (!this.tenantPw) return this.toast('다시 로그인하면 불러옵니다');
+    this.setState({ payBusy: true });
+    const mine = () => this.state.role === 'tenant' && this.state.unit === key; // 그사이 로그아웃했으면 응답을 버린다
+    api({ unit: key, pw: this.tenantPw })
+      .then(j => {
+        if (!mine()) return;
+        if (!j.ok) throw j.error;
+        const { bills, ...info } = j;
+        this.setState({ payBusy: false, pay: 'unpaid' in info ? info : null, payAt: '· ' + nowHm() + ' 조회' });
+        this.useBills(key, bills);
+        this.toast('입금 내역을 새로 불러왔습니다');
+      })
+      .catch(e => {
+        if (!mine()) return;
+        this.setState({ payBusy: false });
+        this.toast(
+          e === 'locked'
+            ? LOGIN_ERR.locked
+            : e === 'auth'
+              ? '비밀번호가 바뀌었습니다. 다시 로그인하세요'
+              : '불러오지 못했습니다. 인터넷 연결을 확인하세요'
+        );
+      });
+  }
+
+  // ── 비밀번호 ──
+  // 관리인: 비밀번호 변경. ch = {세대키 | 'admin': 새 번호}
+  setPws(ch, msg, onOk, onErr) {
+    if (this.state.pwBusy) return;
+    if (!this.adminPlain) return onErr('관리인 비밀번호로 다시 로그인하세요');
+    this.setState({ pwBusy: true });
+    api({
+      unit: 'admin',
+      pw: this.adminPlain,
+      set: Object.entries(ch)
+        .map(([k, v]) => k + ':' + v)
+        .join(','),
+    })
+      .then(j => {
+        if (!j.ok) throw j.error;
+        const { admin, ...units } = ch;
+        this.setState({ pwBusy: false, pws: { ...(this.state.pws || {}), ...units } });
+        onOk();
+        this.toast(msg);
+      })
+      .catch(e => {
+        this.setState({ pwBusy: false });
+        onErr(
+          e === 'locked'
+            ? LOGIN_ERR.locked
+            : e === 'auth'
+              ? '관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요'
+              : '저장하지 못했습니다. 인터넷 연결을 확인하세요'
+        );
+      });
+  }
+  // 세대 본인 비밀번호 변경.
+  // 응답에 changed 가 없으면(예전 Apps Script) 실패로 본다
+  saveMyPw() {
+    const s = this.state;
+    if (s.mpBusy) return;
+    if (!/^\d{4}$/.test(s.mpCur)) return this.setState({ mpErr: '현재 비밀번호 숫자 4자리를 입력하세요' });
+    if (!/^\d{4}$/.test(s.mpNew)) return this.setState({ mpErr: '새 비밀번호는 숫자 4자리입니다' });
+    if (s.mpNew === s.mpCur) return this.setState({ mpErr: '현재와 다른 번호를 입력하세요' });
+    if (s.mpNew !== s.mpNew2) return this.setState({ mpErr: '새 비밀번호가 서로 다릅니다' });
+    const key = s.unit,
+      np = s.mpNew;
+    this.setState({ mpBusy: true, mpErr: '' });
+    api({ unit: key, pw: s.mpCur, newpw: np })
+      .then(j => {
+        if (!j.ok) throw j.error;
+        if (!j.changed) throw 'old';
+        lsSet(LOGIN_LS, key + ':' + hashPw(key, np));
+        this.tenantPw = np;
+        this.setState({ mpBusy: false, mpCur: '', mpNew: '', mpNew2: '' });
+        this.toast('비밀번호를 변경했습니다');
+      })
+      .catch(e =>
+        this.setState({
+          mpBusy: false,
+          mpErr:
+            e === 'auth'
+              ? '현재 비밀번호가 맞지 않습니다'
+              : e === 'locked'
+                ? LOGIN_ERR.locked
+                : e === 'old'
+                  ? '아직 비밀번호 변경을 쓸 수 없습니다. 관리인에게 문의하세요'
+                  : '변경하지 못했습니다. 인터넷 연결을 확인하세요',
+        })
+      );
+  }
+
+  // 공지 열기 (세대는 읽음 표시를 폰에 저장)
+  openNotice(id) {
+    const s = this.state;
+    const reads = { ...s.reads };
+    const rl = reads[id] || [];
+    if (s.role === 'tenant' && !rl.includes(s.unit)) {
+      reads[id] = [...rl, s.unit];
+      try {
+        localStorage.setItem(READ_LS, JSON.stringify(reads));
+      } catch (e) {}
+    }
+    this.go('notice', { noticeId: id, prevScreen: s.screen, reads, banner: null });
+  }
+
+  // ── 화면(템플릿)에 넘기는 값 ──
+  renderVals() {
+    const s = this.state,
+      p = this.props;
+    const home = p.homeLayout ?? '1면',
+      billL = p.billLayout ?? '영수증',
+      noticeL = p.noticeLayout ?? '목록',
+      aflow = p.adminFlow ?? '한 화면';
+    // 현재 세대와 고지서 (cur: 이번 달, bm: 고지서 화면에서 고른 달)
+    const u = UNITS.find(x => x.key === s.unit) || UNITS[1] || UNITS[0];
+    const cur = billFor(u, 5);
+    const realMonths = MONTHS.map((_, i) => i).filter(i => srcAt(u, i));
+    const bmIdx = realMonths.includes(s.billMonth)
+      ? s.billMonth
+      : realMonths.length
+        ? realMonths[realMonths.length - 1]
+        : 5;
+    const bm = billFor(u, bmIdx);
+    if (bmIdx === 5 && s.role === 'tenant' && s.pay && s.pay.unpaid <= 0)
+      Object.assign(bm, { status: '납부 완료', tagClass: 'tag-neutral' });
+    const isT = s.role === 'tenant',
+      isA = s.role === 'admin';
+    // 공지
+    const unread = n => isT && !(s.reads[n.id] || []).includes(u.key);
+    const excerpt = n => {
+      const b = previewOf(n);
+      return b.length > 90 ? b.slice(0, 88) + '…' : b;
+    };
+    const imgSrc = p => this.localImgs[p] || p;
+    const nv = n => {
+      const ims = n.images || [];
+      return {
+        ...n,
+        unread: unread(n),
+        excerpt: excerpt(n),
+        weight: unread(n) ? 700 : 600,
+        open: () => this.openNotice(n.id),
+        readCount: (s.reads[n.id] || []).length,
+        pct: '0%',
+        hasImages: ims.length > 0,
+        imgCount: ims.length,
+        cover: ims.length ? imgSrc(ims[0]) : '',
+        imgs: ims.map((pth, i) => ({
+          src: imgSrc(pth),
+          alt: '공지 사진 ' + (i + 1),
+          open: e => {
+            e && e.stopPropagation && e.stopPropagation();
+            this.setState({ imgView: imgSrc(pth) });
+          },
+        })),
+      };
+    };
+    const sorted = [...s.notices].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+    // 캐러셀: 전체·목록형에서 고정 → 안 읽음 → 최신순 5개 (공지 2개 이상일 때)
+    const carSrc =
+      noticeL === '목록' && s.cat === '전체' && sorted.length > 1
+        ? [
+            ...sorted.filter(n => n.pinned),
+            ...sorted.filter(n => !n.pinned && unread(n)),
+            ...sorted.filter(n => !n.pinned && !unread(n)),
+          ].slice(0, 5)
+        : [];
+    const carIds = new Set(carSrc.map(n => n.id)),
+      carIdx = Math.min(s.carIdx || 0, Math.max(0, carSrc.length - 1));
+    const filtered = sorted.filter(n => s.cat === '전체' || n.cat === s.cat).map(nv);
+    const chip = on => ({
+      bg: on ? 'var(--color-accent-100)' : 'transparent',
+      fg: on ? 'var(--color-accent-800)' : 'var(--color-text)',
+    });
+    const ndRaw = s.notices.find(n => n.id === s.noticeId) ||
+      s.notices[0] || { id: '', cat: '', title: '', body: [], date: '' };
+    const nd = nv(ndRaw);
+    // 고지서 화면: 금액이 있는 항목과 구성비
+    const itemsNZ = bm.items.filter(i => i.amount > 0);
+    const bsorted = [...itemsNZ].sort((a, b) => b.amount - a.amount);
+    const maxI = bsorted[0] ? bsorted[0].amount : 1;
+    const colorOf = i => SEGC[Math.min(i, 5)];
+    const segs = bsorted.slice(0, 5).map((it, i) => ({ w: (it.amount / bm.subtotal) * 100 + '%', color: colorOf(i) }));
+    const restAmt = bsorted.slice(5).reduce((a, b) => a + b.amount, 0);
+    if (restAmt) segs.push({ w: (restAmt / bm.subtotal) * 100 + '%', color: SEGC[5] });
+    const trendVals = MONTHS.map((m, i) => sub(u, i));
+    const tMax = Math.max(1, ...trendVals);
+    // 하단 메뉴
+    const tabs = defs =>
+      defs.map(([k, label, icon, badge]) => {
+        const on =
+          s.screen === k ||
+          (k === 'notices' && s.screen === 'notice' && s.prevScreen === 'notices') ||
+          (k === 'anotices' && (s.screen === 'acompose' || (s.screen === 'notice' && isA)));
+        return {
+          label,
+          icon,
+          badge: !!badge,
+          color: on ? 'var(--color-accent-700)' : 'var(--color-neutral-700)',
+          w: on ? 700 : 400,
+          go: () => this.go(k),
+        };
+      });
+    const anyUnread = s.notices.some(unread);
+    // 관리인 '고지서 발송' 시안 계산
+    const aVals = {};
+    ITEMS9.forEach(([n]) => (aVals[n] = parseInt(String(s.totals[n]).replace(/\D/g, '')) || 0));
+    const perOf = ([n, a, r]) => Math.ceil(aVals[n] / (r ? 29 : 31));
+    const up10 = n => Math.ceil(n / 10) * 10;
+    const perRes = up10(ITEMS9.reduce((t, it) => t + perOf(it), 0)),
+      perShop = up10(ITEMS9.filter(it => !it[2]).reduce((t, it) => t + perOf(it), 0));
+    const unpaidUnits = UNITS.filter(x => x.prev > 0);
+    const latestN = s.notices[0] ? nv(s.notices[0]) : null;
+    const ho = x => x.dong + '동 ' + x.ho + '호';
+    const stepsDef = ['항목 입력', '호수별 확인', '발송'];
     return {
-      jumpLogin:()=>this.go('login',{role:null,banner:null}),jumpTenant:()=>{this.setState({billMonth:5});this.enterTenant('101-202');},jumpAdmin:()=>this.enterAdmin(),
-      isLogin:s.screen==='login',isTenantMode:s.lMode==='tenant',
-      tenantTabW:s.lMode==='tenant'?700:400,adminTabW:s.lMode==='admin'?700:400,tenantTabLine:s.lMode==='tenant'?'var(--color-accent)':'transparent',adminTabLine:s.lMode==='admin'?'var(--color-accent)':'transparent',
-      modeTenant:()=>this.setState({lMode:'tenant',lErr:'',lPw:''}),modeAdmin:()=>this.setState({lMode:'admin',lErr:'',lPw:''}),
-      pwLabel:s.lMode==='admin'?'관리인 비밀번호':'비밀번호',
-      d101:s.lDong==='101',d102:s.lDong==='102',pick101:()=>this.setState({lDong:'101'}),pick102:()=>this.setState({lDong:'102'}),
-      lHo:s.lHo,lPw:s.lPw,lErr:s.lErr,onHo:e=>this.setState({lHo:e.target.value,lErr:''}),onPw:e=>this.setState({lPw:e.target.value.replace(/\D/g,'').slice(0,4),lErr:''}),loginLabel:s.lBusy?'확인 중…':'로그인',doLogin:()=>this.doLogin(),
-      isHomeA:s.screen==='home'&&home==='1면',isHomeB:s.screen==='home'&&home==='피드',isHomeC:s.screen==='home'&&home==='추이',
-      unitLabel:ho(u),unitType:u.shop?'상가':'세대',resident:u.resident,area:u.area,depositName:u.dong+'-'+u.ho,
-      cur,hasPrev:u.prev>0,
-      hasPay:!!(isT&&s.pay),payDate:s.pay&&s.pay.lastDate?s.pay.lastDate.replace(/-/g,'.')+' · '+fmt(s.pay.lastAmount)+'원':'입금 내역 없음',payUnpaid:s.pay?(s.pay.unpaid>0?fmt(s.pay.unpaid)+'원':s.pay.unpaid<0?'완납 (선납 '+fmt(-s.pay.unpaid)+'원)':'완납'):'',payColor:s.pay&&s.pay.unpaid>0?'var(--color-accent-2-700)':'var(--color-accent-700)',deltaFmt:fmt(cur.subtotal-sub(u,4)),
-      goBill:()=>this.go('bill',{billMonth:5}),goNotices:()=>this.go('notices'),
-      copyAcct:()=>{try{navigator.clipboard.writeText('국민은행 444401-01-505592').catch(()=>{});}catch(e){}this.toast('계좌번호를 복사했습니다');},
-      latest3:sorted.slice(0,3).map(nv),
-      feed:[{date:s.issueShort||'09.26',kind:'고지서',icon:'icon-receipt',kColor:'var(--color-accent-2-700)',title:PD.label+'분 관리비 '+cur.totalFmt+'원이 청구되었습니다',unread:false,open:()=>this.go('bill',{billMonth:5})},...s.notices.slice(0,5).map(n=>({date:n.date.slice(5),kind:n.cat,icon:'icon-megaphone',kColor:'var(--color-accent-700)',title:n.title,unread:unread(n),open:()=>this.openNotice(n.id)}))],
-      trend:MONTHS.map((m,i)=>({label:m[0],short:(trendVals[i]/10000).toFixed(1)+'만',h:(trendVals[i]/tMax*120)+'px',color:i===5?'var(--color-accent)':cur.unpaid.has(i)?'var(--color-neutral-800)':'var(--color-neutral-300)',w:i===5?700:400,open:()=>this.go('bill',{billMonth:i})})),
-      pinned:sorted[0]?nv(sorted[0]):null,noLatest:!s.notices.length,
-      isBill:s.screen==='bill',isBillA:billL==='영수증',isBillB:billL==='구성비',bm,
-      monthChips:realMonths.map(i=>({label:MONTHS[i][0],...chip(i===bmIdx),go:()=>this.setState({billMonth:i})})),
-      billItems:itemsNZ.map(i=>({name:i.name,amtFmt:fmt(i.amount)})),
-      billSegs:segs,billSorted:bsorted.map((it,i)=>({name:it.name,amtFmt:fmt(it.amount),pct:Math.round(it.amount/bm.subtotal*100)+'%',w:(it.amount/maxI*100)+'%',color:colorOf(i)})),
-      isNotices:s.screen==='notices',isNoticeA:noticeL==='목록',isNoticeB:noticeL==='1면',
-      hasCarousel:carSrc.length>0,hasCarRest:carSrc.length>0&&filtered.length>carSrc.length,listMt:carSrc.length?'14px':'26px',
-      carousel:carSrc.map(n=>{const v=nv(n);return {...v,noImages:!v.hasImages,multiImg:v.imgCount>1,preview:previewOf(n)};}),
-      carDots:carSrc.map((_,i)=>({bg:i===carIdx?'var(--color-accent)':'var(--color-neutral-300)'})),carCounter:(carIdx+1)+' / '+carSrc.length,
-      onCarScroll:e=>{const el=e.currentTarget,c=el.firstElementChild,w=c?c.getBoundingClientRect().width+12:el.clientWidth,i=Math.max(0,Math.min(carSrc.length-1,Math.round(el.scrollLeft/w)));if(i!==carIdx)this.setState({carIdx:i});},
-      catChips:['전체',...CATS].map(c=>({label:c,...chip(s.cat===c),go:()=>this.setState({cat:c,carIdx:0})})),
-      noticeList:carIds.size?filtered.filter(n=>!carIds.has(n.id)):filtered,lead:filtered[0]||null,rest:filtered.slice(1),noNotices:filtered.length===0,
-      isNotice:s.screen==='notice',nd,back:()=>this.go(s.prevScreen||'notices'),backLabel:s.screen==='acompose'?'취소':'목록',isAdmin:isA,
-      noteEdit:()=>this.editNote(nd.id),noteAskDel:()=>this.setState({noteDelId:nd.id}),
-      noteDelOpen:!!s.noteDelId,noteDelTitle:(s.notices.find(x=>x.id===s.noteDelId)||{}).title||'',noteDelCancel:()=>{if(!s.delBusy)this.setState({noteDelId:null});},noteDelConfirm:()=>this.deleteNote(s.noteDelId),delBusy:!!s.delBusy,delLabel:s.delBusy?'삭제 중…':'삭제',
-      imgView:s.imgView,closeImg:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:null});},
-      readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
-      isSettings:s.screen==='settings',
-      // 차량 정보: 로그인 응답(구글시트 세대정보 G열)에 car 가 있을 때만 표시. 오프라인 로그인이나 예전 Apps Script 면 숨김
-      hasCar:!!(isT&&s.pay&&'car' in s.pay),carInfo:(s.pay&&s.pay.car)||'등록된 차량 정보가 없습니다',carColor:s.pay&&s.pay.car?'var(--color-text)':'var(--color-neutral-700)',
-      mpCur:s.mpCur,mpNew:s.mpNew,mpNew2:s.mpNew2,mpErr:s.mpErr,mpLabel:s.mpBusy?'변경 중…':'변경',saveMyPw:()=>this.saveMyPw(),
-      onMpCur:e=>this.setState({mpCur:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew:e=>this.setState({mpNew:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew2:e=>this.setState({mpNew2:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),
-      toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>{this.clearBills();this.go('login',{role:null,banner:null,pay:null,billMonth:5,mpCur:'',mpNew:'',mpNew2:'',mpErr:''});},kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
-      isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
-      hasPayAll:!!s.payAll,payAllStatus:s.payAllStatus||'',reloadPayAll:()=>this.loadPayAll(),
-      payDueCount:(s.payAll||[]).filter(x=>x.unpaid>0).length,payDueSum:fmt((s.payAll||[]).reduce((a,x)=>a+Math.max(0,x.unpaid),0)),
-      payRows:(s.payAll||[]).map(x=>({label:x.label,owner:x.owner,last:x.lastDate?x.lastDate.slice(5).replace('-','.')+' · '+fmt(x.lastAmount)+'원':'입금 내역 없음',unpaid:x.unpaid>0?fmt(x.unpaid)+'원':x.unpaid<0?'선납 '+fmt(-x.unpaid)+'원':'완납',color:x.unpaid>0?'var(--color-accent-2-700)':'var(--color-accent-700)'})),
-      // 관리인 차량 화면: 구글시트 세대정보의 G 차량정보(car), H 리모컨키(remote). 입금 현황과 같은 응답(payAll)을 씀
-      isACars:s.screen==='acars',carCount:(s.payAll||[]).filter(x=>x.car).length,remoteCount:(s.payAll||[]).filter(x=>x.remote).length,
-      carNote:s.payAll&&s.payAll.length&&!('remote' in s.payAll[0])?'구글시트 Apps Script를 새 버전으로 배포해야 차량 정보가 표시됩니다.':'',
-      carRows:[...(s.payAll||[])].sort((a,b)=>a.unit.localeCompare(b.unit)).map(x=>({label:x.label,owner:x.owner,car:x.car||'–',remote:x.remote||'–',carColor:x.car?'var(--color-text)':'var(--color-neutral-500)',remoteColor:x.remote?'var(--color-text)':'var(--color-neutral-500)'})),
-      topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
-      latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
-      goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cEdit:null,cCat:'일반',cTitle:'',cSummary:'',cBody:'',cPin:false,cImgs:[]}),
-      isABill:s.screen==='abill',sent:s.sent,showStepper:!s.sent&&aflow==='단계별',
-      steps:stepsDef.map((l,i)=>{const on=s.step===i+1,done=s.step>i+1;return {n:done?'✓':String(i+1),label:l,fg:on?'var(--color-text)':'var(--color-neutral-700)',w:on?700:400,bg:on||done?'var(--color-accent)':'var(--color-neutral-300)',nfg:on||done?'var(--color-bg)':'var(--color-text)'};}),
-      showItems:!s.sent&&(aflow==='한 화면'||s.step===1),showPreview:!s.sent&&aflow==='단계별'&&s.step===2,showConfirm:!s.sent&&aflow==='단계별'&&s.step===3,
-      aItems:ITEMS9.map(it=>({name:it[0],scope:it[2]?'주거 29호':'전체 31호',value:s.totals[it[0]],per:fmt(perOf(it)),onChange:e=>this.setState({totals:{...s.totals,[it[0]]:e.target.value.replace(/[^\d,]/g,'')}})})),
-      aTotal:fmt(Object.values(aVals).reduce((a,b)=>a+b,0)),perRes:fmt(perRes),perShop:fmt(perShop),
-      primaryItemsLabel:aflow==='단계별'?'다음 · 호수별 확인':'고지서 발송',
-      primaryItems:()=>aflow==='단계별'?(this.setState({step:2}),this.scRef.current&&(this.scRef.current.scrollTop=0)):this.setState({confirmOpen:true}),
-      a101:s.aDong==='101',a102:s.aDong==='102',pickA101:()=>this.setState({aDong:'101'}),pickA102:()=>this.setState({aDong:'102'}),
-      previewUnits:UNITS.filter(x=>x.dong===s.aDong).map(x=>({ho:x.ho+'호',res:x.resident,total:fmt((x.shop?perShop:perRes)+x.prev)+'원',prevNote:x.prev?'미납 '+fmt(x.prev)+' 포함':''})),
-      stepBack:()=>this.setState({step:Math.max(1,s.step-1)}),stepNext:()=>this.setState({step:3}),
-      confirmOpen:s.confirmOpen,closeConfirm:()=>this.setState({confirmOpen:false}),
-      doSend:()=>{this.setState({sent:true,confirmOpen:false,step:1});this.toast('31호에 고지서 발송 알림을 보냈습니다');},
-      resetSend:()=>this.setState({sent:false,step:1}),
-      isANotices:s.screen==='anotices',adminNotices:s.notices.map(nv),noAdminNotices:!s.notices.length,notesStatus:s.notesStatus||'공지 불러오는 중…',nextNoteId:this.nextNoteId(),
-      composeCancel:()=>this.go('anotices',{cErr:''}),cPinBg:s.cPin?'var(--color-accent)':'var(--color-neutral-300)',cPinX:s.cPin?'21px':'3px',toggleCPin:()=>this.setState({cPin:!s.cPin}),
-      composeTitle:s.cEdit?'공지 수정':'새 공지',composeFile:s.cEdit?('uploads/'+s.cEdit+'.json'):('uploads/'+this.nextNoteId()+'.json'),
-      cImgs:s.cImgs.map((im,i)=>({src:im.data||imgSrc(im.path),alt:'첨부 사진 '+(i+1),remove:e=>{e&&e.preventDefault&&e.preventDefault();this.setState({cImgs:this.state.cImgs.filter(x=>x.id!==im.id),cErr:''});}})),
-      cImgCount:s.cImgs.length?s.cImgs.length+'/'+IMG_MAX:'',canAddImg:s.cImgs.length<IMG_MAX&&!s.noteBusy,addImgLabel:s.imgBusy?'준비 중…':'사진 추가',
-      onPickImgs:e=>{if(!this.state.imgBusy)this.pickImgs(e);},
-      saveNote:()=>this.saveNote(),noteBusy:!!(s.noteBusy||s.imgBusy),saveNoteLabel:s.noteBusy?(s.noteProg||'저장 중…'):s.imgBusy?'사진 준비 중…':s.cEdit?(s.ghToken?'수정 저장 · GitHub':'수정 저장 · 파일로 받기'):(s.ghToken?'게시 · GitHub에 저장':'게시 · 파일로 받기'),saveNoteHint:s.ghToken?'저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.':'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
-      billNotes:(()=>{const arr=((srcAt(u,bmIdx)||{}).notices||[]).map(x=>x.trim());const hi=arr.findIndex(x=>/^특이사항$/.test(x));return arr.map((t,i)=>{const head=/^특이사항$/.test(t);const star=/^※/.test(t);const item=hi>=0&&i>hi&&!head&&!star;return {t:item?'• '+t:t,size:head?'15px':'14px',w:head||star?600:400,color:head?'var(--color-accent-700)':'var(--color-text)',mt:head?'10px':'0'};});})(),hasBillNotes:!!(((srcAt(u,bmIdx)||{}).notices||[]).length),
-      isACompose:s.screen==='acompose',
-      composeCats:CATS.map(c=>({label:c,...chip(s.cCat===c),go:()=>this.setState({cCat:c})})),
-      cTitle:s.cTitle,cBody:s.cBody,onCTitle:e=>this.setState({cTitle:e.target.value,cErr:''}),cSummary:s.cSummary||'',onCSummary:e=>this.setState({cSummary:e.target.value}),onCBody:e=>this.setState({cBody:e.target.value,cErr:''}),
-      cPushBg:s.cPush?'var(--color-accent)':'var(--color-neutral-300)',cPushX:s.cPush?'21px':'3px',toggleCPush:()=>this.setState({cPush:!s.cPush}),cErr:s.cErr,
-      publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
-      showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
-      tenantTabs:tabs([['home','홈','icon-house'],['bill','고지서','icon-receipt'],['notices','공지','icon-megaphone',anyUnread],['settings','내 정보','icon-circle-user']]),
-      adminTabs:tabs([['ahome','현황','icon-chart-column'],['anotices','공지','icon-megaphone'],['acars','차량','icon-car'],['asettings','비밀번호','icon-key-round']]),
-      isASettings:s.screen==='asettings',
-      apCur:s.apCur,apNew:s.apNew,apNew2:s.apNew2,apErr:s.apErr,
-      onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
-      saveAdminPw:()=>{if(s.apCur!==this.adminPlain)return this.setState({apErr:'현재 비밀번호가 맞지 않습니다'});if(!/^\d{4}$/.test(s.apNew))return this.setState({apErr:'새 비밀번호는 숫자 4자리입니다'});if(s.apNew===s.apCur)return this.setState({apErr:'현재와 다른 번호를 입력하세요'});if(s.apNew!==s.apNew2)return this.setState({apErr:'새 비밀번호가 서로 다릅니다'});const np=s.apNew;this.setPws({admin:np},'관리인 비밀번호를 변경했습니다',()=>{this.adminPlain=np;this.setState({apCur:'',apNew:'',apNew2:''});},m=>this.setState({apErr:m}));},
-      p101:s.apDong==='101',p102:s.apDong==='102',pickP101:()=>this.setState({apDong:'101'}),pickP102:()=>this.setState({apDong:'102'}),
-      showPwLabel:s.showPw?'번호 숨기기':'번호 보기',showPwIcon:s.showPw?'icon-eye-off':'icon-eye',toggleShowPw:()=>this.setState({showPw:!s.showPw}),
-      vaultMsg:s.pws?'':'관리인 비밀번호로 로그인해야 번호를 볼 수 있습니다. 로그아웃 후 다시 로그인하세요.',
-      pwUnits:UNITS.filter(x=>x.dong===s.apDong).map(x=>{const kn=(s.pws||{})[x.key]||'';return {ho:x.ho+'호',res:x.resident+(x.shop?' · 상가':''),pw:kn?(s.showPw?kn:'••••'):'?',color:'var(--color-text)',edit:()=>this.setState({pwEdit:x.key,pwNew:'',pwErr:''})};}),
-      ghStatus:s.ghToken?'연결됨':'연결 안 됨',
-      ghConnected:!!s.ghToken,ghNotConnected:!s.ghToken,ghBusy:s.ghBusy,ghErr:s.ghErr,ghInput:s.ghInput,ghHelp:s.ghHelp,
-      onGhInput:e=>this.setState({ghInput:e.target.value,ghErr:''}),ghConnect:()=>this.ghConnect(),
-      ghDisconnect:()=>{lsSet(GH_LS,'');this.setState({ghToken:'',ghErr:''});this.toast('이 폰에서 GitHub 연결을 해제했습니다');},
-      toggleGhHelp:()=>this.setState({ghHelp:!s.ghHelp}),
-      ghSteps:[{n:'1',t:'GitHub에 로그인 후 아래 "토큰 만들기 페이지"를 엽니다 (Settings → Developer settings → Fine-grained tokens).'},{n:'2',t:'Token name에 "도화 관리자앱", Expiration은 1년(366 days)을 고릅니다.'},{n:'3',t:'Repository access에서 "Only select repositories" → abbyjy80/dohwa 를 선택합니다.'},{n:'4',t:'Permissions에서 "+ Add permissions" 버튼 → 목록에서 Contents 선택 → 오른쪽 Access를 "Read and write"로 바꿉니다. (버튼이 안 보이면 3번의 저장소 선택을 먼저 하세요)'},{n:'5',t:'맨 아래 Generate token → 생성된 github_pat_… 문자열을 복사합니다.'},{n:'6',t:'이 화면 입력칸에 붙여넣고 "연결"을 누릅니다.'}],
-      pwSheet:!!s.pwEdit,pwSheetTitle:s.pwEdit?s.pwEdit.replace('-','동 ')+'호 비밀번호':'',pwNew:s.pwNew,pwErr:s.pwErr,
-      onPwNew:e=>this.setState({pwNew:e.target.value.replace(/\D/g,'').slice(0,4),pwErr:''}),
-      pwRandom:()=>this.setState({pwNew:rnd4(),pwErr:''}),
-      pwCancel:()=>this.setState({pwEdit:null}),
-      pwSaveLabel:s.pwBusy?'저장 중…':'저장',
-      pwSave:()=>{if(!/^\d{4}$/.test(s.pwNew))return this.setState({pwErr:'숫자 4자리를 입력하세요'});const k=s.pwEdit,np=s.pwNew;this.setPws({[k]:np},k.replace('-','동 ')+'호 비밀번호를 변경했습니다',()=>this.setState({pwEdit:null,showPw:true}),m=>this.setState({pwErr:m}));},
-      resetAllPw:()=>{if(!window.confirm(s.apDong+'동 전체 세대의 비밀번호를 새로 만듭니다.\n바로 적용되어 기존 번호로는 로그인할 수 없게 됩니다. 계속할까요?'))return;const ch={};UNITS.filter(x=>x.dong===s.apDong).forEach(x=>ch[x.key]=rnd4());this.setPws(ch,s.apDong+'동 새 번호를 만들었습니다',()=>this.setState({showPw:true}),m=>this.toast(m));},
-      adminLogout:()=>{this.adminPlain='';this.clearBills();this.go('login',{role:null,banner:null,payAll:null,lMode:'tenant',lPw:'',pws:null,showPw:false});},
-      banner:s.banner,bannerTap:()=>{this.setState({banner:null});this.go('bill',{billMonth:5});},toast:s.toast,
-      scRef:this.scRef,
-      isMobile:!!s.isMobile,showDesk:!s.isMobile,outerPad:s.isMobile?'0':'40px 24px',
-      frameW:s.isMobile?'100%':'392px',frameH:s.isMobile?'100dvh':'852px',frameBg:s.isMobile?'var(--color-bg)':'#1b1a19',frameR:s.isMobile?'0':'40px',framePad:s.isMobile?'0':'10px',frameShadow:s.isMobile?'none':'var(--shadow-lg)',innerR:s.isMobile?'0':'30px',safeTop:s.isMobile?'env(safe-area-inset-top)':'0',dataSrc:s.dataSrc||'데이터 불러오는 중…'
+      // ── 로그인 ──
+      jumpLogin: () => this.go('login', { role: null, banner: null }),
+      jumpTenant: () => {
+        this.setState({ billMonth: 5 });
+        this.enterTenant('101-202');
+      },
+      jumpAdmin: () => this.enterAdmin(),
+      isLogin: s.screen === 'login',
+      isTenantMode: s.lMode === 'tenant',
+      tenantTabW: s.lMode === 'tenant' ? 700 : 400,
+      adminTabW: s.lMode === 'admin' ? 700 : 400,
+      tenantTabLine: s.lMode === 'tenant' ? 'var(--color-accent)' : 'transparent',
+      adminTabLine: s.lMode === 'admin' ? 'var(--color-accent)' : 'transparent',
+      modeTenant: () => this.setState({ lMode: 'tenant', lErr: '', lPw: '' }),
+      modeAdmin: () => this.setState({ lMode: 'admin', lErr: '', lPw: '' }),
+      pwLabel: s.lMode === 'admin' ? '관리인 비밀번호' : '비밀번호',
+      d101: s.lDong === '101',
+      d102: s.lDong === '102',
+      pick101: () => this.setState({ lDong: '101' }),
+      pick102: () => this.setState({ lDong: '102' }),
+      lHo: s.lHo,
+      lPw: s.lPw,
+      lErr: s.lErr,
+      onHo: e => this.setState({ lHo: e.target.value, lErr: '' }),
+      onPw: e => this.setState({ lPw: e.target.value.replace(/\D/g, '').slice(0, 4), lErr: '' }),
+      loginLabel: s.lBusy ? '확인 중…' : '로그인',
+      doLogin: () => this.doLogin(),
+
+      // ── 세대: 홈 ──
+      isHomeA: s.screen === 'home' && home === '1면',
+      isHomeB: s.screen === 'home' && home === '피드',
+      isHomeC: s.screen === 'home' && home === '추이',
+      unitLabel: ho(u),
+      unitType: u.shop ? '상가' : '세대',
+      resident: u.resident,
+      area: u.area,
+      depositName: u.dong + '-' + u.ho,
+      cur,
+      hasPrev: u.prev > 0,
+      // 입금 확인 칸 + 새로고침
+      payBox: !!(isT && (s.pay || this.tenantPw)),
+      noPay: !!(isT && !s.pay),
+      payAt: s.payAt || '',
+      payReloadLabel: s.payBusy ? '불러오는 중…' : '새로고침',
+      reloadPay: () => this.reloadPay(),
+      hasPay: !!(isT && s.pay),
+      payDate:
+        s.pay && s.pay.lastDate
+          ? s.pay.lastDate.replace(/-/g, '.') + ' · ' + fmt(s.pay.lastAmount) + '원'
+          : '입금 내역 없음',
+      payUnpaid: s.pay
+        ? s.pay.unpaid > 0
+          ? fmt(s.pay.unpaid) + '원'
+          : s.pay.unpaid < 0
+            ? '완납 (선납 ' + fmt(-s.pay.unpaid) + '원)'
+            : '완납'
+        : '',
+      payColor: s.pay && s.pay.unpaid > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)',
+      deltaFmt: fmt(cur.subtotal - sub(u, 4)),
+      goBill: () => this.go('bill', { billMonth: 5 }),
+      goNotices: () => this.go('notices'),
+      copyAcct: () => {
+        try {
+          navigator.clipboard.writeText('국민은행 444401-01-505592').catch(() => {});
+        } catch (e) {}
+        this.toast('계좌번호를 복사했습니다');
+      },
+      latest3: sorted.slice(0, 3).map(nv),
+      feed: [
+        {
+          date: s.issueShort || '09.26',
+          kind: '고지서',
+          icon: 'icon-receipt',
+          kColor: 'var(--color-accent-2-700)',
+          title: PD.label + '분 관리비 ' + cur.totalFmt + '원이 청구되었습니다',
+          unread: false,
+          open: () => this.go('bill', { billMonth: 5 }),
+        },
+        ...s.notices.slice(0, 5).map(n => ({
+          date: n.date.slice(5),
+          kind: n.cat,
+          icon: 'icon-megaphone',
+          kColor: 'var(--color-accent-700)',
+          title: n.title,
+          unread: unread(n),
+          open: () => this.openNotice(n.id),
+        })),
+      ],
+      trend: MONTHS.map((m, i) => ({
+        label: m[0],
+        short: (trendVals[i] / 10000).toFixed(1) + '만',
+        h: (trendVals[i] / tMax) * 120 + 'px',
+        color:
+          i === 5 ? 'var(--color-accent)' : cur.unpaid.has(i) ? 'var(--color-neutral-800)' : 'var(--color-neutral-300)',
+        w: i === 5 ? 700 : 400,
+        open: () => this.go('bill', { billMonth: i }),
+      })),
+      pinned: sorted[0] ? nv(sorted[0]) : null,
+      noLatest: !s.notices.length,
+
+      // ── 세대: 고지서 ──
+      isBill: s.screen === 'bill',
+      isBillA: billL === '영수증',
+      isBillB: billL === '구성비',
+      bm,
+      monthChips: realMonths.map(i => ({
+        label: MONTHS[i][0],
+        ...chip(i === bmIdx),
+        go: () => this.setState({ billMonth: i }),
+      })),
+      billItems: itemsNZ.map(i => ({ name: i.name, amtFmt: fmt(i.amount) })),
+      billSegs: segs,
+      billSorted: bsorted.map((it, i) => ({
+        name: it.name,
+        amtFmt: fmt(it.amount),
+        pct: Math.round((it.amount / bm.subtotal) * 100) + '%',
+        w: (it.amount / maxI) * 100 + '%',
+        color: colorOf(i),
+      })),
+
+      // ── 공지 목록·상세 ──
+      isNotices: s.screen === 'notices',
+      isNoticeA: noticeL === '목록',
+      isNoticeB: noticeL === '1면',
+      hasCarousel: carSrc.length > 0,
+      hasCarRest: carSrc.length > 0 && filtered.length > carSrc.length,
+      listMt: carSrc.length ? '14px' : '26px',
+      carousel: carSrc.map(n => {
+        const v = nv(n);
+        return { ...v, noImages: !v.hasImages, multiImg: v.imgCount > 1, preview: previewOf(n) };
+      }),
+      carDots: carSrc.map((_, i) => ({ bg: i === carIdx ? 'var(--color-accent)' : 'var(--color-neutral-300)' })),
+      carCounter: carIdx + 1 + ' / ' + carSrc.length,
+      onCarScroll: e => {
+        const el = e.currentTarget,
+          c = el.firstElementChild,
+          w = c ? c.getBoundingClientRect().width + 12 : el.clientWidth,
+          i = Math.max(0, Math.min(carSrc.length - 1, Math.round(el.scrollLeft / w)));
+        if (i !== carIdx) this.setState({ carIdx: i });
+      },
+      catChips: ['전체', ...CATS].map(c => ({
+        label: c,
+        ...chip(s.cat === c),
+        go: () => this.setState({ cat: c, carIdx: 0 }),
+      })),
+      noticeList: carIds.size ? filtered.filter(n => !carIds.has(n.id)) : filtered,
+      lead: filtered[0] || null,
+      rest: filtered.slice(1),
+      noNotices: filtered.length === 0,
+      isNotice: s.screen === 'notice',
+      nd,
+      back: () => this.go(s.prevScreen || 'notices'),
+      backLabel: s.screen === 'acompose' ? '취소' : '목록',
+      isAdmin: isA,
+      noteEdit: () => this.editNote(nd.id),
+      noteAskDel: () => this.setState({ noteDelId: nd.id }),
+      noteDelOpen: !!s.noteDelId,
+      noteDelTitle: (s.notices.find(x => x.id === s.noteDelId) || {}).title || '',
+      noteDelCancel: () => {
+        if (!s.delBusy) this.setState({ noteDelId: null });
+      },
+      noteDelConfirm: () => this.deleteNote(s.noteDelId),
+      delBusy: !!s.delBusy,
+      delLabel: s.delBusy ? '삭제 중…' : '삭제',
+      imgView: s.imgView,
+      closeImg: e => {
+        e && e.stopPropagation && e.stopPropagation();
+        this.setState({ imgView: null });
+      },
+      readGrid: [].map(d => {
+        const us = UNITS.filter(x => x.dong === d);
+        const rc = us.filter(x => s.reads[nd.id].includes(x.key)).length;
+        return {
+          dong: d + '동',
+          count: rc + '/' + us.length + ' 읽음',
+          units: us.map(x => {
+            const r = s.reads[nd.id].includes(x.key);
+            return {
+              ho: x.ho,
+              bg: r ? 'var(--color-accent-100)' : 'transparent',
+              fg: r ? 'var(--color-accent-800)' : 'var(--color-neutral-700)',
+              bd: r ? 'var(--color-accent)' : 'var(--color-neutral-300)',
+            };
+          }),
+        };
+      }),
+
+      // ── 세대: 내 정보 ──
+      isSettings: s.screen === 'settings',
+      // 차량 정보 (응답에 car 가 있을 때만)
+      hasCar: !!(isT && s.pay && 'car' in s.pay),
+      carInfo: (s.pay && s.pay.car) || '등록된 차량 정보가 없습니다',
+      carColor: s.pay && s.pay.car ? 'var(--color-text)' : 'var(--color-neutral-700)',
+      mpCur: s.mpCur,
+      mpNew: s.mpNew,
+      mpNew2: s.mpNew2,
+      mpErr: s.mpErr,
+      mpLabel: s.mpBusy ? '변경 중…' : '변경',
+      saveMyPw: () => this.saveMyPw(),
+      onMpCur: e => this.setState({ mpCur: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
+      onMpNew: e => this.setState({ mpNew: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
+      onMpNew2: e => this.setState({ mpNew2: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
+      toggles: [
+        ['pushNotice', '새 공지 알림', '관리단이 공지를 올리면 알려드립니다'],
+        ['pushBill', '고지서 발송 알림', '매월 고지서가 발행되면 알려드립니다'],
+      ].map(([k, label, subt]) => ({
+        label,
+        sub: subt,
+        bg: s[k] ? 'var(--color-accent)' : 'var(--color-neutral-300)',
+        x: s[k] ? '21px' : '3px',
+        toggle: () => this.setState({ [k]: !s[k] }),
+      })),
+      logout: () => {
+        this.tenantPw = '';
+        this.clearBills();
+        this.go('login', {
+          role: null,
+          banner: null,
+          pay: null,
+          payBusy: false,
+          payAt: '',
+          billMonth: 5,
+          mpCur: '',
+          mpNew: '',
+          mpNew2: '',
+          mpErr: '',
+        });
+      },
+      kakaoUrl: KAKAO_URL,
+      smsUrl: 'sms:01037691962?&body=' + encodeURIComponent('[' + ho(u) + '] '),
+
+      // ── 관리인: 현황 ──
+      isAHome: s.screen === 'ahome',
+      unpaidCount: unpaidUnits.length,
+      unpaidSumMan: fmt(unpaidUnits.reduce((a, b) => a + b.prev, 0) / 10000),
+      hasPayAll: !!s.payAll,
+      payAllStatus: s.payAllStatus || '',
+      reloadPayAll: () => this.loadPayAll(),
+      payDueCount: (s.payAll || []).filter(x => x.unpaid > 0).length,
+      payDueSum: fmt((s.payAll || []).reduce((a, x) => a + Math.max(0, x.unpaid), 0)),
+      payRows: (s.payAll || []).map(x => ({
+        label: x.label,
+        owner: x.owner,
+        last: x.lastDate ? x.lastDate.slice(5).replace('-', '.') + ' · ' + fmt(x.lastAmount) + '원' : '입금 내역 없음',
+        unpaid: x.unpaid > 0 ? fmt(x.unpaid) + '원' : x.unpaid < 0 ? '선납 ' + fmt(-x.unpaid) + '원' : '완납',
+        color: x.unpaid > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)',
+      })),
+
+      // ── 관리인: 차량 (세대정보 G·H열, payAll 사용) ──
+      isACars: s.screen === 'acars',
+      carCount: (s.payAll || []).filter(x => x.car).length,
+      remoteCount: (s.payAll || []).filter(x => x.remote).length,
+      carNote:
+        s.payAll && s.payAll.length && !('remote' in s.payAll[0])
+          ? '구글시트 Apps Script를 새 버전으로 배포해야 차량 정보가 표시됩니다.'
+          : '',
+      carRows: [...(s.payAll || [])]
+        .sort((a, b) => a.unit.localeCompare(b.unit))
+        .map(x => ({
+          label: x.label,
+          owner: x.owner,
+          car: x.car || '–',
+          remote: x.remote || '–',
+          carColor: x.car ? 'var(--color-text)' : 'var(--color-neutral-500)',
+          remoteColor: x.remote ? 'var(--color-text)' : 'var(--color-neutral-500)',
+        })),
+
+      // ── 관리인: 현황 (이어서) ──
+      topUnpaid: [...unpaidUnits]
+        .sort((a, b) => b.prev - a.prev)
+        .slice(0, 5)
+        .map(x => ({ label: ho(x), amt: fmt(x.prev) })),
+      latestA: latestN,
+      billTaskSub: s.sent ? '발송 완료 · 31호' : '미발송 · 납부기한 ' + PD.nextDue,
+      pd: PD,
+      goABill: () => this.go('abill'),
+      goCompose: () =>
+        this.go('acompose', {
+          prevScreen: s.screen,
+          cErr: '',
+          cEdit: null,
+          cCat: '일반',
+          cTitle: '',
+          cSummary: '',
+          cBody: '',
+          cPin: false,
+          cImgs: [],
+        }),
+
+      // ── 관리인: 고지서 발송 (시안 — 실제 발송은 없음) ──
+      isABill: s.screen === 'abill',
+      sent: s.sent,
+      showStepper: !s.sent && aflow === '단계별',
+      steps: stepsDef.map((l, i) => {
+        const on = s.step === i + 1,
+          done = s.step > i + 1;
+        return {
+          n: done ? '✓' : String(i + 1),
+          label: l,
+          fg: on ? 'var(--color-text)' : 'var(--color-neutral-700)',
+          w: on ? 700 : 400,
+          bg: on || done ? 'var(--color-accent)' : 'var(--color-neutral-300)',
+          nfg: on || done ? 'var(--color-bg)' : 'var(--color-text)',
+        };
+      }),
+      showItems: !s.sent && (aflow === '한 화면' || s.step === 1),
+      showPreview: !s.sent && aflow === '단계별' && s.step === 2,
+      showConfirm: !s.sent && aflow === '단계별' && s.step === 3,
+      aItems: ITEMS9.map(it => ({
+        name: it[0],
+        scope: it[2] ? '주거 29호' : '전체 31호',
+        value: s.totals[it[0]],
+        per: fmt(perOf(it)),
+        onChange: e => this.setState({ totals: { ...s.totals, [it[0]]: e.target.value.replace(/[^\d,]/g, '') } }),
+      })),
+      aTotal: fmt(Object.values(aVals).reduce((a, b) => a + b, 0)),
+      perRes: fmt(perRes),
+      perShop: fmt(perShop),
+      primaryItemsLabel: aflow === '단계별' ? '다음 · 호수별 확인' : '고지서 발송',
+      primaryItems: () =>
+        aflow === '단계별'
+          ? (this.setState({ step: 2 }), this.scRef.current && (this.scRef.current.scrollTop = 0))
+          : this.setState({ confirmOpen: true }),
+      a101: s.aDong === '101',
+      a102: s.aDong === '102',
+      pickA101: () => this.setState({ aDong: '101' }),
+      pickA102: () => this.setState({ aDong: '102' }),
+      previewUnits: UNITS.filter(x => x.dong === s.aDong).map(x => ({
+        ho: x.ho + '호',
+        res: x.resident,
+        total: fmt((x.shop ? perShop : perRes) + x.prev) + '원',
+        prevNote: x.prev ? '미납 ' + fmt(x.prev) + ' 포함' : '',
+      })),
+      stepBack: () => this.setState({ step: Math.max(1, s.step - 1) }),
+      stepNext: () => this.setState({ step: 3 }),
+      confirmOpen: s.confirmOpen,
+      closeConfirm: () => this.setState({ confirmOpen: false }),
+      doSend: () => {
+        this.setState({ sent: true, confirmOpen: false, step: 1 });
+        this.toast('31호에 고지서 발송 알림을 보냈습니다');
+      },
+      resetSend: () => this.setState({ sent: false, step: 1 }),
+
+      // ── 관리인: 공지 관리·작성 ──
+      isANotices: s.screen === 'anotices',
+      adminNotices: s.notices.map(nv),
+      noAdminNotices: !s.notices.length,
+      notesStatus: s.notesStatus || '공지 불러오는 중…',
+      nextNoteId: this.nextNoteId(),
+      composeCancel: () => this.go('anotices', { cErr: '' }),
+      cPinBg: s.cPin ? 'var(--color-accent)' : 'var(--color-neutral-300)',
+      cPinX: s.cPin ? '21px' : '3px',
+      toggleCPin: () => this.setState({ cPin: !s.cPin }),
+      composeTitle: s.cEdit ? '공지 수정' : '새 공지',
+      composeFile: s.cEdit ? 'uploads/' + s.cEdit + '.json' : 'uploads/' + this.nextNoteId() + '.json',
+      cImgs: s.cImgs.map((im, i) => ({
+        src: im.data || imgSrc(im.path),
+        alt: '첨부 사진 ' + (i + 1),
+        remove: e => {
+          e && e.preventDefault && e.preventDefault();
+          this.setState({ cImgs: this.state.cImgs.filter(x => x.id !== im.id), cErr: '' });
+        },
+      })),
+      cImgCount: s.cImgs.length ? s.cImgs.length + '/' + IMG_MAX : '',
+      canAddImg: s.cImgs.length < IMG_MAX && !s.noteBusy,
+      addImgLabel: s.imgBusy ? '준비 중…' : '사진 추가',
+      onPickImgs: e => {
+        if (!this.state.imgBusy) this.pickImgs(e);
+      },
+      saveNote: () => this.saveNote(),
+      noteBusy: !!(s.noteBusy || s.imgBusy),
+      saveNoteLabel: s.noteBusy
+        ? s.noteProg || '저장 중…'
+        : s.imgBusy
+          ? '사진 준비 중…'
+          : s.cEdit
+            ? s.ghToken
+              ? '수정 저장 · GitHub'
+              : '수정 저장 · 파일로 받기'
+            : s.ghToken
+              ? '게시 · GitHub에 저장'
+              : '게시 · 파일로 받기',
+      saveNoteHint: s.ghToken
+        ? '저장하면 1~2분 뒤 모든 입주민 폰에 표시됩니다.'
+        : 'GitHub가 연결되지 않아 파일로 내려받습니다. 사진을 붙이려면 비밀번호 탭에서 GitHub를 먼저 연결하세요.',
+
+      // 세대 고지서 화면의 안내문 (구글시트 '고지서공지')
+      billNotes: (() => {
+        const arr = ((srcAt(u, bmIdx) || {}).notices || []).map(x => x.trim());
+        const hi = arr.findIndex(x => /^특이사항$/.test(x));
+        return arr.map((t, i) => {
+          const head = /^특이사항$/.test(t);
+          const star = /^※/.test(t);
+          const item = hi >= 0 && i > hi && !head && !star;
+          return {
+            t: item ? '• ' + t : t,
+            size: head ? '15px' : '14px',
+            w: head || star ? 600 : 400,
+            color: head ? 'var(--color-accent-700)' : 'var(--color-text)',
+            mt: head ? '10px' : '0',
+          };
+        });
+      })(),
+      hasBillNotes: !!((srcAt(u, bmIdx) || {}).notices || []).length,
+
+      // ── 관리인: 공지 작성 (이어서) ──
+      isACompose: s.screen === 'acompose',
+      composeCats: CATS.map(c => ({ label: c, ...chip(s.cCat === c), go: () => this.setState({ cCat: c }) })),
+      cTitle: s.cTitle,
+      cBody: s.cBody,
+      onCTitle: e => this.setState({ cTitle: e.target.value, cErr: '' }),
+      cSummary: s.cSummary || '',
+      onCSummary: e => this.setState({ cSummary: e.target.value }),
+      onCBody: e => this.setState({ cBody: e.target.value, cErr: '' }),
+      cPushBg: s.cPush ? 'var(--color-accent)' : 'var(--color-neutral-300)',
+      cPushX: s.cPush ? '21px' : '3px',
+      toggleCPush: () => this.setState({ cPush: !s.cPush }),
+      cErr: s.cErr,
+      publish: () => {
+        if (!s.cTitle.trim()) return this.setState({ cErr: '제목을 입력하세요' });
+        if (!s.cBody.trim()) return this.setState({ cErr: '내용을 입력하세요' });
+        const id = 'n' + Date.now();
+        const n = { id, cat: s.cCat, date: '2026.09.27', title: s.cTitle.trim(), body: s.cBody.trim().split(/\n+/) };
+        this.go('anotices', {
+          notices: [n, ...s.notices],
+          reads: { ...s.reads, [id]: [] },
+          cTitle: '',
+          cBody: '',
+          cErr: '',
+        });
+        this.toast(s.cPush ? '게시하고 31호에 알림을 보냈습니다' : '공지를 게시했습니다');
+      },
+
+      // ── 하단 메뉴 ──
+      showTenantNav: isT && s.screen !== 'login',
+      showAdminNav: isA && s.screen !== 'login',
+      tenantTabs: tabs([
+        ['home', '홈', 'icon-house'],
+        ['bill', '고지서', 'icon-receipt'],
+        ['notices', '공지', 'icon-megaphone', anyUnread],
+        ['settings', '내 정보', 'icon-circle-user'],
+      ]),
+      adminTabs: tabs([
+        ['ahome', '현황', 'icon-chart-column'],
+        ['anotices', '공지', 'icon-megaphone'],
+        ['acars', '차량', 'icon-car'],
+        ['asettings', '비밀번호', 'icon-key-round'],
+      ]),
+
+      // ── 관리인: 비밀번호 · GitHub 연결 ──
+      isASettings: s.screen === 'asettings',
+      apCur: s.apCur,
+      apNew: s.apNew,
+      apNew2: s.apNew2,
+      apErr: s.apErr,
+      onApCur: e => this.setState({ apCur: e.target.value.replace(/\D/g, '').slice(0, 4), apErr: '' }),
+      onApNew: e => this.setState({ apNew: e.target.value.replace(/\D/g, '').slice(0, 4), apErr: '' }),
+      onApNew2: e => this.setState({ apNew2: e.target.value.replace(/\D/g, '').slice(0, 4), apErr: '' }),
+      saveAdminPw: () => {
+        if (s.apCur !== this.adminPlain) return this.setState({ apErr: '현재 비밀번호가 맞지 않습니다' });
+        if (!/^\d{4}$/.test(s.apNew)) return this.setState({ apErr: '새 비밀번호는 숫자 4자리입니다' });
+        if (s.apNew === s.apCur) return this.setState({ apErr: '현재와 다른 번호를 입력하세요' });
+        if (s.apNew !== s.apNew2) return this.setState({ apErr: '새 비밀번호가 서로 다릅니다' });
+        const np = s.apNew;
+        this.setPws(
+          { admin: np },
+          '관리인 비밀번호를 변경했습니다',
+          () => {
+            this.adminPlain = np;
+            this.setState({ apCur: '', apNew: '', apNew2: '' });
+          },
+          m => this.setState({ apErr: m })
+        );
+      },
+      p101: s.apDong === '101',
+      p102: s.apDong === '102',
+      pickP101: () => this.setState({ apDong: '101' }),
+      pickP102: () => this.setState({ apDong: '102' }),
+      showPwLabel: s.showPw ? '번호 숨기기' : '번호 보기',
+      showPwIcon: s.showPw ? 'icon-eye-off' : 'icon-eye',
+      toggleShowPw: () => this.setState({ showPw: !s.showPw }),
+      vaultMsg: s.pws ? '' : '관리인 비밀번호로 로그인해야 번호를 볼 수 있습니다. 로그아웃 후 다시 로그인하세요.',
+      pwUnits: UNITS.filter(x => x.dong === s.apDong).map(x => {
+        const kn = (s.pws || {})[x.key] || '';
+        return {
+          ho: x.ho + '호',
+          res: x.resident + (x.shop ? ' · 상가' : ''),
+          pw: kn ? (s.showPw ? kn : '••••') : '?',
+          color: 'var(--color-text)',
+          edit: () => this.setState({ pwEdit: x.key, pwNew: '', pwErr: '' }),
+        };
+      }),
+      ghStatus: s.ghToken ? '연결됨' : '연결 안 됨',
+      ghConnected: !!s.ghToken,
+      ghNotConnected: !s.ghToken,
+      ghBusy: s.ghBusy,
+      ghErr: s.ghErr,
+      ghInput: s.ghInput,
+      ghHelp: s.ghHelp,
+      onGhInput: e => this.setState({ ghInput: e.target.value, ghErr: '' }),
+      ghConnect: () => this.ghConnect(),
+      ghDisconnect: () => {
+        lsSet(GH_LS, '');
+        this.setState({ ghToken: '', ghErr: '' });
+        this.toast('이 폰에서 GitHub 연결을 해제했습니다');
+      },
+      toggleGhHelp: () => this.setState({ ghHelp: !s.ghHelp }),
+      ghSteps: [
+        {
+          n: '1',
+          t: 'GitHub에 로그인 후 아래 "토큰 만들기 페이지"를 엽니다 (Settings → Developer settings → Fine-grained tokens).',
+        },
+        { n: '2', t: 'Token name에 "도화 관리자앱", Expiration은 1년(366 days)을 고릅니다.' },
+        { n: '3', t: 'Repository access에서 "Only select repositories" → abbyjy80/dohwa 를 선택합니다.' },
+        {
+          n: '4',
+          t: 'Permissions에서 "+ Add permissions" 버튼 → 목록에서 Contents 선택 → 오른쪽 Access를 "Read and write"로 바꿉니다. (버튼이 안 보이면 3번의 저장소 선택을 먼저 하세요)',
+        },
+        { n: '5', t: '맨 아래 Generate token → 생성된 github_pat_… 문자열을 복사합니다.' },
+        { n: '6', t: '이 화면 입력칸에 붙여넣고 "연결"을 누릅니다.' },
+      ],
+      pwSheet: !!s.pwEdit,
+      pwSheetTitle: s.pwEdit ? s.pwEdit.replace('-', '동 ') + '호 비밀번호' : '',
+      pwNew: s.pwNew,
+      pwErr: s.pwErr,
+      onPwNew: e => this.setState({ pwNew: e.target.value.replace(/\D/g, '').slice(0, 4), pwErr: '' }),
+      pwRandom: () => this.setState({ pwNew: rnd4(), pwErr: '' }),
+      pwCancel: () => this.setState({ pwEdit: null }),
+      pwSaveLabel: s.pwBusy ? '저장 중…' : '저장',
+      pwSave: () => {
+        if (!/^\d{4}$/.test(s.pwNew)) return this.setState({ pwErr: '숫자 4자리를 입력하세요' });
+        const k = s.pwEdit,
+          np = s.pwNew;
+        this.setPws(
+          { [k]: np },
+          k.replace('-', '동 ') + '호 비밀번호를 변경했습니다',
+          () => this.setState({ pwEdit: null, showPw: true }),
+          m => this.setState({ pwErr: m })
+        );
+      },
+      resetAllPw: () => {
+        if (
+          !window.confirm(
+            s.apDong +
+              '동 전체 세대의 비밀번호를 새로 만듭니다.\n바로 적용되어 기존 번호로는 로그인할 수 없게 됩니다. 계속할까요?'
+          )
+        )
+          return;
+        const ch = {};
+        UNITS.filter(x => x.dong === s.apDong).forEach(x => (ch[x.key] = rnd4()));
+        this.setPws(
+          ch,
+          s.apDong + '동 새 번호를 만들었습니다',
+          () => this.setState({ showPw: true }),
+          m => this.toast(m)
+        );
+      },
+      adminLogout: () => {
+        this.adminPlain = '';
+        this.clearBills();
+        this.go('login', {
+          role: null,
+          banner: null,
+          payAll: null,
+          lMode: 'tenant',
+          lPw: '',
+          pws: null,
+          showPw: false,
+        });
+      },
+
+      // ── 공통: 알림 배너, 화면 틀 ──
+      banner: s.banner,
+      bannerTap: () => {
+        this.setState({ banner: null });
+        this.go('bill', { billMonth: 5 });
+      },
+      toast: s.toast,
+      scRef: this.scRef,
+      isMobile: !!s.isMobile,
+      showDesk: !s.isMobile,
+      outerPad: s.isMobile ? '0' : '40px 24px',
+      frameW: s.isMobile ? '100%' : '392px',
+      frameH: s.isMobile ? '100dvh' : '852px',
+      frameBg: s.isMobile ? 'var(--color-bg)' : '#1b1a19',
+      frameR: s.isMobile ? '0' : '40px',
+      framePad: s.isMobile ? '0' : '10px',
+      frameShadow: s.isMobile ? 'none' : 'var(--shadow-lg)',
+      innerR: s.isMobile ? '0' : '30px',
+      safeTop: s.isMobile ? 'env(safe-area-inset-top)' : '0',
+      dataSrc: s.dataSrc || '데이터 불러오는 중…',
     };
   }
 }
