@@ -435,6 +435,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;margin-top:2px">{{ unitLabel }}</div>
               <div style="font-size:14px;margin-top:2px">{{ resident }}</div>
             </div>
+            <sc-if value="{{ hasCar }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">차량 정보</div>
+              <div style="font-size:16px;line-height:1.6;white-space:pre-line;color:{{ carColor }}">{{ carInfo }}</div>
+            </sc-if>
             <div style="font-size:13px;color:var(--color-neutral-700);margin:36px 0 6px">알림</div>
             <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="2">
               <div onClick="{{ t.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;cursor:pointer">
@@ -581,6 +585,33 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <sc-if value="{{ cErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px">{{ cErr }}</div></sc-if>
             <button class="btn btn-primary btn-block" onClick="{{ saveNote }}" disabled="{{ noteBusy }}" style="min-height:48px;font-size:15px;margin-top:18px">{{ saveNoteLabel }}</button>
             <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:10px">{{ saveNoteHint }}</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isACars }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:18px 22px 40px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">차량 정보</div>
+              <button class="btn btn-ghost" onClick="{{ reloadPayAll }}" style="min-height:36px;margin-right:-6px"><i class="icon-refresh-cw"></i>새로고침</button>
+            </div>
+            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:4px">{{ payAllStatus }}</div>
+            <sc-if value="{{ carNote }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px;display:flex;gap:6px"><i class="icon-circle-alert" style="flex:none;margin-top:2px"></i><span>{{ carNote }}</span></div>
+            </sc-if>
+            <sc-if value="{{ hasPayAll }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:14px;margin-top:10px">차량 등록 <b style="color:var(--color-accent-700)">{{ carCount }}</b>세대 · 리모컨키 등록 <b style="color:var(--color-accent-700)">{{ remoteCount }}</b>세대</div>
+              <div style="display:flex;flex-direction:column;margin-top:8px;border-top:1px solid var(--color-divider)">
+                <sc-for list="{{ carRows }}" as="x" hint-placeholder-count="5">
+                  <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)">
+                    <div style="font-size:15px">{{ x.label }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ x.owner }}</span></div>
+                    <div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 10px;align-items:baseline;margin-top:4px;font-size:14px;line-height:1.5">
+                      <span style="font-size:12px;color:var(--color-neutral-700)">차량번호</span><span style="white-space:pre-line;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;color:{{ x.carColor }}">{{ x.car }}</span>
+                      <span style="font-size:12px;color:var(--color-neutral-700)">리모컨키</span><span style="white-space:pre-line;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;color:{{ x.remoteColor }}">{{ x.remote }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -981,6 +1012,8 @@ class Component extends DCLogic {
       imgView:s.imgView,closeImg:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:null});},
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
+      // 차량 정보: 로그인 응답(구글시트 세대정보 G열)에 car 가 있을 때만 표시. 오프라인 로그인이나 예전 Apps Script 면 숨김
+      hasCar:!!(isT&&s.pay&&'car' in s.pay),carInfo:(s.pay&&s.pay.car)||'등록된 차량 정보가 없습니다',carColor:s.pay&&s.pay.car?'var(--color-text)':'var(--color-neutral-700)',
       mpCur:s.mpCur,mpNew:s.mpNew,mpNew2:s.mpNew2,mpErr:s.mpErr,mpLabel:s.mpBusy?'변경 중…':'변경',saveMyPw:()=>this.saveMyPw(),
       onMpCur:e=>this.setState({mpCur:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew:e=>this.setState({mpNew:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew2:e=>this.setState({mpNew2:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
@@ -989,6 +1022,10 @@ class Component extends DCLogic {
       hasPayAll:!!s.payAll,payAllStatus:s.payAllStatus||'',reloadPayAll:()=>this.loadPayAll(),
       payDueCount:(s.payAll||[]).filter(x=>x.unpaid>0).length,payDueSum:fmt((s.payAll||[]).reduce((a,x)=>a+Math.max(0,x.unpaid),0)),
       payRows:(s.payAll||[]).map(x=>({label:x.label,owner:x.owner,last:x.lastDate?x.lastDate.slice(5).replace('-','.')+' · '+fmt(x.lastAmount)+'원':'입금 내역 없음',unpaid:x.unpaid>0?fmt(x.unpaid)+'원':x.unpaid<0?'선납 '+fmt(-x.unpaid)+'원':'완납',color:x.unpaid>0?'var(--color-accent-2-700)':'var(--color-accent-700)'})),
+      // 관리인 차량 화면: 구글시트 세대정보의 G 차량정보(car), H 리모컨키(remote). 입금 현황과 같은 응답(payAll)을 씀
+      isACars:s.screen==='acars',carCount:(s.payAll||[]).filter(x=>x.car).length,remoteCount:(s.payAll||[]).filter(x=>x.remote).length,
+      carNote:s.payAll&&s.payAll.length&&!('remote' in s.payAll[0])?'구글시트 Apps Script를 새 버전으로 배포해야 차량 정보가 표시됩니다.':'',
+      carRows:[...(s.payAll||[])].sort((a,b)=>a.unit.localeCompare(b.unit)).map(x=>({label:x.label,owner:x.owner,car:x.car||'–',remote:x.remote||'–',carColor:x.car?'var(--color-text)':'var(--color-neutral-500)',remoteColor:x.remote?'var(--color-text)':'var(--color-neutral-500)'})),
       topUnpaid:[...unpaidUnits].sort((a,b)=>b.prev-a.prev).slice(0,5).map(x=>({label:ho(x),amt:fmt(x.prev)})),
       latestA:latestN,billTaskSub:s.sent?'발송 완료 · 31호':'미발송 · 납부기한 '+PD.nextDue,pd:PD,
       goABill:()=>this.go('abill'),goCompose:()=>this.go('acompose',{prevScreen:s.screen,cErr:'',cEdit:null,cCat:'일반',cTitle:'',cSummary:'',cBody:'',cPin:false,cImgs:[]}),
@@ -1020,7 +1057,7 @@ class Component extends DCLogic {
       publish:()=>{if(!s.cTitle.trim())return this.setState({cErr:'제목을 입력하세요'});if(!s.cBody.trim())return this.setState({cErr:'내용을 입력하세요'});const id='n'+Date.now();const n={id,cat:s.cCat,date:'2026.09.27',title:s.cTitle.trim(),body:s.cBody.trim().split(/\n+/)};this.go('anotices',{notices:[n,...s.notices],reads:{...s.reads,[id]:[]},cTitle:'',cBody:'',cErr:''});this.toast(s.cPush?'게시하고 31호에 알림을 보냈습니다':'공지를 게시했습니다');},
       showTenantNav:isT&&s.screen!=='login',showAdminNav:isA&&s.screen!=='login',
       tenantTabs:tabs([['home','홈','icon-house'],['bill','고지서','icon-receipt'],['notices','공지','icon-megaphone',anyUnread],['settings','내 정보','icon-circle-user']]),
-      adminTabs:tabs([['ahome','현황','icon-chart-column'],['anotices','공지','icon-megaphone'],['asettings','비밀번호','icon-key-round']]),
+      adminTabs:tabs([['ahome','현황','icon-chart-column'],['anotices','공지','icon-megaphone'],['acars','차량','icon-car'],['asettings','비밀번호','icon-key-round']]),
       isASettings:s.screen==='asettings',
       apCur:s.apCur,apNew:s.apNew,apNew2:s.apNew2,apErr:s.apErr,
       onApCur:e=>this.setState({apCur:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew:e=>this.setState({apNew:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),onApNew2:e=>this.setState({apNew2:e.target.value.replace(/\D/g,'').slice(0,4),apErr:''}),
