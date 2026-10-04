@@ -448,7 +448,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:16px;font-weight:600">박은혜</span><span style="font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">010-3769-1962</span></div>
             <div style="display:flex;gap:8px;margin-top:10px">
               <a class="btn btn-secondary" href="tel:01037691962" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-phone" style="font-size:14px"></i>전화</a>
-              <a class="btn btn-secondary" href="sms:01037691962" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-message-square" style="font-size:14px"></i>문자</a>
+              <a class="btn btn-secondary" href="{{ smsUrl }}" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-message-square" style="font-size:14px"></i>문자</a>
               <a class="btn btn-secondary" href="{{ kakaoUrl }}" target="_blank" rel="noopener" style="flex:1;min-height:38px;font-size:13px;padding:8px 6px;gap:4px"><i class="icon-message-circle" style="font-size:14px"></i>카카오톡</a>
             </div>
           </div>
@@ -966,7 +966,7 @@ class Component extends DCLogic {
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>this.go('login',{role:null,banner:null,pay:null}),kakaoUrl:KAKAO_URL,
+      logout:()=>this.go('login',{role:null,banner:null,pay:null}),kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       hasPayAll:!!s.payAll,payAllStatus:s.payAllStatus||'',reloadPayAll:()=>this.loadPayAll(),
       payDueCount:(s.payAll||[]).filter(x=>x.unpaid>0).length,payDueSum:fmt((s.payAll||[]).reduce((a,x)=>a+Math.max(0,x.unpaid),0)),
