@@ -831,7 +831,8 @@ const GH={owner:'abbyjy80',repo:'dohwa',branch:'main'},GH_LS='dohwa-gh-token';
 // 관리인 카카오톡 오픈채팅 링크 — 나중에 이 줄의 주소만 바꾸면 '카카오톡 보내기' 버튼이 그 방으로 연결됩니다.
 const KAKAO_URL='https://open.kakao.com/o/sov81aQi';
 // 입금 내역 조회용 Apps Script 웹앱 주소 (…/exec) — 비워두면 홈 화면의 '마지막 입금 · 미수 잔액'이 표시되지 않습니다.
-const PAY_URL='https://script.google.com/macros/s/AKfycbwp13MMwbtJUWb5FQO98GiOe5-HSPpCC3H2YdU_LgZoWvHRBc0b5nXDpzNv-YadB3y83g/exec';
+//const PAY_URL='https://script.google.com/macros/s/AKfycbwp13MMwbtJUWb5FQO98GiOe5-HSPpCC3H2YdU_LgZoWvHRBc0b5nXDpzNv-YadB3y83g/exec';
+const PAY_URL='https://script.google.com/macros/s/AKfycbwSuU6B99iEv_03nCXe97NXTD5xcLxxudK7sH8W8mtwYXEjm6VXJ-FrPSMLoVbtGOpH/exec';
 // 로그인·입금 조회·비밀번호 변경은 모두 위 Apps Script 가 처리합니다 (비밀번호는 구글시트 '비밀번호' 시트에만 있고 이 저장소에는 없음).
 const api=q=>fetch(PAY_URL+'?'+Object.entries(q).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&'),{cache:'no-store'}).then(r=>r.json());
 const LOGIN_LS='dohwa-login',LOGIN_ERR={auth:'비밀번호가 맞지 않습니다. 관리인에게 문의하세요',locked:'여러 번 틀려 1시간 동안 잠겼습니다. 잠시 후 다시 시도하세요'};
