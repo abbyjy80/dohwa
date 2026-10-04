@@ -444,6 +444,16 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </div>
               </div>
             </sc-for>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">비밀번호 변경</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">현재 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ mpCur }}" onChange="{{ onMpCur }}" placeholder="숫자 4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ mpNew }}" onChange="{{ onMpNew }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">새 비밀번호 확인</span><input class="input" type="password" inputMode="numeric" value="{{ mpNew2 }}" onChange="{{ onMpNew2 }}" placeholder="4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
+              </div>
+              <sc-if value="{{ mpErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-2-700)">{{ mpErr }}</div></sc-if>
+              <button class="btn btn-secondary" onClick="{{ saveMyPw }}" style="align-self:flex-start;min-height:44px">{{ mpLabel }}</button>
+            </div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">관리인</div>
             <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:16px;font-weight:600">박은혜</span><span style="font-size:13px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">010-3769-1962</span></div>
             <div style="display:flex;gap:8px;margin-top:10px">
@@ -806,7 +816,7 @@ const SEGC=['var(--color-accent)','var(--color-accent-700)','var(--color-accent-
 class Component extends DCLogic {
   scRef=React.createRef();
   localImgs={};
-  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'',lBusy:false,lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',cEdit:null,noteDelId:null,delBusy:false,ghToken:lsGet(GH_LS),pws:null,pwBusy:false,ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:''};
+  state={screen:'login',role:null,unit:'101-202',lMode:'tenant',lDong:'101',lHo:'202',lPw:'',lBusy:false,lErr:'',billMonth:5,cat:'전체',noticeId:null,prevScreen:'notices',notices:NOTICES,reads:initReads(),pushNotice:true,pushBill:true,toast:null,banner:null,totals:defTotals(),step:1,sent:false,confirmOpen:false,aDong:'101',cCat:'일반',cTitle:'',cBody:'',cPush:true,cErr:'',cImgs:[],imgBusy:false,imgView:null,noteProg:'',cEdit:null,noteDelId:null,delBusy:false,ghToken:lsGet(GH_LS),pws:null,pwBusy:false,ghInput:'',ghBusy:false,ghErr:'',ghHelp:false,apCur:'',apNew:'',apNew2:'',apErr:'',apDong:'101',showPw:false,pwEdit:null,pwNew:'',pwErr:'',mpCur:'',mpNew:'',mpNew2:'',mpErr:'',mpBusy:false};
   componentDidMount(){
     this.mq=window.matchMedia('(max-width: 600px), (pointer: coarse)');this.onMq=()=>this.setState({isMobile:this.mq.matches});this.onMq();this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
     this.onPop=e=>{const sc=e.state&&e.state.dohwa;if(sc){this.popping=true;this.go(sc);this.popping=false;}};window.addEventListener('popstate',this.onPop);
@@ -895,6 +905,12 @@ class Component extends DCLogic {
   setPws(ch,msg,onOk,onErr){if(this.state.pwBusy)return;if(!this.adminPlain)return onErr('관리인 비밀번호로 다시 로그인하세요');this.setState({pwBusy:true});
     api({unit:'admin',pw:this.adminPlain,set:Object.entries(ch).map(([k,v])=>k+':'+v).join(',')}).then(j=>{if(!j.ok)throw j.error;const {admin,...units}=ch;this.setState({pwBusy:false,pws:{...(this.state.pws||{}),...units}});onOk();this.toast(msg);})
     .catch(e=>{this.setState({pwBusy:false});onErr(e==='locked'?LOGIN_ERR.locked:e==='auth'?'관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요':'저장하지 못했습니다. 인터넷 연결을 확인하세요');});}
+  // 세대 본인 비밀번호 변경: 현재 번호는 Apps Script 가 확인하고 구글시트 '비밀번호' 시트에 저장 (관리인 화면의 호수별 비밀번호에도 새 번호가 보임)
+  // changed 가 없는 응답은 newpw 를 모르는 예전 Apps Script 가 로그인으로만 처리한 것이므로 실패로 봄
+  saveMyPw(){const s=this.state;if(s.mpBusy)return;if(!/^\d{4}$/.test(s.mpCur))return this.setState({mpErr:'현재 비밀번호 숫자 4자리를 입력하세요'});if(!/^\d{4}$/.test(s.mpNew))return this.setState({mpErr:'새 비밀번호는 숫자 4자리입니다'});if(s.mpNew===s.mpCur)return this.setState({mpErr:'현재와 다른 번호를 입력하세요'});if(s.mpNew!==s.mpNew2)return this.setState({mpErr:'새 비밀번호가 서로 다릅니다'});
+    const key=s.unit,np=s.mpNew;this.setState({mpBusy:true,mpErr:''});
+    api({unit:key,pw:s.mpCur,newpw:np}).then(j=>{if(!j.ok)throw j.error;if(!j.changed)throw 'old';lsSet(LOGIN_LS,key+':'+hashPw(key,np));this.setState({mpBusy:false,mpCur:'',mpNew:'',mpNew2:''});this.toast('비밀번호를 변경했습니다');})
+    .catch(e=>this.setState({mpBusy:false,mpErr:e==='auth'?'현재 비밀번호가 맞지 않습니다':e==='locked'?LOGIN_ERR.locked:e==='old'?'아직 비밀번호 변경을 쓸 수 없습니다. 관리인에게 문의하세요':'변경하지 못했습니다. 인터넷 연결을 확인하세요'}));}
   openNotice(id){const s=this.state;const reads={...s.reads};const rl=reads[id]||[];if(s.role==='tenant'&&!rl.includes(s.unit)){reads[id]=[...rl,s.unit];try{localStorage.setItem(READ_LS,JSON.stringify(reads));}catch(e){}}this.go('notice',{noticeId:id,prevScreen:s.screen,reads,banner:null});}
   renderVals(){
     const s=this.state,p=this.props;
@@ -965,8 +981,10 @@ class Component extends DCLogic {
       imgView:s.imgView,closeImg:e=>{e&&e.stopPropagation&&e.stopPropagation();this.setState({imgView:null});},
       readGrid:[].map(d=>{const us=UNITS.filter(x=>x.dong===d);const rc=us.filter(x=>s.reads[nd.id].includes(x.key)).length;return {dong:d+'동',count:rc+'/'+us.length+' 읽음',units:us.map(x=>{const r=s.reads[nd.id].includes(x.key);return {ho:x.ho,bg:r?'var(--color-accent-100)':'transparent',fg:r?'var(--color-accent-800)':'var(--color-neutral-700)',bd:r?'var(--color-accent)':'var(--color-neutral-300)'};})};}),
       isSettings:s.screen==='settings',
+      mpCur:s.mpCur,mpNew:s.mpNew,mpNew2:s.mpNew2,mpErr:s.mpErr,mpLabel:s.mpBusy?'변경 중…':'변경',saveMyPw:()=>this.saveMyPw(),
+      onMpCur:e=>this.setState({mpCur:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew:e=>this.setState({mpNew:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),onMpNew2:e=>this.setState({mpNew2:e.target.value.replace(/\D/g,'').slice(0,4),mpErr:''}),
       toggles:[['pushNotice','새 공지 알림','관리단이 공지를 올리면 알려드립니다'],['pushBill','고지서 발송 알림','매월 고지서가 발행되면 알려드립니다']].map(([k,label,subt])=>({label,sub:subt,bg:s[k]?'var(--color-accent)':'var(--color-neutral-300)',x:s[k]?'21px':'3px',toggle:()=>this.setState({[k]:!s[k]})})),
-      logout:()=>this.go('login',{role:null,banner:null,pay:null}),kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
+      logout:()=>this.go('login',{role:null,banner:null,pay:null,mpCur:'',mpNew:'',mpNew2:'',mpErr:''}),kakaoUrl:KAKAO_URL,smsUrl:'sms:01037691962?&body='+encodeURIComponent('['+ho(u)+'] '),
       isAHome:s.screen==='ahome',unpaidCount:unpaidUnits.length,unpaidSumMan:fmt(unpaidUnits.reduce((a,b)=>a+b.prev,0)/10000),
       hasPayAll:!!s.payAll,payAllStatus:s.payAllStatus||'',reloadPayAll:()=>this.loadPayAll(),
       payDueCount:(s.payAll||[]).filter(x=>x.unpaid>0).length,payDueSum:fmt((s.payAll||[]).reduce((a,x)=>a+Math.max(0,x.unpaid),0)),
