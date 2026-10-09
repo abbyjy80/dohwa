@@ -101,7 +101,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             </div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">납기 후 {{ cur.afterFmt }}원</div>
             <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
-              <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>전월 미납액 {{ cur.prevFmt }}원이 합산되었습니다. 이미 납부하셨다면 이체확인증을 관리인에게 보내주세요.</span></div>
+              <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>{{ prevMsg }}</span></div>
             </sc-if>
             <sc-if value="{{ payBox }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:18px;padding-top:6px;border-top:1px solid var(--color-divider)">
@@ -496,18 +496,76 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:24px">관리 현황</div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">{{ pd.label }}분 고지 기준</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px">
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">전체</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500">31<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">101동 16 · 102동 15</div></div>
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;color:var(--color-accent-2-700)">{{ unpaidCount }}<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">전월 기준</div></div>
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납 총액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;line-height:1.35;margin-top:4px;font-variant-numeric:tabular-nums">{{ unpaidSumMan }}<span style="font-size:13px">만원</span></div></div>
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">전체</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;font-variant-numeric:lining-nums">31<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">101동 16 · 102동 15</div></div>
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;font-variant-numeric:lining-nums;color:var(--color-accent-2-700)">{{ unpaidCount }}<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">전월 기준</div></div>
+              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납 총액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;line-height:1.35;margin-top:4px;font-variant-numeric:lining-nums">{{ unpaidSumMan }}<span style="font-size:13px">만원</span></div></div>
             </div>
 
+            <!-- 수납 현황: 구글시트 '대쉬보드' 시트의 값 (수납률은 큰 숫자 + 막대, 나머지는 숫자 칸) -->
             <div style="margin-top:34px">
-              <div style="font-size:17px;font-weight:600">미납 상위 세대</div>
-              <div style="display:flex;flex-direction:column;margin-top:8px">
-                <sc-for list="{{ topUnpaid }}" as="x" hint-placeholder-count="5">
-                  <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:15px"><span>{{ x.label }}</span><span style="font-variant-numeric:tabular-nums;color:var(--color-accent-2-700)">{{ x.amt }}원</span></div>
-                </sc-for>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                <div style="font-size:17px;font-weight:600">수납 현황</div>
+                <div style="font-size:13px;color:var(--color-neutral-700)">{{ dashMonth }}</div>
               </div>
+              <div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px">{{ dashCaption }}</div>
+              <sc-if value="{{ dashNote }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px;display:flex;gap:6px"><i class="icon-circle-alert" style="flex:none;margin-top:2px"></i><span>{{ dashNote }}</span></div>
+              </sc-if>
+              <sc-if value="{{ hasDash }}" hint-placeholder-val="{{ false }}">
+                <!-- 새로고침으로 다시 받아 오는 동안에는 이전 값을 흐리게 둔다 -->
+                <div style="opacity:{{ dashOpacity }};transition:opacity .2s">
+                <div style="margin-top:16px">
+                  <div style="font-size:12px;color:var(--color-neutral-700)">수납률</div>
+                  <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:48px;line-height:1.05;font-weight:500;font-variant-numeric:lining-nums">{{ dash.ratePct }}<span style="font-size:20px">%</span></div>
+                  <div role="img" aria-label="{{ dash.meterLabel }}" style="height:10px;border-radius:5px;background:var(--color-accent-200);overflow:hidden;margin-top:10px">
+                    <div style="height:100%;width:{{ dash.meterW }};background:var(--color-accent-600);border-radius:0 4px 4px 0"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--color-neutral-700);margin-top:6px"><span>수납 {{ dash.paid }}원</span><span>청구 {{ dash.billed }}원</span></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:14px;border-top:1px solid var(--color-divider)">
+                  <div><div style="font-size:12px;color:var(--color-neutral-700)">총청구액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600;line-height:1.35;margin-top:2px;font-variant-numeric:lining-nums">{{ dash.billed }}<span style="font-size:12px">원</span></div></div>
+                  <div><div style="font-size:12px;color:var(--color-neutral-700)">총수납액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600;line-height:1.35;margin-top:2px;font-variant-numeric:lining-nums">{{ dash.paid }}<span style="font-size:12px">원</span></div></div>
+                  <div><div style="font-size:12px;color:var(--color-neutral-700)">총미수금</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600;line-height:1.35;margin-top:2px;font-variant-numeric:lining-nums">{{ dash.unpaid }}<span style="font-size:12px">원</span></div></div>
+                </div>
+                <div style="margin-top:18px">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                    <div style="font-size:12px;color:var(--color-neutral-700)">이 달에 입금이 없는 세대</div>
+                    <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:500;line-height:1.25;margin-top:2px;font-variant-numeric:lining-nums">{{ dash.unpaidUnits }}<span style="font-size:13px">{{ dash.unitsUnit }}</span></div>
+                  </div>
+                  <sc-if value="{{ hasNoPay }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;margin-top:6px;border-top:1px solid var(--color-divider)">
+                      <sc-for list="{{ dashNoPay }}" as="x" hint-placeholder-count="4">
+                        <div style="display:flex;align-items:baseline;gap:6px;min-width:0;padding:7px 0;border-bottom:1px solid var(--color-divider);font-size:14px"><span style="flex:none;font-variant-numeric:tabular-nums">{{ x.label }}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--color-neutral-700)">{{ x.name }}</span></div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ hasNoPayMore }}" hint-placeholder-val="{{ false }}">
+                      <button class="btn btn-ghost" onClick="{{ toggleNoPay }}" style="min-height:36px;margin:4px 0 0 -8px;font-size:13px">{{ noPayMoreLabel }}</button>
+                    </sc-if>
+                  </sc-if>
+                  <sc-if value="{{ noPayNone }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:13px;color:var(--color-neutral-700);margin-top:6px">이 달은 모든 세대가 입금했습니다.</div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ hasDashTrend }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:22px">
+                    <div style="font-size:12px;color:var(--color-neutral-700)">월별 수납률 · 막대를 누르면 그 달의 값을 봅니다</div>
+                    <div style="display:flex;align-items:flex-end;gap:6px;height:112px;margin-top:10px;border-bottom:1px solid var(--color-divider)">
+                      <sc-for list="{{ dashBars }}" as="b" hint-placeholder-count="3">
+                        <button onClick="{{ b.pick }}" title="{{ b.aria }}" aria-label="{{ b.aria }}" style="flex:1;min-width:0;height:100%;border:0;background:none;padding:0;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;color:var(--color-text)">
+                          <span style="font-size:11px;font-variant-numeric:tabular-nums;visibility:{{ b.labelVis }}">{{ b.pct }}</span>
+                          <span style="width:100%;max-width:24px;height:{{ b.h }};background:{{ b.color }};border-radius:4px 4px 0 0"></span>
+                        </button>
+                      </sc-for>
+                    </div>
+                    <div style="display:flex;gap:6px;margin-top:4px">
+                      <sc-for list="{{ dashBars }}" as="b" hint-placeholder-count="3">
+                        <span style="flex:1;min-width:0;text-align:center;font-size:11px;font-weight:{{ b.w }};color:{{ b.fg }}">{{ b.label }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                </div>
+              </sc-if>
             </div>
 
             <div style="margin-top:34px">
@@ -1358,6 +1416,11 @@ class Component extends DCLogic {
     mpBusy: false,
     payBusy: false,
     payAt: '',
+    dash: null,
+    dashAt: '',
+    dashYm: null,
+    dashAll: false,
+    payAllBusy: false,
   };
 
   // ── 시작·종료 ──
@@ -1785,27 +1848,34 @@ class Component extends DCLogic {
   }
 
   // ── 로그인·입금 조회 ──
-  // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)
+  // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)·수납 현황(dash)
+  // dash 가 응답에 없으면(예전 Apps Script) null 로 두어 화면에서 안내한다
   setAdminData(j, after) {
     const t = new Date();
     this.setState({
       payAll: j.list || [],
       pws: j.pws || {},
       payAllStatus: '구글시트 세대정보 · ' + t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0') + ' 조회',
+      dash: 'dash' in j ? (Array.isArray(j.dash) ? j.dash : []) : null,
+      dashAt: nowHm(),
     });
     this.useBills('admin', j.bills, after);
   }
-  // 관리인 화면의 새로고침
+  // 관리인 화면의 새로고침: 입금 현황·수납 현황(대쉬보드)·고지서를 한 번에 다시 받는다
   loadPayAll() {
+    if (this.state.payAllBusy) return;
     if (!this.adminPlain) return this.setState({ payAllStatus: '관리인 비밀번호로 다시 로그인하면 불러옵니다' });
-    this.setState({ payAllStatus: '구글시트에서 불러오는 중…' });
+    this.setState({ payAllBusy: true, payAllStatus: '구글시트에서 불러오는 중…' });
     api({ unit: 'admin', pw: this.adminPlain })
       .then(j => {
         if (!j.ok) throw j.error;
+        if (this.state.role !== 'admin') return; // 그사이 로그아웃했으면 응답을 버린다
         this.setAdminData(j);
+        this.setState({ payAllBusy: false });
       })
       .catch(e =>
         this.setState({
+          payAllBusy: false,
           payAllStatus:
             e === 'locked'
               ? LOGIN_ERR.locked
@@ -2099,6 +2169,19 @@ class Component extends DCLogic {
     const latestN = s.notices[0] ? nv(s.notices[0]) : null;
     const ho = x => x.dong + '동 ' + x.ho + '호';
     const stepsDef = ['항목 입력', '호수별 확인', '발송'];
+    // 관리인 수납 현황: 청구액이나 수납액이 있는 달만, 최근 6개월. 고른 달이 없으면 최신 달
+    const dashRows = (s.dash || [])
+      .filter(d => d && /^\d{4}-\d{2}$/.test(d.ym) && typeof d.rate === 'number' && (d.billed > 0 || d.paid > 0))
+      .sort((a, b) => a.ym.localeCompare(b.ym))
+      .slice(-6);
+    const dashSel = dashRows.find(d => d.ym === s.dashYm) || dashRows[dashRows.length - 1] || null;
+    const pct1 = r => (Math.round(r * 1000) / 10).toFixed(1);
+    const noPay =
+      dashSel && Array.isArray(dashSel.noPay)
+        ? dashSel.noPay.filter(x => x && x.label).map(x => ({ label: String(x.label), name: String(x.name || '') }))
+        : null;
+    // 세대 수는 화면에 보이는 목록과 같게 한다. 목록이 없을 때만 대쉬보드의 당월미납세대 값을 쓴다
+    const noPayCount = noPay ? noPay.length : dashSel && dashSel.unpaidUnits != null ? dashSel.unpaidUnits : null;
     return {
       // ── 로그인 ──
       jumpLogin: () => this.go('login', { role: null, banner: null }),
@@ -2139,6 +2222,14 @@ class Component extends DCLogic {
       depositName: u.dong + '-' + u.ho,
       cur,
       hasPrev: u.prev > 0,
+      // 미납 안내: 구글시트 세대정보의 미납시작월~미납종료월(연월 6자리)을 적는다. 그 값이 없으면(빈 칸·오프라인·예전 Apps Script) '전월'
+      prevMsg:
+        (s.pay && /^\d{6}$/.test(s.pay.unpaidFrom) && /^\d{6}$/.test(s.pay.unpaidTo)
+          ? s.pay.unpaidFrom + '월~' + s.pay.unpaidTo + '월'
+          : '전월') +
+        ' 미납액 ' +
+        cur.prevFmt +
+        '원이 합산되었습니다. 이미 납부하셨다면 이체확인증을 관리인에게 보내주세요.',
       // 입금 확인 칸 + 새로고침
       payBox: !!(isT && (s.pay || this.tenantPw)),
       noPay: !!(isT && !s.pay),
@@ -2335,6 +2426,66 @@ class Component extends DCLogic {
       isAHome: s.screen === 'ahome',
       unpaidCount: unpaidUnits.length,
       unpaidSumMan: fmt(unpaidUnits.reduce((a, b) => a + b.prev, 0) / 10000),
+      // 수납 현황 (구글시트 '대쉬보드'): 고른 달의 값과 월별 수납률 막대
+      hasDash: !!dashSel,
+      dashMonth: dashSel ? +dashSel.ym.slice(5) + '월분' : '',
+      // 아래 '입금 현황'의 새로고침이 이 값들도 함께 다시 받는다 (받는 동안 이전 값은 흐리게)
+      dashCaption: s.payAllBusy
+        ? '구글시트에서 불러오는 중…'
+        : '구글시트 대쉬보드' + (s.dash && s.dashAt ? ' · ' + s.dashAt + ' 조회' : ''),
+      dashOpacity: s.payAllBusy ? 0.45 : 1,
+      dashNote: !isA
+        ? ''
+        : s.dash === null
+          ? s.payAll
+            ? '구글시트 Apps Script를 새 버전으로 배포하면 수납 현황이 표시됩니다.'
+            : ''
+          : dashSel
+            ? ''
+            : "'대쉬보드' 시트에 청구액이나 수납액이 있는 달이 없습니다.",
+      dash: {
+        ratePct: dashSel ? pct1(dashSel.rate) : '',
+        meterW: dashSel ? Math.max(0, Math.min(100, Math.round(dashSel.rate * 1000) / 10)) + '%' : '0%',
+        meterLabel: dashSel
+          ? +dashSel.ym.slice(5) +
+            '월분 수납률 ' +
+            pct1(dashSel.rate) +
+            '% (수납 ' +
+            fmt(dashSel.paid) +
+            '원 / 청구 ' +
+            fmt(dashSel.billed) +
+            '원)'
+          : '',
+        billed: dashSel ? fmt(dashSel.billed) : '',
+        paid: dashSel ? fmt(dashSel.paid) : '',
+        unpaid: dashSel ? fmt(dashSel.unpaid) : '',
+        // 입금이 없는 세대 수 (없으면 단위 없이 '–')
+        unpaidUnits: noPayCount != null ? String(noPayCount) : '–',
+        unitsUnit: noPayCount != null ? '세대' : '',
+      },
+      // 입금이 없는 세대 목록 (수금현황에서 그 달 입금이 0 인 세대). 10곳이 넘으면 접어 두고 펼쳐 본다
+      hasNoPay: !!(noPay && noPay.length),
+      noPayNone: !!(noPay && !noPay.length),
+      dashNoPay: noPay ? (s.dashAll ? noPay : noPay.slice(0, 10)) : [],
+      hasNoPayMore: !!(noPay && noPay.length > 10),
+      noPayMoreLabel: s.dashAll ? '접기' : '전체 ' + (noPay ? noPay.length : 0) + '세대 보기',
+      toggleNoPay: () => this.setState({ dashAll: !s.dashAll }),
+      hasDashTrend: dashRows.length > 1,
+      dashBars: dashRows.map(d => {
+        const on = d === dashSel;
+        const m = +d.ym.slice(5) + '월';
+        return {
+          label: m,
+          pct: pct1(d.rate) + '%',
+          h: Math.max(2, Math.round(Math.max(0, Math.min(1, d.rate)) * 84)) + 'px',
+          color: on ? 'var(--color-accent-600)' : 'var(--color-neutral-400)',
+          labelVis: on ? 'visible' : 'hidden',
+          w: on ? 700 : 400,
+          fg: on ? 'var(--color-text)' : 'var(--color-neutral-700)',
+          aria: m + ' 수납률 ' + pct1(d.rate) + '%',
+          pick: () => this.setState({ dashYm: d.ym }),
+        };
+      }),
       hasPayAll: !!s.payAll,
       payAllStatus: s.payAllStatus || '',
       reloadPayAll: () => this.loadPayAll(),
@@ -2368,10 +2519,6 @@ class Component extends DCLogic {
         })),
 
       // ── 관리인: 현황 (이어서) ──
-      topUnpaid: [...unpaidUnits]
-        .sort((a, b) => b.prev - a.prev)
-        .slice(0, 5)
-        .map(x => ({ label: ho(x), amt: fmt(x.prev) })),
       latestA: latestN,
       billTaskSub: s.sent ? '발송 완료 · 31호' : '미발송 · 납부기한 ' + PD.nextDue,
       pd: PD,
@@ -2664,6 +2811,11 @@ class Component extends DCLogic {
           role: null,
           banner: null,
           payAll: null,
+          dash: null,
+          dashAt: '',
+          dashYm: null,
+          dashAll: false,
+          payAllBusy: false,
           lMode: 'tenant',
           lPw: '',
           pws: null,
