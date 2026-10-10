@@ -86,7 +86,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
-        <!-- ── 세대: 홈 (기본 '1면') ── -->
+        <!-- ── 세대: 홈 ── -->
         <sc-if value="{{ isHomeA }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
             <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
@@ -97,9 +97,11 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:52px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em">{{ cur.totalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px">원</span>
             </div>
             <div style="font-size:14px;margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 12px">
-              <span>납부기한 {{ pd.dueFull }}</span><span style="color:var(--color-accent-700);font-weight:600">{{ pd.dday }}</span>
+              <span>납부기한 {{ pd.dueFull }}</span><span style="color:var(--color-accent-700);font-weight:600">{{ dueTag }}</span>
             </div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">납기 후 {{ cur.afterFmt }}원</div>
+            <sc-if value="{{ showAfter }}" hint-placeholder-val="{{ true }}">
+              <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">납기 후 {{ cur.afterFmt }}원</div>
+            </sc-if>
             <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>{{ prevMsg }}</span></div>
             </sc-if>
@@ -146,79 +148,6 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
-        <!-- ── 세대: 홈 ('피드' 시안) ── -->
-        <sc-if value="{{ isHomeB }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:22px 22px 40px">
-            <div style="font-size:13px;color:var(--color-neutral-700)">도화엘리시아 · {{ unitLabel }}</div>
-            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:4px">안녕하세요</div>
-            <div class="card" onClick="{{ goBill }}" style="margin-top:22px;cursor:pointer;padding:18px">
-              <div class="card-kicker" style="color:var(--color-accent-700)">{{ pd.label }}분 관리비 · {{ pd.dday }}</div>
-              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
-                <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:32px;font-weight:500;font-variant-numeric:tabular-nums">{{ cur.totalFmt }}<span style="font-size:16px;font-weight:400">원</span></span>
-                <i class="icon-chevron-right" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px"></i>
-              </div>
-              <div class="card-meta" style="color:var(--color-neutral-700);font-size:12px">납부기한 {{ pd.dueShort }} · 납기 후 {{ cur.afterFmt }}원</div>
-              <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
-                <span class="tag tag-accent-2" style="align-self:flex-start">전월 미납 {{ cur.prevFmt }}원 포함</span>
-              </sc-if>
-            </div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin:36px 0 14px">최근 소식</div>
-            <div style="display:flex;flex-direction:column;gap:22px">
-              <sc-for list="{{ feed }}" as="f" hint-placeholder-count="5">
-                <div onClick="{{ f.open }}" style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;cursor:pointer">
-                  <div style="font-size:13px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700);padding-top:2px">{{ f.date }}</div>
-                  <div style="display:flex;flex-direction:column;gap:3px">
-                    <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:{{ f.kColor }}">
-                      <i class="{{ f.icon }}" style="font-size:14px"></i><span>{{ f.kind }}</span>
-                      <sc-if value="{{ f.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
-                    </div>
-                    <div style="font-size:16px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ f.title }}</div>
-                  </div>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-        </sc-if>
-
-        <!-- ── 세대: 홈 ('추이' 시안) ── -->
-        <sc-if value="{{ isHomeC }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:22px 22px 40px">
-            <div style="font-size:13px;color:var(--color-neutral-700)">{{ unitLabel }} · {{ pd.label }}분</div>
-            <div style="display:flex;align-items:baseline;gap:4px;margin-top:6px">
-              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:44px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums">{{ cur.subtotalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px">원</span>
-            </div>
-            <div style="font-size:14px;margin-top:10px">지난달보다 <span style="color:var(--color-accent-700);font-weight:600">{{ deltaFmt }}원</span> 늘었습니다</div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px;line-height:1.5">수선유지비 인상(4,300원 → 10,000원)과 소방교육·관리단 설립 비용이 더해졌습니다.</div>
-
-            <div style="display:flex;align-items:flex-end;gap:10px;height:170px;margin-top:30px">
-              <sc-for list="{{ trend }}" as="b" hint-placeholder-count="6">
-                <div onClick="{{ b.open }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%;cursor:pointer">
-                  <span style="font-size:11px;font-variant-numeric:tabular-nums;color:var(--color-neutral-700)">{{ b.short }}</span>
-                  <div style="width:100%;height:{{ b.h }};background:{{ b.color }};border-radius:1px"></div>
-                  <span style="font-size:12px;font-weight:{{ b.w }}">{{ b.label }}</span>
-                </div>
-              </sc-for>
-            </div>
-            <div style="display:flex;gap:16px;font-size:12px;color:var(--color-neutral-700);margin-top:12px">
-              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-neutral-300)"></span>납부</span>
-              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-neutral-800)"></span>미납</span>
-              <span style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;background:var(--color-accent)"></span>이번 달</span>
-            </div>
-
-            <div style="margin-top:30px;display:flex;flex-direction:column;gap:4px">
-              <div style="font-size:13px;color:var(--color-neutral-700)">이번 달 청구액 (미납 포함)</div>
-              <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums">{{ cur.totalFmt }}원 <span style="font-size:13px;font-weight:400;color:var(--color-neutral-700)">· {{ pd.dueShort }}까지</span></div>
-            </div>
-            <button class="btn btn-primary btn-block" onClick="{{ goBill }}" style="min-height:46px;font-size:15px;margin-top:14px">고지서 자세히 보기</button>
-
-            <sc-if value="{{ pinned }}" hint-placeholder-val="{{ false }}"><div class="card" onClick="{{ pinned.open }}" style="margin-top:32px;cursor:pointer">
-              <div class="card-kicker" style="color:var(--color-accent-700)">고정 공지 · {{ pinned.cat }}</div>
-              <div class="card-title">{{ pinned.title }}</div>
-              <div class="card-meta" style="color:var(--color-neutral-700)">{{ pinned.date }}</div>
-            </div></sc-if>
-          </div>
-        </sc-if>
-
         <!-- ── 세대: 고지서 ── -->
         <sc-if value="{{ isBill }}" hint-placeholder-val="{{ false }}">
           <div style="padding:18px 22px 40px">
@@ -252,36 +181,14 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <div style="font-size:13px;color:var(--color-accent-2-700);margin-top:10px">{{ bm.move }}</div>
             </sc-if>
 
-            <sc-if value="{{ isBillA }}" hint-placeholder-val="{{ true }}">
-              <div style="font-size:13px;color:var(--color-neutral-700);margin:32px 0 6px">항목별 내역</div>
-              <div style="display:flex;flex-direction:column">
-                <sc-for list="{{ billItems }}" as="it" hint-placeholder-count="10">
-                  <div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:15px">
-                    <span>{{ it.name }}</span><span style="font-variant-numeric:tabular-nums">{{ it.amtFmt }}</span>
-                  </div>
-                </sc-for>
-              </div>
-            </sc-if>
-
-            <sc-if value="{{ isBillB }}" hint-placeholder-val="{{ false }}">
-              <div style="font-size:13px;color:var(--color-neutral-700);margin:32px 0 10px">어디에 쓰였나</div>
-              <div style="display:flex;height:22px;gap:2px">
-                <sc-for list="{{ billSegs }}" as="sg" hint-placeholder-count="6">
-                  <div style="width:{{ sg.w }};background:{{ sg.color }}"></div>
-                </sc-for>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:14px;margin-top:22px">
-                <sc-for list="{{ billSorted }}" as="it" hint-placeholder-count="10">
-                  <div style="display:flex;flex-direction:column;gap:5px">
-                    <div style="display:flex;justify-content:space-between;gap:10px;font-size:15px">
-                      <span style="display:flex;gap:8px;align-items:center"><span style="width:8px;height:8px;background:{{ it.color }}"></span>{{ it.name }}</span>
-                      <span style="font-variant-numeric:tabular-nums">{{ it.amtFmt }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ it.pct }}</span></span>
-                    </div>
-                    <div style="height:3px;background:var(--color-surface)"><div style="height:3px;width:{{ it.w }};background:{{ it.color }}"></div></div>
-                  </div>
-                </sc-for>
-              </div>
-            </sc-if>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin:32px 0 6px">항목별 내역</div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ billItems }}" as="it" hint-placeholder-count="10">
+                <div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:15px">
+                  <span>{{ it.name }}</span><span style="font-variant-numeric:tabular-nums">{{ it.amtFmt }}</span>
+                </div>
+              </sc-for>
+            </div>
 
             <div style="margin-top:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--color-neutral-700)">
               <div style="display:flex;justify-content:space-between"><span>소계</span><span style="font-variant-numeric:tabular-nums">{{ bm.subtotalFmt }}</span></div>
@@ -323,81 +230,54 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               </sc-for>
             </div>
 
-            <sc-if value="{{ isNoticeA }}" hint-placeholder-val="{{ true }}">
-              <sc-if value="{{ hasCarousel }}" hint-placeholder-val="{{ false }}">
-                <div onScroll="{{ onCarScroll }}" style="display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:22px -22px 0;padding:2px 22px 4px;scroll-padding-inline:22px">
-                  <sc-for list="{{ carousel }}" as="n" hint-placeholder-count="3">
-                    <div onClick="{{ n.open }}" style="flex:none;width:84%;scroll-snap-align:start;cursor:pointer;border:1px solid var(--color-divider);border-radius:6px;overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
-                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}">
-                        <div style="position:relative">
-                          <img src="{{ n.cover }}" alt="" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--color-surface)">
-                          <sc-if value="{{ n.multiImg }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:8px;bottom:8px;display:flex;gap:3px;align-items:center;padding:2px 8px;border-radius:10px;font-size:11px;background:rgba(0,0,0,.55);color:#fff"><i class="icon-image" style="font-size:12px"></i>{{ n.imgCount }}</span></sc-if>
-                        </div>
-                      </sc-if>
-                      <sc-if value="{{ n.noImages }}" hint-placeholder-val="{{ true }}">
-                        <div style="aspect-ratio:16/10;box-sizing:border-box;padding:18px 18px 0;background:var(--color-accent-100);overflow:hidden">
-                          <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:16px;line-height:1.6;color:var(--color-accent-800);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div>
-                        </div>
-                      </sc-if>
-                      <div style="padding:12px 14px 12px;display:flex;flex-direction:column;gap:4px">
-                        <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
-                          <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:12px"></i></sc-if>
-                          <span>{{ n.cat }} · {{ n.date }}</span>
-                          <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
-                        </div>
-                        <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;line-height:1.35;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.title }}</div>
-                        <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div></sc-if>
+            <sc-if value="{{ hasCarousel }}" hint-placeholder-val="{{ false }}">
+              <div onScroll="{{ onCarScroll }}" style="display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:22px -22px 0;padding:2px 22px 4px;scroll-padding-inline:22px">
+                <sc-for list="{{ carousel }}" as="n" hint-placeholder-count="3">
+                  <div onClick="{{ n.open }}" style="flex:none;width:84%;scroll-snap-align:start;cursor:pointer;border:1px solid var(--color-divider);border-radius:6px;overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
+                    <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:relative">
+                        <img src="{{ n.cover }}" alt="" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--color-surface)">
+                        <sc-if value="{{ n.multiImg }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:8px;bottom:8px;display:flex;gap:3px;align-items:center;padding:2px 8px;border-radius:10px;font-size:11px;background:rgba(0,0,0,.55);color:#fff"><i class="icon-image" style="font-size:12px"></i>{{ n.imgCount }}</span></sc-if>
                       </div>
+                    </sc-if>
+                    <sc-if value="{{ n.noImages }}" hint-placeholder-val="{{ true }}">
+                      <div style="aspect-ratio:16/10;box-sizing:border-box;padding:18px 18px 0;background:var(--color-accent-100);overflow:hidden">
+                        <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:16px;line-height:1.6;color:var(--color-accent-800);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div>
+                      </div>
+                    </sc-if>
+                    <div style="padding:12px 14px 12px;display:flex;flex-direction:column;gap:4px">
+                      <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                        <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:12px"></i></sc-if>
+                        <span>{{ n.cat }} · {{ n.date }}</span>
+                        <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                      </div>
+                      <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;line-height:1.35;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.title }}</div>
+                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div></sc-if>
                     </div>
-                  </sc-for>
-                </div>
-                <div style="position:relative;display:flex;justify-content:center;align-items:center;gap:6px;margin-top:12px;min-height:16px">
-                  <sc-for list="{{ carDots }}" as="d" hint-placeholder-count="3"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.bg }}"></span></sc-for>
-                  <span style="position:absolute;right:0;font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ carCounter }}</span>
-                </div>
-                <sc-if value="{{ hasCarRest }}" hint-placeholder-val="{{ false }}"><div style="font-size:17px;font-weight:600;margin-top:30px">지난 공지</div></sc-if>
-              </sc-if>
-              <div style="display:flex;flex-direction:column;gap:24px;margin-top:{{ listMt }}">
-                <sc-for list="{{ noticeList }}" as="n" hint-placeholder-count="6">
-                  <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
-                    <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
-                      <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:13px"></i></sc-if>
-                      <span>{{ n.cat }}</span>
-                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:3px;align-items:center;color:var(--color-neutral-700)"><i class="icon-image" style="font-size:13px"></i>{{ n.imgCount }}</span></sc-if>
-                      <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
-                    </div>
-                    <div style="font-size:17px;line-height:1.4;font-weight:{{ n.weight }};text-wrap:pretty">{{ n.title }}</div>
-                    <div style="font-size:12px;color:var(--color-neutral-700)">{{ n.date }} · 관리인 박은혜</div>
                   </div>
                 </sc-for>
               </div>
+              <div style="position:relative;display:flex;justify-content:center;align-items:center;gap:6px;margin-top:12px;min-height:16px">
+                <sc-for list="{{ carDots }}" as="d" hint-placeholder-count="3"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.bg }}"></span></sc-for>
+                <span style="position:absolute;right:0;font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ carCounter }}</span>
+              </div>
+              <sc-if value="{{ hasCarRest }}" hint-placeholder-val="{{ false }}"><div style="font-size:17px;font-weight:600;margin-top:30px">지난 공지</div></sc-if>
             </sc-if>
+            <div style="display:flex;flex-direction:column;gap:24px;margin-top:{{ listMt }}">
+              <sc-for list="{{ noticeList }}" as="n" hint-placeholder-count="6">
+                <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
+                    <sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><i class="icon-pin" style="font-size:13px"></i></sc-if>
+                    <span>{{ n.cat }}</span>
+                    <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:3px;align-items:center;color:var(--color-neutral-700)"><i class="icon-image" style="font-size:13px"></i>{{ n.imgCount }}</span></sc-if>
+                    <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                  </div>
+                  <div style="font-size:17px;line-height:1.4;font-weight:{{ n.weight }};text-wrap:pretty">{{ n.title }}</div>
+                  <div style="font-size:12px;color:var(--color-neutral-700)">{{ n.date }} · 관리인 박은혜</div>
+                </div>
+              </sc-for>
+            </div>
 
-            <sc-if value="{{ isNoticeB }}" hint-placeholder-val="{{ false }}">
-              <sc-if value="{{ lead }}" hint-placeholder-val="{{ true }}">
-                <div onClick="{{ lead.open }}" style="cursor:pointer;margin-top:26px;display:flex;flex-direction:column;gap:8px">
-                  <sc-if value="{{ lead.hasImages }}" hint-placeholder-val="{{ false }}"><img src="{{ lead.cover }}" alt="" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:4px;display:block;background:var(--color-surface)"></sc-if>
-                  <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">{{ lead.cat }} · {{ lead.date }}</div>
-                  <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;line-height:1.25;font-weight:600;text-wrap:pretty">{{ lead.title }}</div>
-                  <div style="font-size:14px;line-height:1.65;color:var(--color-neutral-700);text-wrap:pretty">{{ lead.excerpt }}</div>
-                  <sc-if value="{{ lead.unread }}" hint-placeholder-val="{{ false }}"><span class="tag tag-accent" style="align-self:flex-start">읽지 않음</span></sc-if>
-                </div>
-              </sc-if>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;margin-top:32px">
-                <sc-for list="{{ rest }}" as="n" hint-placeholder-count="4">
-                  <div onClick="{{ n.open }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px">
-                    <div style="display:flex;gap:6px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
-                      <span>{{ n.cat }}</span>
-                      <sc-if value="{{ n.hasImages }}" hint-placeholder-val="{{ false }}"><i class="icon-image" style="font-size:12px;color:var(--color-neutral-700)"></i></sc-if>
-                      <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
-                    </div>
-                    <div style="font-size:15px;line-height:1.4;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
-                    <div style="font-size:12px;line-height:1.5;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{ n.excerpt }}</div>
-                    <div style="font-size:11px;color:var(--color-neutral-700)">{{ n.date }}</div>
-                  </div>
-                </sc-for>
-              </div>
-            </sc-if>
             <sc-if value="{{ noNotices }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:14px;color:var(--color-neutral-700);margin-top:40px">이 분류의 공지가 없습니다.</div>
             </sc-if>
@@ -458,15 +338,6 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">차량 정보</div>
               <div style="font-size:16px;line-height:1.6;white-space:pre-line;color:{{ carColor }}">{{ carInfo }}</div>
             </sc-if>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin:36px 0 6px">알림</div>
-            <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="2">
-              <div onClick="{{ t.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;cursor:pointer">
-                <div><div style="font-size:16px">{{ t.label }}</div><div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px">{{ t.sub }}</div></div>
-                <div style="width:44px;height:26px;border-radius:13px;background:{{ t.bg }};position:relative;flex:none;transition:background .2s">
-                  <div style="position:absolute;top:3px;left:{{ t.x }};width:20px;height:20px;border-radius:50%;background:var(--color-bg);box-shadow:var(--shadow-sm);transition:left .2s"></div>
-                </div>
-              </div>
-            </sc-for>
             <div style="font-size:13px;color:var(--color-neutral-700);margin:30px 0 6px">비밀번호 변경</div>
             <div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">
               <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--color-neutral-700)">현재 비밀번호</span><input class="input" type="password" inputMode="numeric" value="{{ mpCur }}" onChange="{{ onMpCur }}" placeholder="숫자 4자리" style="min-height:44px;font-size:16px;letter-spacing:.3em"></label>
@@ -495,11 +366,6 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             </div>
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:24px">관리 현황</div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">{{ pd.label }}분 고지 기준</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px">
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">전체</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;font-variant-numeric:lining-nums">31<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">101동 16 · 102동 15</div></div>
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:30px;font-weight:500;font-variant-numeric:lining-nums;color:var(--color-accent-2-700)">{{ unpaidCount }}<span style="font-size:14px">호</span></div><div style="font-size:11px;color:var(--color-neutral-700)">전월 기준</div></div>
-              <div><div style="font-size:12px;color:var(--color-neutral-700)">미납 총액</div><div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600;line-height:1.35;margin-top:4px;font-variant-numeric:lining-nums">{{ unpaidSumMan }}<span style="font-size:13px">만원</span></div></div>
-            </div>
 
             <!-- 수납 현황: 구글시트 '대쉬보드' 시트의 값 (수납률은 큰 숫자 + 막대, 나머지는 숫자 칸) -->
             <div style="margin-top:34px">
@@ -803,13 +669,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
       <div style="height:env(safe-area-inset-bottom);flex:none;background:var(--color-bg)"></div>
       </sc-if>
 
-      <!-- ── 알림 배너 · 토스트 ── -->
-      <sc-if value="{{ banner }}" hint-placeholder-val="{{ false }}">
-        <div onClick="{{ bannerTap }}" style="position:absolute;top:38px;left:10px;right:10px;background:var(--color-bg);box-shadow:var(--shadow-lg);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;z-index:5">
-          <i class="icon-building-2" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;color:var(--color-accent-700)"></i>
-          <div style="flex:1;min-width:0"><div style="font-size:11px;color:var(--color-neutral-700)">도화엘리시아 · 지금</div><div style="font-size:14px;font-weight:600;margin-top:2px">{{ banner.title }}</div><div style="font-size:13px;margin-top:2px">{{ banner.body }}</div></div>
-        </div>
-      </sc-if>
+      <!-- ── 토스트 ── -->
       <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--color-text);color:var(--color-bg);font-size:13px;padding:10px 16px;border-radius:2px;white-space:nowrap;z-index:6">{{ toast }}</div>
       </sc-if>
@@ -855,8 +715,8 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;startAs&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;로그인&quot;,&quot;세입자&quot;,&quot;관리자&quot;],&quot;default&quot;:&quot;로그인&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;시작 화면&quot;},&quot;homeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1면&quot;,&quot;피드&quot;,&quot;추이&quot;],&quot;default&quot;:&quot;1면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;billLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;영수증&quot;,&quot;구성비&quot;],&quot;default&quot;:&quot;영수증&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;noticeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;목록&quot;,&quot;1면&quot;],&quot;default&quot;:&quot;목록&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;},&quot;adminFlow&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;한 화면&quot;,&quot;단계별&quot;],&quot;default&quot;:&quot;한 화면&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;레이아웃 안&quot;}}">
-// ── 예시 금액: 디자인 미리보기와 '고지서 발송' 시안에서만 쓴다 ──
+<script type="text/x-dc" data-dc-script data-props="{&quot;startAs&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;로그인&quot;,&quot;세입자&quot;,&quot;관리자&quot;],&quot;default&quot;:&quot;로그인&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;시작 화면&quot;}}">
+// ── 예시 금액: 디자인 미리보기(DEMO)에서만 쓴다 ──
 const ITEMS9 = [
   ['공용전기', 6916, 0],
   ['관리회사용역비', 4839, 0],
@@ -907,21 +767,15 @@ let PD = null;
 function buildPeriod(y, m, dueDay) {
   const t = new Date();
   const t0 = new Date(t.getFullYear(), t.getMonth(), t.getDate());
-  const [ny, nm] = addM(y, m, 1),
-    [my, mm2] = addM(y, m, 2);
+  const [ny, nm] = addM(y, m, 1);
   const due = new Date(ny, nm - 1, dueDay);
   const dd = Math.round((due - t0) / 864e5);
-  const due2 = new Date(my, mm2 - 1, dueDay);
   PD = {
     label: m + '월',
     ym: ymStr(y, m),
     dueFull: nm + '월 ' + dueDay + '일(' + WD[due.getDay()] + ')',
     dueShort: nm + '월 ' + dueDay + '일',
     dday: dd > 0 ? 'D-' + dd : dd === 0 ? '오늘 마감' : '기한 ' + -dd + '일 경과',
-    nextLabel: nm + '월',
-    nextDue: mm2 + '월 ' + dueDay + '일',
-    nextDueFull: my + '년 ' + mm2 + '월 ' + dueDay + '일',
-    nextFile: 'bills-data-' + ymStr(ny, nm) + '.json',
     todayFull: t.getFullYear() + '년 ' + (t.getMonth() + 1) + '월 ' + t.getDate() + '일 ' + WD[t.getDay()] + '요일',
   };
 }
@@ -1086,25 +940,21 @@ function items(u, mi) {
   if (mi === 5 && u.move) it = it.map(i => ({ ...i, amount: Math.round((i.amount * 8) / 30) }));
   return it;
 }
-// 예전 방식의 공개 파일 (전환용)
-const DATA_DIR = 'uploads/';
-const fileFor = ym => 'bills-data-' + ym + '.json';
 const keyOf = b => b.dong.replace('동', '') + '-' + b.ho.replace('호', '');
-// 고지서 적용: found = [{ym, json}] 최신 달 먼저 → UNITS·MONTHS·PD 를 채운다
+// 고지서 적용: found = [{ym, bills}] 최신 달 먼저 → UNITS·MONTHS·PD 를 채운다
 function applyAll(found) {
-  const latest = found[0],
-    j = latest.json;
+  const latest = found[0];
   const [y, m] = latest.ym.split('-').map(Number);
-  const dm = /(\d+)\s*일/.exec((j.bills[0] && j.bills[0].dueDateNote) || '');
+  const dm = /(\d+)\s*일/.exec((latest.bills[0] && latest.bills[0].dueDateNote) || '');
   buildPeriod(y, m, dm ? +dm[1] : 5);
   buildMonths(y, m);
   const byYm = {};
   found.forEach(f => {
     const mp = {};
-    f.json.bills.forEach(b => (mp[keyOf(b)] = b));
+    f.bills.forEach(b => (mp[keyOf(b)] = b));
     byYm[f.ym] = mp;
   });
-  UNITS = j.bills
+  UNITS = latest.bills
     .map(b => {
       const k = keyOf(b),
         d = k.split('-')[0],
@@ -1126,10 +976,6 @@ function applyAll(found) {
       };
     })
     .sort((a, b) => a.key.localeCompare(b.key));
-  const lines = (j.bills[0] && j.bills[0].notices) || [];
-  const si = lines.indexOf('특이사항');
-  const body = si > 0 ? [lines.slice(0, si).join(' ').replace(/^※\s*/, ''), ...lines.slice(si + 1)] : lines;
-  return { body: body.length ? body : null, issue: (j.building && j.building.issueDate) || '' };
 }
 // u 세대의 mi 번째 달 고지서 (없으면 null)
 const srcAt = (u, mi) => (u.srcs && MONTHS[mi] ? u.srcs[MONTHS[mi][2]] : null);
@@ -1284,7 +1130,7 @@ const nowHm = () => {
   const t = new Date();
   return t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0');
 };
-// 로그인 응답의 bills → applyAll 이 읽는 [{ym, json}] (최신 달 먼저). 형식이 틀린 건은 버린다
+// 로그인 응답의 bills → applyAll 이 읽는 [{ym, bills}] (최신 달 먼저). 형식이 틀린 건은 버린다
 const BILLS_LS = 'dohwa-bills';
 const billOk = b =>
   b &&
@@ -1298,17 +1144,14 @@ const toFound = list =>
     .filter(m => m && /^\d{4}-\d{2}$/.test(m.ym) && Array.isArray(m.bills))
     .map(m => ({
       ym: m.ym,
-      json: {
-        bills: m.bills.filter(billOk).map(b => ({
-          ...b,
-          resident: String(b.resident || ''),
-          items: b.items.map(i => ({ name: String(i.name), amount: i.amount })),
-          notices: Array.isArray(b.notices) ? b.notices.map(String) : [],
-        })),
-        building: { title: m.title || '', issueDate: '' },
-      },
+      bills: m.bills.filter(billOk).map(b => ({
+        ...b,
+        resident: String(b.resident || ''),
+        items: b.items.map(i => ({ name: String(i.name), amount: i.amount })),
+        notices: Array.isArray(b.notices) ? b.notices.map(String) : [],
+      })),
     }))
-    .filter(f => f.json.bills.length)
+    .filter(f => f.bills.length)
     .sort((a, b) => b.ym.localeCompare(a.ym));
 
 // ── GitHub API ──
@@ -1336,21 +1179,6 @@ const ghErrMsg = st =>
 
 // ── 기타 ──
 const rnd4 = () => String(1000 + Math.floor(Math.random() * 9000));
-// '고지서 발송' 시안의 항목별 총액 기본값
-const defTotals = () => {
-  const t = {};
-  ITEMS9.forEach(([n, a, r]) => (t[n] = String(a * (r ? 29 : 31))));
-  return t;
-};
-// 구성비 막대 색
-const SEGC = [
-  'var(--color-accent)',
-  'var(--color-accent-700)',
-  'var(--color-accent-400)',
-  'var(--color-neutral-700)',
-  'var(--color-neutral-500)',
-  'var(--color-neutral-300)',
-];
 
 class Component extends DCLogic {
   scRef = React.createRef();
@@ -1372,19 +1200,10 @@ class Component extends DCLogic {
     prevScreen: 'notices',
     notices: NOTICES,
     reads: initReads(),
-    pushNotice: true,
-    pushBill: true,
     toast: null,
-    banner: null,
-    totals: defTotals(),
-    step: 1,
-    sent: false,
-    confirmOpen: false,
-    aDong: '101',
     cCat: '일반',
     cTitle: '',
     cBody: '',
-    cPush: true,
     cErr: '',
     cImgs: [],
     imgBusy: false,
@@ -1446,73 +1265,6 @@ class Component extends DCLogic {
     this.loadNotes();
     this.applyStart();
   }
-
-  // ── 고지서 데이터 ──
-  // 로그인 응답의 고지서를 쓰고, 없으면 공개 파일(uploads/bills-data-*.json)을 읽는다.
-  // 세대 고지서는 오프라인 로그인용으로 폰에 저장 (cached: 저장본 사용). after: 적용 뒤 한 번 호출
-  useBills(key, list, after, cached) {
-    const found = toFound(list);
-    const seq = (this.billSeq = (this.billSeq || 0) + 1);
-    const done = () => {
-      if (this.billSeq === seq && after) after();
-    };
-    if (key !== 'admin' && !cached) lsSet(BILLS_LS, found.length ? JSON.stringify({ unit: key, bills: list }) : '');
-    if (found.length) {
-      this.showBills(found, cached ? '이 폰에 저장된 고지서' : '구글시트 고지서');
-      return done();
-    }
-    this.loadFileBills(seq).then(done);
-  }
-  loadFileBills(seq) {
-    const t = new Date();
-    const cands = [];
-    for (let k = 1; k >= -12; k--) {
-      const [y, m] = addM(t.getFullYear(), t.getMonth() + 1, k);
-      cands.push(ymStr(y, m));
-    }
-    return Promise.all(
-      cands.map(ym =>
-        fetch(DATA_DIR + fileFor(ym))
-          .then(r => (r.ok ? r.json() : null))
-          .then(j => (j && j.bills ? { ym, json: j } : null))
-          .catch(() => null)
-      )
-    ).then(res => {
-      if (seq === undefined || this.billSeq === seq) this.showBills(res.filter(Boolean), 'uploads 파일');
-    });
-  }
-  // 화면 데이터에 적용. 없거나 읽기 실패면 0원 상태로 둔다 (로그인은 계속)
-  showBills(found, label) {
-    let issue = '',
-      ok = found.length > 0;
-    if (ok) {
-      try {
-        issue = applyAll(found).issue;
-      } catch (e) {
-        ok = false;
-      }
-    }
-    if (!ok) resetData();
-    this.setState({
-      billMonth: 5,
-      issueShort: issue ? issue.slice(5).replace('-', '.') : '',
-      dataSrc: ok
-        ? label +
-          ' · ' +
-          UNITS.length +
-          '호 · ' +
-          found
-            .map(f => +f.ym.slice(5) + '월')
-            .reverse()
-            .join('·')
-        : '고지서 데이터가 없습니다',
-    });
-  }
-  // 로그아웃할 때 고지서를 비운다
-  clearBills() {
-    this.billSeq = (this.billSeq || 0) + 1;
-    resetData();
-  }
   componentDidUpdate(pp) {
     if (pp.startAs !== this.props.startAs) this.applyStart();
   }
@@ -1520,7 +1272,24 @@ class Component extends DCLogic {
     window.removeEventListener('popstate', this.onPop);
     this.mq && this.mq.removeEventListener && this.mq.removeEventListener('change', this.onMq);
     clearTimeout(this.tt);
-    clearTimeout(this.bt);
+  }
+
+  // ── 고지서 데이터 ──
+  // 로그인 응답의 고지서(구글시트 '고지서')를 화면 데이터로 쓴다. 없거나 형식이 틀리면 0원 상태로 둔다 (로그인은 계속).
+  // 세대 고지서는 오프라인 로그인용으로 폰에 저장 (cached: 그 저장본을 쓰는 경우)
+  useBills(key, list, cached) {
+    const found = toFound(list);
+    if (key !== 'admin' && !cached) lsSet(BILLS_LS, found.length ? JSON.stringify({ unit: key, bills: list }) : '');
+    let ok = found.length > 0;
+    if (ok) {
+      try {
+        applyAll(found);
+      } catch (e) {
+        ok = false;
+      }
+    }
+    if (!ok) resetData();
+    this.setState({ billMonth: 5 });
   }
 
   // ── 공지: 불러오기·작성·삭제 (GitHub 에 저장) ──
@@ -1799,17 +1568,13 @@ class Component extends DCLogic {
   }
 
   // ── 화면 이동·알림 ──
-  // 디자인 미리보기: 로그인 없이 세입자·관리자 화면으로 시작
+  // 디자인 미리보기: 로그인 없이 세입자·관리자 화면으로 시작 (예시 금액으로 표시)
   applyStart() {
     const s = this.props.startAs ?? '로그인';
     DEMO = s !== '로그인';
-    if (s === '세입자') {
-      this.enterTenant('101-202', true);
-      this.useBills('101-202', null, () => this.billBanner(), true);
-    } else if (s === '관리자') {
-      this.enterAdmin();
-      this.useBills('admin', null);
-    } else this.setState({ screen: 'login', role: null });
+    if (s === '세입자') this.enterTenant('101-202');
+    else if (s === '관리자') this.enterAdmin();
+    else this.setState({ screen: 'login', role: null });
   }
   // 화면 전환 (뒤로가기 기록 포함)
   go(screen, extra) {
@@ -1828,38 +1593,25 @@ class Component extends DCLogic {
     this.setState({ toast: msg });
     this.tt = setTimeout(() => this.setState({ toast: null }), 2200);
   }
-  enterTenant(key, quiet) {
+  enterTenant(key) {
     this.go('home', { role: 'tenant', unit: key, lErr: '' });
-    if (!quiet) setTimeout(() => this.billBanner(), 500);
-  }
-  // 고지서 도착 알림 (이번 달 고지서가 있을 때만)
-  billBanner() {
-    if (!this.state.pushBill || this.state.role !== 'tenant') return;
-    const bu = UNITS.find(x => x.key === this.state.unit);
-    if (!bu || !srcAt(bu, 5)) return;
-    clearTimeout(this.bt);
-    this.setState({
-      banner: { title: PD.label + '분 관리비 고지서가 도착했습니다', body: PD.dueShort + '까지 납부해 주세요.' },
-    });
-    this.bt = setTimeout(() => this.setState({ banner: null }), 3700);
   }
   enterAdmin() {
-    this.go('ahome', { role: 'admin', lErr: '', banner: null });
+    this.go('ahome', { role: 'admin', lErr: '' });
   }
 
   // ── 로그인·입금 조회 ──
   // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)·수납 현황(dash)
   // dash 가 응답에 없으면(예전 Apps Script) null 로 두어 화면에서 안내한다
-  setAdminData(j, after) {
-    const t = new Date();
+  setAdminData(j) {
     this.setState({
       payAll: j.list || [],
       pws: j.pws || {},
-      payAllStatus: '구글시트 세대정보 · ' + t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0') + ' 조회',
+      payAllStatus: '구글시트 세대정보 · ' + nowHm() + ' 조회',
       dash: 'dash' in j ? (Array.isArray(j.dash) ? j.dash : []) : null,
       dashAt: nowHm(),
     });
-    this.useBills('admin', j.bills, after);
+    this.useBills('admin', j.bills);
   }
   // 관리인 화면의 새로고침: 입금 현황·수납 현황(대쉬보드)·고지서를 한 번에 다시 받는다
   loadPayAll() {
@@ -1907,23 +1659,21 @@ class Component extends DCLogic {
                 ? '관리인 비밀번호가 맞지 않습니다'
                 : LOGIN_ERR[j.error] || '로그인하지 못했습니다. 잠시 후 다시 시도하세요',
           });
-        // 고지서 적용이 끝난 뒤 화면 전환 (0원이 잠깐 보이지 않게)
+        // 응답의 고지서를 먼저 적용하고 화면을 바꾼다
         if (admin) {
           this.adminPlain = pw;
-          this.setAdminData(j, () => {
-            this.setState({ lBusy: false, lPw: '' });
-            this.enterAdmin();
-          });
+          this.setAdminData(j);
+          this.setState({ lBusy: false, lPw: '' });
+          this.enterAdmin();
           return;
         }
         lsSet(LOGIN_LS, key + ':' + hashPw(key, pw));
         this.tenantPw = pw;
         const { bills, ...info } = j;
         const pay = 'unpaid' in info ? info : null;
-        this.useBills(key, bills, () => {
-          this.setState({ lBusy: false, lPw: '', pay, payBusy: false, payAt: '· ' + nowHm() + ' 조회' });
-          this.enterTenant(key, !!pay && pay.unpaid <= 0);
-        });
+        this.useBills(key, bills);
+        this.setState({ lBusy: false, lPw: '', pay, payBusy: false, payAt: '· ' + nowHm() + ' 조회' });
+        this.enterTenant(key);
       })
       .catch(() => {
         // 오프라인: 이 폰에서 마지막에 성공한 세대·번호면 저장된 고지서로 들어간다
@@ -1933,15 +1683,9 @@ class Component extends DCLogic {
           try {
             c = JSON.parse(lsGet(BILLS_LS) || 'null');
           } catch (e) {}
-          this.useBills(
-            key,
-            c && c.unit === key ? c.bills : null,
-            () => {
-              this.setState({ lBusy: false, lPw: '', pay: null, payBusy: false, payAt: '' });
-              this.enterTenant(key);
-            },
-            true
-          );
+          this.useBills(key, c && c.unit === key ? c.bills : null, true);
+          this.setState({ lBusy: false, lPw: '', pay: null, payBusy: false, payAt: '' });
+          this.enterTenant(key);
           return;
         }
         this.setState({ lBusy: false, lErr: '서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요' });
@@ -2056,17 +1800,12 @@ class Component extends DCLogic {
         localStorage.setItem(READ_LS, JSON.stringify(reads));
       } catch (e) {}
     }
-    this.go('notice', { noticeId: id, prevScreen: s.screen, reads, banner: null });
+    this.go('notice', { noticeId: id, prevScreen: s.screen, reads });
   }
 
   // ── 화면(템플릿)에 넘기는 값 ──
   renderVals() {
-    const s = this.state,
-      p = this.props;
-    const home = p.homeLayout ?? '1면',
-      billL = p.billLayout ?? '영수증',
-      noticeL = p.noticeLayout ?? '목록',
-      aflow = p.adminFlow ?? '한 화면';
+    const s = this.state;
     // 현재 세대와 고지서 (cur: 이번 달, bm: 고지서 화면에서 고른 달)
     const u = UNITS.find(x => x.key === s.unit) || UNITS[1] || UNITS[0];
     const cur = billFor(u, 5);
@@ -2077,27 +1816,21 @@ class Component extends DCLogic {
         ? realMonths[realMonths.length - 1]
         : 5;
     const bm = billFor(u, bmIdx);
-    if (bmIdx === 5 && s.role === 'tenant' && s.pay && s.pay.unpaid <= 0)
-      Object.assign(bm, { status: '납부 완료', tagClass: 'tag-neutral' });
     const isT = s.role === 'tenant',
       isA = s.role === 'admin';
+    // 완납: 입금 내역을 받아 왔고 미수 잔액이 0 이하
+    const paidUp = isT && !!s.pay && s.pay.unpaid <= 0;
+    if (bmIdx === 5 && paidUp) Object.assign(bm, { status: '납부 완료', tagClass: 'tag-neutral' });
     // 공지
     const unread = n => isT && !(s.reads[n.id] || []).includes(u.key);
-    const excerpt = n => {
-      const b = previewOf(n);
-      return b.length > 90 ? b.slice(0, 88) + '…' : b;
-    };
     const imgSrc = p => this.localImgs[p] || p;
     const nv = n => {
       const ims = n.images || [];
       return {
         ...n,
         unread: unread(n),
-        excerpt: excerpt(n),
         weight: unread(n) ? 700 : 600,
         open: () => this.openNotice(n.id),
-        readCount: (s.reads[n.id] || []).length,
-        pct: '0%',
         hasImages: ims.length > 0,
         imgCount: ims.length,
         cover: ims.length ? imgSrc(ims[0]) : '',
@@ -2112,9 +1845,9 @@ class Component extends DCLogic {
       };
     };
     const sorted = [...s.notices].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
-    // 캐러셀: 전체·목록형에서 고정 → 안 읽음 → 최신순 5개 (공지 2개 이상일 때)
+    // 캐러셀: 분류가 전체일 때 고정 → 안 읽음 → 최신순 5개 (공지 2개 이상일 때)
     const carSrc =
-      noticeL === '목록' && s.cat === '전체' && sorted.length > 1
+      s.cat === '전체' && sorted.length > 1
         ? [
             ...sorted.filter(n => n.pinned),
             ...sorted.filter(n => !n.pinned && unread(n)),
@@ -2131,16 +1864,8 @@ class Component extends DCLogic {
     const ndRaw = s.notices.find(n => n.id === s.noticeId) ||
       s.notices[0] || { id: '', cat: '', title: '', body: [], date: '' };
     const nd = nv(ndRaw);
-    // 고지서 화면: 금액이 있는 항목과 구성비
+    // 고지서 화면: 금액이 있는 항목
     const itemsNZ = bm.items.filter(i => i.amount > 0);
-    const bsorted = [...itemsNZ].sort((a, b) => b.amount - a.amount);
-    const maxI = bsorted[0] ? bsorted[0].amount : 1;
-    const colorOf = i => SEGC[Math.min(i, 5)];
-    const segs = bsorted.slice(0, 5).map((it, i) => ({ w: (it.amount / bm.subtotal) * 100 + '%', color: colorOf(i) }));
-    const restAmt = bsorted.slice(5).reduce((a, b) => a + b.amount, 0);
-    if (restAmt) segs.push({ w: (restAmt / bm.subtotal) * 100 + '%', color: SEGC[5] });
-    const trendVals = MONTHS.map((m, i) => sub(u, i));
-    const tMax = Math.max(1, ...trendVals);
     // 하단 메뉴
     const tabs = defs =>
       defs.map(([k, label, icon, badge]) => {
@@ -2158,17 +1883,7 @@ class Component extends DCLogic {
         };
       });
     const anyUnread = s.notices.some(unread);
-    // 관리인 '고지서 발송' 시안 계산
-    const aVals = {};
-    ITEMS9.forEach(([n]) => (aVals[n] = parseInt(String(s.totals[n]).replace(/\D/g, '')) || 0));
-    const perOf = ([n, a, r]) => Math.ceil(aVals[n] / (r ? 29 : 31));
-    const up10 = n => Math.ceil(n / 10) * 10;
-    const perRes = up10(ITEMS9.reduce((t, it) => t + perOf(it), 0)),
-      perShop = up10(ITEMS9.filter(it => !it[2]).reduce((t, it) => t + perOf(it), 0));
-    const unpaidUnits = UNITS.filter(x => x.prev > 0);
-    const latestN = s.notices[0] ? nv(s.notices[0]) : null;
     const ho = x => x.dong + '동 ' + x.ho + '호';
-    const stepsDef = ['항목 입력', '호수별 확인', '발송'];
     // 관리인 수납 현황: 청구액이나 수납액이 있는 달만, 최근 6개월. 고른 달이 없으면 최신 달
     const dashRows = (s.dash || [])
       .filter(d => d && /^\d{4}-\d{2}$/.test(d.ym) && typeof d.rate === 'number' && (d.billed > 0 || d.paid > 0))
@@ -2184,12 +1899,6 @@ class Component extends DCLogic {
     const noPayCount = noPay ? noPay.length : dashSel && dashSel.unpaidUnits != null ? dashSel.unpaidUnits : null;
     return {
       // ── 로그인 ──
-      jumpLogin: () => this.go('login', { role: null, banner: null }),
-      jumpTenant: () => {
-        this.setState({ billMonth: 5 });
-        this.enterTenant('101-202');
-      },
-      jumpAdmin: () => this.enterAdmin(),
       isLogin: s.screen === 'login',
       isTenantMode: s.lMode === 'tenant',
       tenantTabW: s.lMode === 'tenant' ? 700 : 400,
@@ -2212,16 +1921,17 @@ class Component extends DCLogic {
       doLogin: () => this.doLogin(),
 
       // ── 세대: 홈 ──
-      isHomeA: s.screen === 'home' && home === '1면',
-      isHomeB: s.screen === 'home' && home === '피드',
-      isHomeC: s.screen === 'home' && home === '추이',
+      isHomeA: s.screen === 'home',
       unitLabel: ho(u),
       unitType: u.shop ? '상가' : '세대',
       resident: u.resident,
       area: u.area,
       depositName: u.dong + '-' + u.ho,
       cur,
-      hasPrev: u.prev > 0,
+      // 완납이면 D-day·기한 경과 대신 '납부 완료'로 적고, 납기 후 금액과 미납 안내는 감춘다
+      dueTag: paidUp ? '납부 완료' : PD.dday,
+      showAfter: !paidUp,
+      hasPrev: u.prev > 0 && !paidUp,
       // 미납 안내: 구글시트 세대정보의 미납시작월~미납종료월(연월 6자리)을 적는다. 그 값이 없으면(빈 칸·오프라인·예전 Apps Script) '전월'
       prevMsg:
         (s.pay && /^\d{6}$/.test(s.pay.unpaidFrom) && /^\d{6}$/.test(s.pay.unpaidTo)
@@ -2249,7 +1959,6 @@ class Component extends DCLogic {
             : '완납'
         : '',
       payColor: s.pay && s.pay.unpaid > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)',
-      deltaFmt: fmt(cur.subtotal - sub(u, 4)),
       goBill: () => this.go('bill', { billMonth: 5 }),
       goNotices: () => this.go('notices'),
       copyAcct: () => {
@@ -2259,42 +1968,10 @@ class Component extends DCLogic {
         this.toast('계좌번호를 복사했습니다');
       },
       latest3: sorted.slice(0, 3).map(nv),
-      feed: [
-        {
-          date: s.issueShort || '09.26',
-          kind: '고지서',
-          icon: 'icon-receipt',
-          kColor: 'var(--color-accent-2-700)',
-          title: PD.label + '분 관리비 ' + cur.totalFmt + '원이 청구되었습니다',
-          unread: false,
-          open: () => this.go('bill', { billMonth: 5 }),
-        },
-        ...s.notices.slice(0, 5).map(n => ({
-          date: n.date.slice(5),
-          kind: n.cat,
-          icon: 'icon-megaphone',
-          kColor: 'var(--color-accent-700)',
-          title: n.title,
-          unread: unread(n),
-          open: () => this.openNotice(n.id),
-        })),
-      ],
-      trend: MONTHS.map((m, i) => ({
-        label: m[0],
-        short: (trendVals[i] / 10000).toFixed(1) + '만',
-        h: (trendVals[i] / tMax) * 120 + 'px',
-        color:
-          i === 5 ? 'var(--color-accent)' : cur.unpaid.has(i) ? 'var(--color-neutral-800)' : 'var(--color-neutral-300)',
-        w: i === 5 ? 700 : 400,
-        open: () => this.go('bill', { billMonth: i }),
-      })),
-      pinned: sorted[0] ? nv(sorted[0]) : null,
       noLatest: !s.notices.length,
 
       // ── 세대: 고지서 ──
       isBill: s.screen === 'bill',
-      isBillA: billL === '영수증',
-      isBillB: billL === '구성비',
       bm,
       monthChips: realMonths.map(i => ({
         label: MONTHS[i][0],
@@ -2302,19 +1979,9 @@ class Component extends DCLogic {
         go: () => this.setState({ billMonth: i }),
       })),
       billItems: itemsNZ.map(i => ({ name: i.name, amtFmt: fmt(i.amount) })),
-      billSegs: segs,
-      billSorted: bsorted.map((it, i) => ({
-        name: it.name,
-        amtFmt: fmt(it.amount),
-        pct: Math.round((it.amount / bm.subtotal) * 100) + '%',
-        w: (it.amount / maxI) * 100 + '%',
-        color: colorOf(i),
-      })),
 
       // ── 공지 목록·상세 ──
       isNotices: s.screen === 'notices',
-      isNoticeA: noticeL === '목록',
-      isNoticeB: noticeL === '1면',
       hasCarousel: carSrc.length > 0,
       hasCarRest: carSrc.length > 0 && filtered.length > carSrc.length,
       listMt: carSrc.length ? '14px' : '26px',
@@ -2337,8 +2004,6 @@ class Component extends DCLogic {
         go: () => this.setState({ cat: c, carIdx: 0 }),
       })),
       noticeList: carIds.size ? filtered.filter(n => !carIds.has(n.id)) : filtered,
-      lead: filtered[0] || null,
-      rest: filtered.slice(1),
       noNotices: filtered.length === 0,
       isNotice: s.screen === 'notice',
       nd,
@@ -2360,23 +2025,6 @@ class Component extends DCLogic {
         e && e.stopPropagation && e.stopPropagation();
         this.setState({ imgView: null });
       },
-      readGrid: [].map(d => {
-        const us = UNITS.filter(x => x.dong === d);
-        const rc = us.filter(x => s.reads[nd.id].includes(x.key)).length;
-        return {
-          dong: d + '동',
-          count: rc + '/' + us.length + ' 읽음',
-          units: us.map(x => {
-            const r = s.reads[nd.id].includes(x.key);
-            return {
-              ho: x.ho,
-              bg: r ? 'var(--color-accent-100)' : 'transparent',
-              fg: r ? 'var(--color-accent-800)' : 'var(--color-neutral-700)',
-              bd: r ? 'var(--color-accent)' : 'var(--color-neutral-300)',
-            };
-          }),
-        };
-      }),
 
       // ── 세대: 내 정보 ──
       isSettings: s.screen === 'settings',
@@ -2393,22 +2041,11 @@ class Component extends DCLogic {
       onMpCur: e => this.setState({ mpCur: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
       onMpNew: e => this.setState({ mpNew: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
       onMpNew2: e => this.setState({ mpNew2: e.target.value.replace(/\D/g, '').slice(0, 4), mpErr: '' }),
-      toggles: [
-        ['pushNotice', '새 공지 알림', '관리단이 공지를 올리면 알려드립니다'],
-        ['pushBill', '고지서 발송 알림', '매월 고지서가 발행되면 알려드립니다'],
-      ].map(([k, label, subt]) => ({
-        label,
-        sub: subt,
-        bg: s[k] ? 'var(--color-accent)' : 'var(--color-neutral-300)',
-        x: s[k] ? '21px' : '3px',
-        toggle: () => this.setState({ [k]: !s[k] }),
-      })),
       logout: () => {
         this.tenantPw = '';
-        this.clearBills();
+        resetData(); // 고지서를 화면 데이터에서 지운다
         this.go('login', {
           role: null,
-          banner: null,
           pay: null,
           payBusy: false,
           payAt: '',
@@ -2424,8 +2061,6 @@ class Component extends DCLogic {
 
       // ── 관리인: 현황 ──
       isAHome: s.screen === 'ahome',
-      unpaidCount: unpaidUnits.length,
-      unpaidSumMan: fmt(unpaidUnits.reduce((a, b) => a + b.prev, 0) / 10000),
       // 수납 현황 (구글시트 '대쉬보드'): 고른 달의 값과 월별 수납률 막대
       hasDash: !!dashSel,
       dashMonth: dashSel ? +dashSel.ym.slice(5) + '월분' : '',
@@ -2518,11 +2153,8 @@ class Component extends DCLogic {
           remoteColor: x.remote ? 'var(--color-text)' : 'var(--color-neutral-500)',
         })),
 
-      // ── 관리인: 현황 (이어서) ──
-      latestA: latestN,
-      billTaskSub: s.sent ? '발송 완료 · 31호' : '미발송 · 납부기한 ' + PD.nextDue,
+      // 청구 기간 문구(여러 화면에서 씀), 공지 작성 화면으로 이동
       pd: PD,
-      goABill: () => this.go('abill'),
       goCompose: () =>
         this.go('acompose', {
           prevScreen: s.screen,
@@ -2536,66 +2168,11 @@ class Component extends DCLogic {
           cImgs: [],
         }),
 
-      // ── 관리인: 고지서 발송 (시안 — 실제 발송은 없음) ──
-      isABill: s.screen === 'abill',
-      sent: s.sent,
-      showStepper: !s.sent && aflow === '단계별',
-      steps: stepsDef.map((l, i) => {
-        const on = s.step === i + 1,
-          done = s.step > i + 1;
-        return {
-          n: done ? '✓' : String(i + 1),
-          label: l,
-          fg: on ? 'var(--color-text)' : 'var(--color-neutral-700)',
-          w: on ? 700 : 400,
-          bg: on || done ? 'var(--color-accent)' : 'var(--color-neutral-300)',
-          nfg: on || done ? 'var(--color-bg)' : 'var(--color-text)',
-        };
-      }),
-      showItems: !s.sent && (aflow === '한 화면' || s.step === 1),
-      showPreview: !s.sent && aflow === '단계별' && s.step === 2,
-      showConfirm: !s.sent && aflow === '단계별' && s.step === 3,
-      aItems: ITEMS9.map(it => ({
-        name: it[0],
-        scope: it[2] ? '주거 29호' : '전체 31호',
-        value: s.totals[it[0]],
-        per: fmt(perOf(it)),
-        onChange: e => this.setState({ totals: { ...s.totals, [it[0]]: e.target.value.replace(/[^\d,]/g, '') } }),
-      })),
-      aTotal: fmt(Object.values(aVals).reduce((a, b) => a + b, 0)),
-      perRes: fmt(perRes),
-      perShop: fmt(perShop),
-      primaryItemsLabel: aflow === '단계별' ? '다음 · 호수별 확인' : '고지서 발송',
-      primaryItems: () =>
-        aflow === '단계별'
-          ? (this.setState({ step: 2 }), this.scRef.current && (this.scRef.current.scrollTop = 0))
-          : this.setState({ confirmOpen: true }),
-      a101: s.aDong === '101',
-      a102: s.aDong === '102',
-      pickA101: () => this.setState({ aDong: '101' }),
-      pickA102: () => this.setState({ aDong: '102' }),
-      previewUnits: UNITS.filter(x => x.dong === s.aDong).map(x => ({
-        ho: x.ho + '호',
-        res: x.resident,
-        total: fmt((x.shop ? perShop : perRes) + x.prev) + '원',
-        prevNote: x.prev ? '미납 ' + fmt(x.prev) + ' 포함' : '',
-      })),
-      stepBack: () => this.setState({ step: Math.max(1, s.step - 1) }),
-      stepNext: () => this.setState({ step: 3 }),
-      confirmOpen: s.confirmOpen,
-      closeConfirm: () => this.setState({ confirmOpen: false }),
-      doSend: () => {
-        this.setState({ sent: true, confirmOpen: false, step: 1 });
-        this.toast('31호에 고지서 발송 알림을 보냈습니다');
-      },
-      resetSend: () => this.setState({ sent: false, step: 1 }),
-
       // ── 관리인: 공지 관리·작성 ──
       isANotices: s.screen === 'anotices',
       adminNotices: s.notices.map(nv),
       noAdminNotices: !s.notices.length,
       notesStatus: s.notesStatus || '공지 불러오는 중…',
-      nextNoteId: this.nextNoteId(),
       composeCancel: () => this.go('anotices', { cErr: '' }),
       cPinBg: s.cPin ? 'var(--color-accent)' : 'var(--color-neutral-300)',
       cPinX: s.cPin ? '21px' : '3px',
@@ -2661,24 +2238,7 @@ class Component extends DCLogic {
       cSummary: s.cSummary || '',
       onCSummary: e => this.setState({ cSummary: e.target.value }),
       onCBody: e => this.setState({ cBody: e.target.value, cErr: '' }),
-      cPushBg: s.cPush ? 'var(--color-accent)' : 'var(--color-neutral-300)',
-      cPushX: s.cPush ? '21px' : '3px',
-      toggleCPush: () => this.setState({ cPush: !s.cPush }),
       cErr: s.cErr,
-      publish: () => {
-        if (!s.cTitle.trim()) return this.setState({ cErr: '제목을 입력하세요' });
-        if (!s.cBody.trim()) return this.setState({ cErr: '내용을 입력하세요' });
-        const id = 'n' + Date.now();
-        const n = { id, cat: s.cCat, date: '2026.09.27', title: s.cTitle.trim(), body: s.cBody.trim().split(/\n+/) };
-        this.go('anotices', {
-          notices: [n, ...s.notices],
-          reads: { ...s.reads, [id]: [] },
-          cTitle: '',
-          cBody: '',
-          cErr: '',
-        });
-        this.toast(s.cPush ? '게시하고 31호에 알림을 보냈습니다' : '공지를 게시했습니다');
-      },
 
       // ── 하단 메뉴 ──
       showTenantNav: isT && s.screen !== 'login',
@@ -2806,10 +2366,9 @@ class Component extends DCLogic {
       },
       adminLogout: () => {
         this.adminPlain = '';
-        this.clearBills();
+        resetData();
         this.go('login', {
           role: null,
-          banner: null,
           payAll: null,
           dash: null,
           dashAt: '',
@@ -2823,12 +2382,7 @@ class Component extends DCLogic {
         });
       },
 
-      // ── 공통: 알림 배너, 화면 틀 ──
-      banner: s.banner,
-      bannerTap: () => {
-        this.setState({ banner: null });
-        this.go('bill', { billMonth: 5 });
-      },
+      // ── 공통: 토스트, 화면 틀 ──
       toast: s.toast,
       scRef: this.scRef,
       isMobile: !!s.isMobile,
@@ -2842,7 +2396,6 @@ class Component extends DCLogic {
       frameShadow: s.isMobile ? 'none' : 'var(--shadow-lg)',
       innerR: s.isMobile ? '0' : '30px',
       safeTop: s.isMobile ? 'env(safe-area-inset-top)' : '0',
-      dataSrc: s.dataSrc || '데이터 불러오는 중…',
     };
   }
 }
