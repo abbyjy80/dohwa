@@ -92,19 +92,39 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="border-top:1px solid var(--color-text);border-bottom:1px solid var(--color-divider);padding:6px 0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em">
               <span>도화엘리시아</span><span>{{ pd.todayFull }}</span>
             </div>
-            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:28px">{{ unitLabel }} 귀하 · {{ pd.label }}분 관리비</div>
-            <div style="display:flex;align-items:baseline;gap:4px;margin-top:6px">
-              <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:52px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em">{{ cur.totalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px">원</span>
+            <!-- 청구 금액 카드: 가는 테두리, 금액 숫자에만 색. 좁은 폰에서는 숫자가 줄어든다 -->
+            <div style="margin-top:22px;padding:20px 18px 18px;border:1px solid var(--color-neutral-400);border-radius:var(--radius-lg)">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                <span style="font-size:13px;color:var(--color-neutral-700)">{{ unitLabel }} · {{ pd.label }}분 관리비</span>
+                <span style="flex:none;font-size:12px;font-weight:700;padding:3px 10px;border:1px solid var(--color-accent-700);border-radius:20px;color:var(--color-accent-700)">{{ dueTag }}</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-top:12px;color:var(--color-accent-700)">
+                <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:clamp(46px,16vw,62px);line-height:1;font-weight:600;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.02em">{{ cur.totalFmt }}</span><span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px">원</span>
+              </div>
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--color-divider);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 10px;font-size:13px">
+                <span>납부기한 <b>{{ pd.dueFull }}</b></span>
+                <sc-if value="{{ showAfter }}" hint-placeholder-val="{{ true }}"><span style="color:var(--color-neutral-700)">납기 후 {{ cur.afterFmt }}원</span></sc-if>
+              </div>
             </div>
-            <div style="font-size:14px;margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 12px">
-              <span>납부기한 {{ pd.dueFull }}</span><span style="color:var(--color-accent-700);font-weight:600">{{ dueTag }}</span>
-            </div>
-            <sc-if value="{{ showAfter }}" hint-placeholder-val="{{ true }}">
-              <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">납기 후 {{ cur.afterFmt }}원</div>
-            </sc-if>
             <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:14px;line-height:1.55;color:var(--color-accent-2-700);margin-top:16px;display:flex;gap:8px"><i class="icon-triangle-alert" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;flex:none;margin-top:1px"></i><span>{{ prevMsg }}</span></div>
             </sc-if>
+            <!-- 입금 계좌 카드: 계좌번호를 크게, 복사 버튼만 색을 채운다. 번호는 버튼과 한 줄에 들어가게 폰 너비에 맞춰 줄어든다 -->
+            <div style="margin-top:12px;padding:16px 18px;border:1px solid var(--color-neutral-400);border-radius:var(--radius-lg)">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--color-neutral-700)">
+                <span style="letter-spacing:.08em;font-weight:700">입금 계좌</span>
+                <span>국민은행 · 도화엘리시아 관리단</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px">
+                <span style="font-size:{{ acctSize }};font-weight:700;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap">444401-01-505592</span>
+                <button onClick="{{ copyAcct }}" style="flex:none;border:0;border-radius:var(--radius-md);background:var(--color-accent-700);color:#fff;font-size:14px;font-weight:600;padding:9px 10px;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="icon-copy"></i>복사</button>
+              </div>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--color-divider);display:flex;align-items:baseline;gap:10px;font-size:13px">
+                <span style="color:var(--color-neutral-700)">입금자명</span>
+                <span style="font-size:18px;font-weight:700;font-variant-numeric:tabular-nums lining-nums">{{ depositName }}</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-block" onClick="{{ goBill }}" style="min-height:46px;font-size:15px;margin-top:12px">고지서 자세히 보기</button>
             <sc-if value="{{ payBox }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:18px;padding-top:6px;border-top:1px solid var(--color-divider)">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -122,13 +142,8 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 </sc-if>
               </div>
             </sc-if>
-            <div style="display:flex;gap:10px;margin-top:22px">
-              <button class="btn btn-primary" onClick="{{ goBill }}" style="flex:1;min-height:46px;font-size:15px">고지서 보기</button>
-              <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="min-height:46px;font-size:15px"><i class="icon-copy"></i>계좌 복사</button>
-            </div>
-            <div style="font-size:12px;color:var(--color-neutral-700);margin-top:10px">국민은행 444401-01-505592 · 입금자명 {{ depositName }}</div>
 
-            <div style="margin-top:48px;display:flex;justify-content:space-between;align-items:baseline">
+            <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:baseline">
               <span style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:22px;font-weight:600">관리단 소식</span>
               <button class="btn btn-ghost" onClick="{{ goNotices }}">전체 보기</button>
             </div>
@@ -138,9 +153,9 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                   <div style="display:flex;gap:8px;align-items:center;font-size:11px;letter-spacing:.06em;color:var(--color-accent-700)">
                     <span>{{ n.cat }}</span>
                     <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></sc-if>
+                    <span style="margin-left:auto;font-size:12px;letter-spacing:0;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">{{ n.date }}</span>
                   </div>
                   <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px;line-height:1.35;font-weight:600;text-wrap:pretty">{{ n.title }}</div>
-                  <div style="font-size:12px;color:var(--color-neutral-700)">{{ n.date }}</div>
                 </div>
               </sc-for>
             </div>
@@ -2169,6 +2184,8 @@ class Component extends DCLogic {
       resident: u.resident,
       area: u.area,
       depositName: u.dong + '-' + u.ho,
+      // 계좌번호 글자 크기: 복사 버튼과 한 줄에 들어가게 폰 너비에 맞춘다 (PC 미리보기 틀은 너비가 고정이라 고정값)
+      acctSize: s.isMobile ? 'clamp(18px,10vw - 17px,24px)' : '21px',
       cur,
       // 완납이면 D-day·기한 경과 대신 '납부 완료'로 적고, 납기 후 금액과 미납 안내는 감춘다
       dueTag: paidUp ? '납부 완료' : PD.dday,
