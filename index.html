@@ -148,9 +148,30 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           </div>
         </sc-if>
 
+        <!-- ── 관리인: 세대 상세 (바로 아래 '세대: 고지서' 블록이 이어서 그 세대의 고지서를 보여 준다) ── -->
+        <sc-if value="{{ isAUnit }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 22px 0">
+            <button class="btn btn-ghost" onClick="{{ auBack }}" style="margin-left:-6px;min-height:44px"><i class="icon-arrow-left" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>{{ auBackLabel }}</button>
+            <div style="font-size:13px;color:var(--color-neutral-700);margin-top:12px">{{ unitType }} · 전용 {{ area }}㎡</div>
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600;margin-top:2px">{{ unitLabel }}</div>
+            <div style="font-size:14px;margin-top:2px">{{ auOwner }}</div>
+            <div style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px 12px;align-items:baseline;margin-top:20px;padding-top:16px;border-top:1px solid var(--color-divider);font-size:14px;line-height:1.5">
+              <sc-for list="{{ auInfo }}" as="x" hint-placeholder-count="5">
+                <span style="font-size:12px;color:var(--color-neutral-700)">{{ x.k }}</span><span style="white-space:pre-line;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;font-weight:{{ x.w }};color:{{ x.color }}">{{ x.v }}</span>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;padding-bottom:8px;border-bottom:1px solid var(--color-divider)">
+              <span style="width:64px;flex:none;margin-right:6px;font-size:12px;color:var(--color-neutral-700)">비밀번호</span>
+              <span style="flex:1;font-size:14px;font-variant-numeric:tabular-nums;letter-spacing:.1em">{{ auPw }}</span>
+              <button class="btn btn-ghost" onClick="{{ toggleShowPw }}" style="min-height:40px"><i class="{{ showPwIcon }}"></i>{{ showPwLabel }}</button>
+              <button class="btn btn-ghost" onClick="{{ auEditPw }}" style="min-height:40px">변경</button>
+            </div>
+          </div>
+        </sc-if>
+
         <!-- ── 세대: 고지서 ── -->
         <sc-if value="{{ isBill }}" hint-placeholder-val="{{ false }}">
-          <div style="padding:18px 22px 40px">
+          <div ref="{{ billRef }}" style="padding:18px 22px 40px">
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:24px;font-weight:600">관리비 고지서</div>
             <div style="display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none">
               <sc-for list="{{ monthChips }}" as="m" hint-placeholder-count="6">
@@ -193,12 +214,32 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="margin-top:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--color-neutral-700)">
               <div style="display:flex;justify-content:space-between"><span>소계</span><span style="font-variant-numeric:tabular-nums">{{ bm.subtotalFmt }}</span></div>
               <div style="display:flex;justify-content:space-between"><span>전월 미납액</span><span style="font-variant-numeric:tabular-nums">{{ bm.prevFmt }}</span></div>
-              <div style="display:flex;justify-content:space-between"><span>연체료 (5%)</span><span style="font-variant-numeric:tabular-nums">0</span></div>
+              <div style="display:flex;justify-content:space-between"><span>연체료 (5%)</span><span style="font-variant-numeric:tabular-nums">{{ bm.lateFmt }}</span></div>
             </div>
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;display:flex;justify-content:space-between;border-top:1px solid var(--color-text);margin-top:10px;padding-top:12px;font-size:18px;font-weight:600">
               <span>합계</span><span style="color:var(--color-accent-700);font-variant-numeric:tabular-nums">{{ bm.totalFmt }}원</span>
             </div>
 
+            <!-- 월별 납부 내역: 구글시트 '수금현황'의 달별 입금액 -->
+            <sc-if value="{{ hasPayHist }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--color-divider)">
+                <div style="font-size:13px;color:var(--color-neutral-700)">월별 납부 내역</div>
+                <div style="display:flex;flex-direction:column;margin-top:6px">
+                  <sc-for list="{{ payHist }}" as="x" hint-placeholder-count="3">
+                    <div onClick="{{ x.go }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--color-divider);cursor:pointer">
+                      <div style="min-width:0">
+                        <div style="font-size:15px;font-weight:{{ x.w }}">{{ x.label }}</div>
+                        <div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px;font-variant-numeric:tabular-nums">청구 {{ x.billed }}원 · 입금 {{ x.paid }}</div>
+                      </div>
+                      <span class="tag {{ x.tagClass }}" style="flex:none">{{ x.status }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:8px;text-wrap:pretty">입금액은 그 달 고지서의 수납 기간에 들어온 금액입니다. 모자란 금액은 다음 달 고지서의 전월 미납액에 합산됩니다.</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showAcct }}" hint-placeholder-val="{{ true }}">
             <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--color-divider);display:flex;flex-direction:column;gap:6px">
               <div style="font-size:13px;color:var(--color-neutral-700)">납부 계좌</div>
               <div style="font-size:17px;font-weight:600">국민은행 444401-01-505592</div>
@@ -207,6 +248,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <button class="btn btn-secondary" onClick="{{ copyAcct }}" style="align-self:flex-start;margin-top:8px;min-height:42px"><i class="icon-copy"></i>계좌번호 복사</button>
             </div>
             <div style="font-size:12px;line-height:1.65;color:var(--color-neutral-700);margin-top:28px;text-wrap:pretty">상기 금액을 청구하오니 납기일 내에 납부하여 주시기 바랍니다. 실 정산금액은 정수올림 처리에 따라 원 단위 차이가 있을 수 있습니다. 문의 관리인 박은혜 010-3769-1962</div>
+            </sc-if>
             <sc-if value="{{ hasBillNotes }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--color-divider)">
                 <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:19px;font-weight:600">{{ bm.monthTitle }} 안내</div>
@@ -289,12 +331,13 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
           <div style="padding:8px 22px 40px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
               <button class="btn btn-ghost" onClick="{{ back }}" style="margin-left:-6px;min-height:44px"><i class="icon-arrow-left" style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:18px"></i>{{ backLabel }}</button>
-              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-                <div style="display:flex;gap:4px">
+              <div style="display:flex;gap:4px">
+                <button class="btn btn-ghost" onClick="{{ noteShare }}" style="min-height:40px;padding:6px 10px"><i class="icon-share-2"></i>공유</button>
+                <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
                   <button class="btn btn-ghost" onClick="{{ noteEdit }}" style="min-height:40px;padding:6px 10px"><i class="icon-pencil"></i>수정</button>
                   <button class="btn btn-ghost" onClick="{{ noteAskDel }}" style="min-height:40px;padding:6px 10px;color:var(--color-accent-2-700)"><i class="icon-trash-2"></i>삭제</button>
-                </div>
-              </sc-if>
+                </sc-if>
+              </div>
             </div>
             <div style="font-size:11px;letter-spacing:.06em;color:var(--color-accent-700);margin-top:14px">{{ nd.cat }}</div>
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:27px;line-height:1.25;font-weight:600;margin-top:6px;text-wrap:pretty">{{ nd.title }}</div>
@@ -367,6 +410,28 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:26px;font-weight:600;margin-top:24px">관리 현황</div>
             <div style="font-size:13px;color:var(--color-neutral-700);margin-top:4px">{{ pd.label }}분 고지 기준</div>
 
+            <!-- 미확인 입금: 입금자명으로 세대를 찾지 못한 입금이 있을 때만. '세대 지정'은 아래쪽 팝업을 연다 -->
+            <sc-if value="{{ hasUnmatched }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:28px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                  <div style="font-size:17px;font-weight:600;color:var(--color-accent-2-700);display:flex;align-items:center;gap:6px"><i class="icon-circle-alert" style="font-size:18px"></i>미확인 입금</div>
+                  <div style="font-size:13px;color:var(--color-neutral-700)">{{ unmatchedCount }}건</div>
+                </div>
+                <div style="font-size:12px;line-height:1.6;color:var(--color-neutral-700);margin-top:2px">입금자명으로 세대를 찾지 못한 입금입니다. 세대를 지정하면 그 세대의 미수 잔액에 반영됩니다.</div>
+                <div style="display:flex;flex-direction:column;margin-top:8px;border-top:1px solid var(--color-divider)">
+                  <sc-for list="{{ unmatchedRows }}" as="x" hint-placeholder-count="2">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--color-divider)">
+                      <div style="min-width:0">
+                        <div style="font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ x.name }} <span style="font-weight:600;font-variant-numeric:tabular-nums">{{ x.amount }}</span></div>
+                        <div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px;font-variant-numeric:tabular-nums">{{ x.date }} 입금</div>
+                      </div>
+                      <button class="btn btn-secondary" onClick="{{ x.pick }}" style="flex:none;min-height:38px;font-size:13px">세대 지정</button>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
             <!-- 수납 현황: 구글시트 '대쉬보드' 시트의 값 (수납률은 큰 숫자 + 막대, 나머지는 숫자 칸) -->
             <div style="margin-top:34px">
               <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
@@ -401,7 +466,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                   <sc-if value="{{ hasNoPay }}" hint-placeholder-val="{{ false }}">
                     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;margin-top:6px;border-top:1px solid var(--color-divider)">
                       <sc-for list="{{ dashNoPay }}" as="x" hint-placeholder-count="4">
-                        <div style="display:flex;align-items:baseline;gap:6px;min-width:0;padding:7px 0;border-bottom:1px solid var(--color-divider);font-size:14px"><span style="flex:none;font-variant-numeric:tabular-nums">{{ x.label }}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--color-neutral-700)">{{ x.name }}</span></div>
+                        <div onClick="{{ x.open }}" style="display:flex;align-items:baseline;gap:6px;min-width:0;padding:7px 0;border-bottom:1px solid var(--color-divider);font-size:14px;cursor:pointer"><span style="flex:none;font-variant-numeric:tabular-nums">{{ x.label }}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--color-neutral-700)">{{ x.name }}</span></div>
                       </sc-for>
                     </div>
                     <sc-if value="{{ hasNoPayMore }}" hint-placeholder-val="{{ false }}">
@@ -444,12 +509,12 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
                 <div style="font-size:14px;margin-top:10px">미수 <b style="color:var(--color-accent-2-700)">{{ payDueCount }}</b>세대 · 합계 <b style="color:var(--color-accent-2-700);font-variant-numeric:tabular-nums">{{ payDueSum }}</b>원</div>
                 <div style="display:flex;flex-direction:column;margin-top:8px;border-top:1px solid var(--color-divider)">
                   <sc-for list="{{ payRows }}" as="x" hint-placeholder-count="5">
-                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--color-divider)">
+                    <div onClick="{{ x.open }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--color-divider);cursor:pointer">
                       <div style="min-width:0">
                         <div style="font-size:15px">{{ x.label }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ x.owner }}</span></div>
                         <div style="font-size:12px;color:var(--color-neutral-700);margin-top:2px;font-variant-numeric:tabular-nums">마지막 입금 {{ x.last }}</div>
                       </div>
-                      <span style="flex:none;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ x.color }}">{{ x.unpaid }}</span>
+                      <span style="flex:none;display:flex;align-items:center;gap:2px;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ x.color }}">{{ x.unpaid }}<i class="icon-chevron-right" style="font-size:16px;color:var(--color-neutral-500)"></i></span>
                     </div>
                   </sc-for>
                 </div>
@@ -549,7 +614,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               <div style="font-size:14px;margin-top:10px">차량 등록 <b style="color:var(--color-accent-700)">{{ carCount }}</b>세대 · 리모컨키 등록 <b style="color:var(--color-accent-700)">{{ remoteCount }}</b>세대</div>
               <div style="display:flex;flex-direction:column;margin-top:8px;border-top:1px solid var(--color-divider)">
                 <sc-for list="{{ carRows }}" as="x" hint-placeholder-count="5">
-                  <div style="padding:10px 0;border-bottom:1px solid var(--color-divider)">
+                  <div onClick="{{ x.open }}" style="padding:10px 0;border-bottom:1px solid var(--color-divider);cursor:pointer">
                     <div style="font-size:15px">{{ x.label }} <span style="font-size:12px;color:var(--color-neutral-700)">{{ x.owner }}</span></div>
                     <div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 10px;align-items:baseline;margin-top:4px;font-size:14px;line-height:1.5">
                       <span style="font-size:12px;color:var(--color-neutral-700)">차량번호</span><span style="white-space:pre-line;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;color:{{ x.carColor }}">{{ x.car }}</span>
@@ -673,7 +738,31 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
       <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--color-text);color:var(--color-bg);font-size:13px;padding:10px 16px;border-radius:2px;white-space:nowrap;z-index:6">{{ toast }}</div>
       </sc-if>
-      <!-- ── 팝업: 호수 비밀번호 변경 / 사진 크게 보기 / 공지 삭제 확인 ── -->
+      <!-- ── 팝업: 미확인 입금의 세대 지정 / 호수 비밀번호 변경 / 사진 크게 보기 / 공지 삭제 확인 ── -->
+      <sc-if value="{{ asgSheet }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
+          <div style="background:var(--color-bg);width:100%;max-height:100%;overflow-y:auto;padding:24px 22px 24px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
+            <div style="font-family:var(--font-heading),'Noto Serif KR',serif;font-size:20px;font-weight:600">입금 세대 지정</div>
+            <div style="font-size:14px;margin-top:6px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere">{{ asgInfo }}</div>
+            <div class="seg" style="margin-top:16px">
+              <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ asg101 }}" onChange="{{ pickAsg101 }}" style="position:absolute;opacity:0;width:0;height:0">101동</label>
+              <label class="seg-opt" style="padding:8px 18px"><input type="radio" name="adong" checked="{{ asg102 }}" onChange="{{ pickAsg102 }}" style="position:absolute;opacity:0;width:0;height:0">102동</label>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px">
+              <sc-for list="{{ asgUnits }}" as="x" hint-placeholder-count="16">
+                <button onClick="{{ x.pick }}" style="border:1px solid {{ x.border }};border-radius:2px;padding:9px 0;font-size:14px;font-variant-numeric:tabular-nums;cursor:pointer;background:{{ x.bg }};color:{{ x.fg }}">{{ x.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;line-height:1.6;color:var(--color-neutral-700);margin-top:12px;font-variant-numeric:tabular-nums">{{ asgSummary }}</div>
+            <sc-if value="{{ asgErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.5;color:var(--color-accent-2-700);margin-top:8px">{{ asgErr }}</div></sc-if>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button class="btn btn-secondary" onClick="{{ asgCancel }}" style="min-height:48px">취소</button>
+              <button class="btn btn-primary" onClick="{{ asgSave }}" disabled="{{ asgOff }}" style="flex:1;min-height:48px;font-size:15px">{{ asgSaveLabel }}</button>
+            </div>
+            <button class="btn btn-ghost" onClick="{{ asgNone }}" style="margin:8px 0 0 -8px;min-height:40px;font-size:13px;color:var(--color-neutral-700)">세대 입금이 아님 · 목록에서 빼기</button>
+          </div>
+        </div>
+      </sc-if>
       <sc-if value="{{ pwSheet }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-text) 40%,transparent);display:flex;align-items:flex-end;z-index:7">
           <div style="background:var(--color-bg);width:100%;padding:24px 22px 30px;box-sizing:border-box;border-radius:16px 16px 0 0;box-shadow:var(--shadow-lg)">
@@ -1009,9 +1098,18 @@ function billFor(u, mi) {
     totalFmt: fmt(total),
     afterFmt: fmt(after),
     prevFmt: fmt(prev),
+    lateFmt: fmt((sb && sb.lateFee) || 0),
     subtotalFmt: fmt(subtotal),
   };
 }
+// 납부 상태별 꼬리표 색
+const TAG_OF = {
+  '납부 대기': 'tag-accent',
+  '납부 완료': 'tag-neutral',
+  '합산 납부': 'tag-neutral',
+  '일부 납부': 'tag-accent-2',
+  '미납': 'tag-accent-2',
+};
 
 // ── SHA-256: 오프라인 로그인 때 비밀번호 대조용 ──
 let SHA_C = null;
@@ -1130,6 +1228,13 @@ const nowHm = () => {
   const t = new Date();
   return t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0');
 };
+// 로그인 화면의 처음 값: 이 폰에서 마지막으로 로그인한 종류(관리인·세대)와 동·호수.
+// 동·호수는 오프라인 로그인용 기록(LOGIN_LS = '101-202:해시')의 세대 키에서 읽는다
+const LAST_LS = 'dohwa-last';
+const lastLogin = () => {
+  const m = /^(101|102)-(\w+)$/.exec(lsGet(LOGIN_LS).split(':')[0]);
+  return { mode: lsGet(LAST_LS) === 'admin' ? 'admin' : 'tenant', dong: m ? m[1] : '101', ho: m ? m[2] : '' };
+};
 // 로그인 응답의 bills → applyAll 이 읽는 [{ym, bills}] (최신 달 먼저). 형식이 틀린 건은 버린다
 const BILLS_LS = 'dohwa-bills';
 const billOk = b =>
@@ -1182,15 +1287,16 @@ const rnd4 = () => String(1000 + Math.floor(Math.random() * 9000));
 
 class Component extends DCLogic {
   scRef = React.createRef();
+  billRef = React.createRef();
   localImgs = {};
-  // 화면 상태 — l*: 로그인, c*: 공지 작성, ap*·pw*: 관리인 비밀번호, mp*: 세대 비밀번호, gh*: GitHub 연결
+  // 화면 상태 — l*: 로그인, c*: 공지 작성, ap*·pw*: 관리인 비밀번호, mp*: 세대 비밀번호, gh*: GitHub 연결, asg*: 미확인 입금 지정
   state = {
     screen: 'login',
     role: null,
     unit: '101-202',
-    lMode: 'tenant',
-    lDong: '101',
-    lHo: '202',
+    lMode: lastLogin().mode,
+    lDong: lastLogin().dong,
+    lHo: lastLogin().ho,
     lPw: '',
     lBusy: false,
     lErr: '',
@@ -1240,6 +1346,12 @@ class Component extends DCLogic {
     dashYm: null,
     dashAll: false,
     payAllBusy: false,
+    unmatched: null,
+    asg: null,
+    asgDong: '101',
+    asgUnit: '',
+    asgBusy: false,
+    asgErr: '',
   };
 
   // ── 시작·종료 ──
@@ -1262,6 +1374,11 @@ class Component extends DCLogic {
     } catch (e) {}
     if ('serviceWorker' in navigator && location.protocol === 'https:')
       navigator.serviceWorker.register('sw.js').catch(() => {});
+    // 공유 링크(…?n=공지ID)로 들어왔으면 로그인한 뒤 그 공지를 연다
+    try {
+      const n = new URLSearchParams(location.search).get('n') || '';
+      if (NOTE_RE.test(n + '.json')) this.linkNote = n;
+    } catch (e) {}
     this.loadNotes();
     this.applyStart();
   }
@@ -1344,6 +1461,7 @@ class Component extends DCLogic {
       notices: list,
       notesStatus: list.length ? 'uploads 폴더의 공지 ' + list.length + '건' : 'uploads 폴더에 공지 파일이 없습니다',
     });
+    this.openLinked();
   }
   nextNoteId() {
     const d = todayYmd();
@@ -1418,8 +1536,11 @@ class Component extends DCLogic {
     };
     const text = JSON.stringify(note, null, 1);
     const n = normNote(id, note);
+    // 저장한 공지를 바로 열어 보여 준다 (거기서 공유 버튼으로 알릴 수 있게)
     const done = msg => {
-      this.go('anotices', {
+      this.go('notice', {
+        noticeId: id,
+        prevScreen: 'anotices',
         notices: [n, ...this.state.notices.filter(x => x.id !== id)].sort((a, b) => b.id.localeCompare(a.id)),
         cEdit: null,
         cTitle: '',
@@ -1595,13 +1716,45 @@ class Component extends DCLogic {
   }
   enterTenant(key) {
     this.go('home', { role: 'tenant', unit: key, lErr: '' });
+    this.openLinked();
   }
   enterAdmin() {
     this.go('ahome', { role: 'admin', lErr: '' });
+    this.openLinked();
+  }
+  // 공유 링크로 들어온 공지 열기: 로그인했고 그 공지를 불러온 뒤에 한 번만
+  openLinked() {
+    if (!this.linkNote) return;
+    this.setState({}, () => {
+      const s = this.state,
+        id = this.linkNote;
+      if (!id || !s.role || !s.notices.some(n => n.id === id)) return;
+      this.linkNote = null;
+      this.openNotice(id);
+    });
+  }
+  // 공지 공유: 폰의 공유 창(카카오톡 등)을 연다. 공유 창이 없는 브라우저에서는 글과 링크를 복사한다
+  shareNote(n) {
+    if (!n || !n.id) return;
+    const pv = previewOf(n);
+    const text =
+      '[도화엘리시아 공지] ' +
+      n.title +
+      (pv ? '\n' + (pv.length > 90 ? pv.slice(0, 88) + '…' : pv) : '') +
+      '\n' +
+      location.origin +
+      location.pathname +
+      '?n=' +
+      n.id;
+    try {
+      if (navigator.share) return void navigator.share({ title: n.title, text }).catch(() => {});
+      navigator.clipboard.writeText(text).catch(() => {});
+    } catch (e) {}
+    this.toast('공지 내용과 링크를 복사했습니다');
   }
 
   // ── 로그인·입금 조회 ──
-  // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)·수납 현황(dash)
+  // 관리인 응답 적용: 입금 현황(list)·비밀번호(pws)·고지서(bills)·수납 현황(dash)·미확인 입금(unmatched)
   // dash 가 응답에 없으면(예전 Apps Script) null 로 두어 화면에서 안내한다
   setAdminData(j) {
     this.setState({
@@ -1610,8 +1763,49 @@ class Component extends DCLogic {
       payAllStatus: '구글시트 세대정보 · ' + nowHm() + ' 조회',
       dash: 'dash' in j ? (Array.isArray(j.dash) ? j.dash : []) : null,
       dashAt: nowHm(),
+      unmatched: Array.isArray(j.unmatched) ? j.unmatched.filter(x => x && x.row > 1 && x.amount > 0) : null,
     });
     this.useBills('admin', j.bills);
+  }
+  // 미확인 입금을 세대에 반영 (unit = '101-202', 세대 입금이 아니면 'none'). 응답은 관리인 로그인과 같아 화면 전체가 새 값으로 바뀐다
+  assignDeposit(unit) {
+    const s = this.state,
+      d = s.asg;
+    if (!d || s.asgBusy) return;
+    if (!this.adminPlain) return this.setState({ asgErr: '관리인 비밀번호로 다시 로그인하세요' });
+    this.setState({ asgBusy: true, asgErr: '' });
+    api({ unit: 'admin', pw: this.adminPlain, assign: d.row + ':' + unit + ':' + d.amount })
+      .then(j => {
+        if (!j.ok) throw j.error;
+        if (!j.assigned) throw 'old';
+        if (this.state.role !== 'admin') return; // 그사이 로그아웃했으면 응답을 버린다
+        this.setAdminData(j);
+        this.setState({ asg: null, asgBusy: false });
+        this.toast(
+          unit === 'none' ? '세대 입금이 아닌 것으로 정리했습니다' : unit.replace('-', '동 ') + '호에 반영했습니다'
+        );
+      })
+      .catch(e => {
+        // 그사이 시트에서 이미 정리된 입금이면 목록을 다시 받는다
+        if (e === 'stale') {
+          this.setState({ asg: null, asgBusy: false });
+          this.toast('이미 정리된 입금입니다 · 목록을 다시 불러옵니다');
+          return this.loadPayAll();
+        }
+        this.setState({
+          asgBusy: false,
+          asgErr:
+            e === 'locked'
+              ? LOGIN_ERR.locked
+              : e === 'auth'
+                ? '관리인 비밀번호가 바뀌었습니다. 다시 로그인하세요'
+                : e === 'unit'
+                  ? '구글시트 세대정보에 없는 세대입니다'
+                  : e === 'old' || e === 'format'
+                    ? '구글시트 Apps Script를 새 버전으로 배포해야 반영할 수 있습니다'
+                    : '반영하지 못했습니다. 인터넷 연결을 확인하세요',
+        });
+      });
   }
   // 관리인 화면의 새로고침: 입금 현황·수납 현황(대쉬보드)·고지서를 한 번에 다시 받는다
   loadPayAll() {
@@ -1660,6 +1854,7 @@ class Component extends DCLogic {
                 : LOGIN_ERR[j.error] || '로그인하지 못했습니다. 잠시 후 다시 시도하세요',
           });
         // 응답의 고지서를 먼저 적용하고 화면을 바꾼다
+        lsSet(LAST_LS, admin ? 'admin' : 'tenant');
         if (admin) {
           this.adminPlain = pw;
           this.setAdminData(j);
@@ -1683,6 +1878,7 @@ class Component extends DCLogic {
           try {
             c = JSON.parse(lsGet(BILLS_LS) || 'null');
           } catch (e) {}
+          lsSet(LAST_LS, 'tenant');
           this.useBills(key, c && c.unit === key ? c.bills : null, true);
           this.setState({ lBusy: false, lPw: '', pay: null, payBusy: false, payAt: '' });
           this.enterTenant(key);
@@ -1789,6 +1985,20 @@ class Component extends DCLogic {
       );
   }
 
+  // 관리인: 세대 상세 열기. 그 세대를 현재 세대(unit)로 두어 고지서 화면의 값을 그대로 쓴다
+  openUnit(key) {
+    const s = this.state;
+    if (!UNITS.some(x => x.key === key)) return this.toast('이 세대의 고지서 자료가 없습니다');
+    this.go('aunit', { unit: key, billMonth: 5, prevScreen: s.screen === 'aunit' ? s.prevScreen : s.screen });
+  }
+  // 고지서의 달을 바꾸고 고지서 맨 위로 올린다
+  pickMonth(i) {
+    this.setState({ billMonth: i });
+    const sc = this.scRef.current,
+      el = this.billRef.current;
+    if (sc && el) sc.scrollTop = el.offsetTop - sc.offsetTop;
+  }
+
   // 공지 열기 (세대는 읽음 표시를 폰에 저장)
   openNotice(id) {
     const s = this.state;
@@ -1818,9 +2028,34 @@ class Component extends DCLogic {
     const bm = billFor(u, bmIdx);
     const isT = s.role === 'tenant',
       isA = s.role === 'admin';
+    // 이 세대의 입금 정보: 세대는 로그인 응답, 관리인은 입금 현황 목록에서 지금 보는 세대의 행
+    const pay = isT ? s.pay : isA ? (s.payAll || []).find(x => x.unit === u.key) || null : null;
     // 완납: 입금 내역을 받아 왔고 미수 잔액이 0 이하
-    const paidUp = isT && !!s.pay && s.pay.unpaid <= 0;
-    if (bmIdx === 5 && paidUp) Object.assign(bm, { status: '납부 완료', tagClass: 'tag-neutral' });
+    const paidUp = !!pay && pay.unpaid <= 0;
+    const setStatus = (b, st) => Object.assign(b, { status: st, tagClass: TAG_OF[st] });
+    if (bmIdx === 5 && paidUp) setStatus(bm, '납부 완료');
+    // 달별 납부 상태. paid = 구글시트 '수금현황'의 그 달 입금액(hist). 응답에 없으면(오프라인·예전 Apps Script) billFor 의 추정값을 그대로 둔다
+    // 지난 달에 모자랐던 금액은 다음 고지서의 전월미납액에 합산되므로, 그 뒤의 달을 다 냈거나 지금 완납이면 '합산 납부'로 본다
+    const hist = pay && pay.hist && typeof pay.hist === 'object' ? pay.hist : null;
+    const months = realMonths.map(i => {
+      const b = i === bmIdx ? bm : billFor(u, i);
+      const paid = hist && typeof hist[MONTHS[i][2]] === 'number' ? hist[MONTHS[i][2]] : null;
+      return { i, b, paid, full: paid != null && paid >= b.total };
+    });
+    months.forEach((m, k) => {
+      if (m.i === 5) setStatus(m.b, paidUp ? '납부 완료' : pay && pay.unpaid < pay.billed ? '일부 납부' : '납부 대기');
+      else if (m.paid != null)
+        setStatus(
+          m.b,
+          m.full
+            ? '납부 완료'
+            : paidUp || months.slice(k + 1).some(x => x.full)
+              ? '합산 납부'
+              : m.paid > 0
+                ? '일부 납부'
+                : '미납'
+        );
+    });
     // 공지
     const unread = n => isT && !(s.reads[n.id] || []).includes(u.key);
     const imgSrc = p => this.localImgs[p] || p;
@@ -1872,7 +2107,8 @@ class Component extends DCLogic {
         const on =
           s.screen === k ||
           (k === 'notices' && s.screen === 'notice' && s.prevScreen === 'notices') ||
-          (k === 'anotices' && (s.screen === 'acompose' || (s.screen === 'notice' && isA)));
+          (k === 'anotices' && (s.screen === 'acompose' || (s.screen === 'notice' && isA))) ||
+          (s.screen === 'aunit' && k === (s.prevScreen === 'acars' ? 'acars' : 'ahome'));
         return {
           label,
           icon,
@@ -1884,6 +2120,12 @@ class Component extends DCLogic {
       });
     const anyUnread = s.notices.some(unread);
     const ho = x => x.dong + '동 ' + x.ho + '호';
+    // 미수 잔액 글자: 56,570원 / 완납 / 선납 1,000원
+    const dueTxt = n => (n > 0 ? fmt(n) + '원' : n < 0 ? '선납 ' + fmt(-n) + '원' : '완납');
+    const dueColor = n => (n > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)');
+    // 미확인 입금 지정 팝업: 고른 세대(asgSel)와, 미수 잔액이 입금액과 같은 세대(asgSame)
+    const asgSel = (s.asg && (s.payAll || []).find(x => x.unit === s.asgUnit)) || null;
+    const asgSame = s.asg ? (s.payAll || []).filter(x => x.unpaid === s.asg.amount) : [];
     // 관리인 수납 현황: 청구액이나 수납액이 있는 달만, 최근 6개월. 고른 달이 없으면 최신 달
     const dashRows = (s.dash || [])
       .filter(d => d && /^\d{4}-\d{2}$/.test(d.ym) && typeof d.rate === 'number' && (d.billed > 0 || d.paid > 0))
@@ -1970,8 +2212,9 @@ class Component extends DCLogic {
       latest3: sorted.slice(0, 3).map(nv),
       noLatest: !s.notices.length,
 
-      // ── 세대: 고지서 ──
-      isBill: s.screen === 'bill',
+      // ── 세대: 고지서 (관리인의 세대 상세 화면도 이 블록으로 그 세대의 고지서를 보여 준다) ──
+      isBill: s.screen === 'bill' || s.screen === 'aunit',
+      billRef: this.billRef,
       bm,
       monthChips: realMonths.map(i => ({
         label: MONTHS[i][0],
@@ -1979,6 +2222,19 @@ class Component extends DCLogic {
         go: () => this.setState({ billMonth: i }),
       })),
       billItems: itemsNZ.map(i => ({ name: i.name, amtFmt: fmt(i.amount) })),
+      // 월별 납부 내역 (최신 달부터). 입금액을 받아 온 달이 있을 때만 보인다. 줄을 누르면 그 달 고지서로 바뀐다
+      hasPayHist: months.some(m => m.paid != null),
+      payHist: [...months].reverse().map(m => ({
+        label: MONTHS[m.i][0] + '분',
+        billed: m.b.totalFmt,
+        paid: m.paid != null ? fmt(m.paid) + '원' : '확인 전',
+        status: m.b.status,
+        tagClass: m.b.tagClass,
+        w: m.i === bmIdx ? 700 : 400,
+        go: () => this.pickMonth(m.i),
+      })),
+      // 납부 계좌 안내는 세대 화면에만
+      showAcct: !isA,
 
       // ── 공지 목록·상세 ──
       isNotices: s.screen === 'notices',
@@ -2010,6 +2266,7 @@ class Component extends DCLogic {
       back: () => this.go(s.prevScreen || 'notices'),
       backLabel: s.screen === 'acompose' ? '취소' : '목록',
       isAdmin: isA,
+      noteShare: () => this.shareNote(ndRaw),
       noteEdit: () => this.editNote(nd.id),
       noteAskDel: () => this.setState({ noteDelId: nd.id }),
       noteDelOpen: !!s.noteDelId,
@@ -2101,7 +2358,10 @@ class Component extends DCLogic {
       // 입금이 없는 세대 목록 (수금현황에서 그 달 입금이 0 인 세대). 10곳이 넘으면 접어 두고 펼쳐 본다
       hasNoPay: !!(noPay && noPay.length),
       noPayNone: !!(noPay && !noPay.length),
-      dashNoPay: noPay ? (s.dashAll ? noPay : noPay.slice(0, 10)) : [],
+      dashNoPay: (noPay ? (s.dashAll ? noPay : noPay.slice(0, 10)) : []).map(x => ({
+        ...x,
+        open: () => this.openUnit(x.label.replace(/\s|호/g, '').replace('동', '-').toUpperCase()),
+      })),
       hasNoPayMore: !!(noPay && noPay.length > 10),
       noPayMoreLabel: s.dashAll ? '접기' : '전체 ' + (noPay ? noPay.length : 0) + '세대 보기',
       toggleNoPay: () => this.setState({ dashAll: !s.dashAll }),
@@ -2130,9 +2390,88 @@ class Component extends DCLogic {
         label: x.label,
         owner: x.owner,
         last: x.lastDate ? x.lastDate.slice(5).replace('-', '.') + ' · ' + fmt(x.lastAmount) + '원' : '입금 내역 없음',
-        unpaid: x.unpaid > 0 ? fmt(x.unpaid) + '원' : x.unpaid < 0 ? '선납 ' + fmt(-x.unpaid) + '원' : '완납',
-        color: x.unpaid > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)',
+        unpaid: dueTxt(x.unpaid),
+        color: dueColor(x.unpaid),
+        open: () => this.openUnit(x.unit),
       })),
+      // 미확인 입금: 입금자명으로 세대를 찾지 못한 입금 (응답의 unmatched). '세대 지정'을 누르면 아래 팝업이 열린다
+      hasUnmatched: !!(isA && s.unmatched && s.unmatched.length),
+      unmatchedCount: (s.unmatched || []).length,
+      unmatchedRows: (s.unmatched || []).map(x => ({
+        name: x.name || '(이름 없음)',
+        amount: fmt(x.amount) + '원',
+        date: String(x.date).slice(5).replace('-', '.'),
+        pick: () => this.setState({ asg: x, asgUnit: '', asgErr: '' }),
+      })),
+      asgSheet: !!s.asg,
+      asgInfo: s.asg
+        ? String(s.asg.date).slice(5).replace('-', '.') +
+          ' · ' +
+          (s.asg.name || '(이름 없음)') +
+          ' · ' +
+          fmt(s.asg.amount) +
+          '원'
+        : '',
+      asg101: s.asgDong === '101',
+      asg102: s.asgDong === '102',
+      pickAsg101: () => this.setState({ asgDong: '101' }),
+      pickAsg102: () => this.setState({ asgDong: '102' }),
+      asgUnits: (s.payAll || [])
+        .filter(x => x.unit.split('-')[0] === s.asgDong)
+        .sort((a, b) => a.unit.localeCompare(b.unit))
+        .map(x => ({
+          label: x.unit.split('-')[1],
+          ...chip(x.unit === s.asgUnit),
+          border: asgSame.includes(x) ? 'var(--color-accent)' : 'var(--color-divider)',
+          pick: () => this.setState({ asgUnit: x.unit, asgErr: '' }),
+        })),
+      asgSummary: asgSel
+        ? asgSel.label + '의 미수 잔액 ' + dueTxt(asgSel.unpaid) + ' → ' + dueTxt(asgSel.unpaid - s.asg.amount)
+        : asgSame.length
+          ? '입금한 세대를 고르세요. 미수 잔액이 이 금액과 같은 세대: ' +
+            asgSame
+              .slice(0, 6)
+              .map(x => x.label)
+              .join(', ') +
+            (asgSame.length > 6 ? ' 외 ' + (asgSame.length - 6) + '곳' : '')
+          : '입금한 세대를 고르세요.',
+      asgErr: s.asgErr,
+      asgOff: !asgSel || s.asgBusy,
+      asgSaveLabel: s.asgBusy ? '반영 중…' : '이 세대에 반영',
+      asgSave: () => asgSel && this.assignDeposit(asgSel.unit),
+      asgCancel: () => {
+        if (!s.asgBusy) this.setState({ asg: null });
+      },
+      asgNone: () => {
+        if (
+          !s.asgBusy &&
+          window.confirm(
+            '이 입금을 세대 입금이 아닌 것으로 정리할까요?\n미확인 목록에서 빠지고, 구글시트 내역의 세대 칸에 "기타"로 적힙니다.'
+          )
+        )
+          this.assignDeposit('none');
+      },
+
+      // ── 관리인: 세대 상세 (입금 현황·차량·입금 없는 세대 목록에서 세대를 누르면 열린다) ──
+      isAUnit: s.screen === 'aunit',
+      auBack: () => this.go(s.prevScreen === 'acars' ? 'acars' : 'ahome'),
+      auBackLabel: s.prevScreen === 'acars' ? '차량' : '현황',
+      auOwner: (pay && pay.owner) || u.resident,
+      auInfo: [
+        ['미수 잔액', pay ? dueTxt(pay.unpaid) : '–', pay ? dueColor(pay.unpaid) : '', 600],
+        [
+          '마지막 입금',
+          pay && pay.lastDate ? pay.lastDate.replace(/-/g, '.') + ' · ' + fmt(pay.lastAmount) + '원' : '입금 내역 없음',
+        ],
+        ['청구 금액', pay ? fmt(pay.billed) + '원' : '–'],
+        ...(pay && /^\d{6}$/.test(pay.unpaidFrom) && /^\d{6}$/.test(pay.unpaidTo)
+          ? [['미납 기간', [pay.unpaidFrom, pay.unpaidTo].map(v => v.slice(0, 4) + '.' + v.slice(4)).join(' ~ ')]]
+          : []),
+        ['차량번호', (pay && pay.car) || '–'],
+        ['리모컨키', (pay && pay.remote) || '–'],
+      ].map(([k, v, color, w]) => ({ k, v, color: color || 'var(--color-text)', w: w || 400 })),
+      auPw: (s.pws || {})[u.key] ? (s.showPw ? s.pws[u.key] : '••••') : '?',
+      auEditPw: () => this.setState({ pwEdit: u.key, pwNew: '', pwErr: '' }),
 
       // ── 관리인: 차량 (세대정보 G·H열, payAll 사용) ──
       isACars: s.screen === 'acars',
@@ -2151,6 +2490,7 @@ class Component extends DCLogic {
           remote: x.remote || '–',
           carColor: x.car ? 'var(--color-text)' : 'var(--color-neutral-500)',
           remoteColor: x.remote ? 'var(--color-text)' : 'var(--color-neutral-500)',
+          open: () => this.openUnit(x.unit),
         })),
 
       // 청구 기간 문구(여러 화면에서 씀), 공지 작성 화면으로 이동
@@ -2375,6 +2715,9 @@ class Component extends DCLogic {
           dashYm: null,
           dashAll: false,
           payAllBusy: false,
+          unmatched: null,
+          asg: null,
+          asgBusy: false,
           lMode: 'tenant',
           lPw: '',
           pws: null,
