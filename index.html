@@ -206,6 +206,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
             <sc-if value="{{ bm.memo }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:14px;border-left:2px solid var(--color-accent-700);padding:2px 0 2px 10px;font-size:13px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere"><span style="font-weight:600;color:var(--color-accent-700)">세대 안내</span>  {{ bm.memo }}</div>
             </sc-if>
+            <!-- 미납 안내: 구글시트 세대정보의 미납시작월~미납종료월·미납원금 (최신 달, 완납이 아닐 때) -->
+            <sc-if value="{{ unpaidInfo }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:12px;border-left:2px solid var(--color-accent-2-700);padding:2px 0 2px 10px;font-size:13px;line-height:1.6"><span style="font-weight:600;color:var(--color-accent-2-700)">미납 안내</span>  {{ unpaidInfo }}<div style="font-size:12px;color:var(--color-neutral-700)">이미 납부하셨다면 이체확인증을 관리인에게 보내 주세요.</div></div>
+            </sc-if>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px">
               <div>
@@ -2145,6 +2149,11 @@ class Component extends DCLogic {
     // 미수 잔액 글자: 56,570원 / 완납 / 선납 1,000원
     const dueTxt = n => (n > 0 ? fmt(n) + '원' : n < 0 ? '선납 ' + fmt(-n) + '원' : '완납');
     const dueColor = n => (n > 0 ? 'var(--color-accent-2-700)' : 'var(--color-accent-700)');
+    // 미납 기간 글자: 세대정보의 미납시작월~미납종료월 → '2026.05 ~ 2026.09' (같은 달이면 한 달만, 값이 없으면 '')
+    const unpaidSpan = p =>
+      p && /^\d{6}$/.test(p.unpaidFrom) && /^\d{6}$/.test(p.unpaidTo)
+        ? [...new Set([p.unpaidFrom, p.unpaidTo])].map(v => v.slice(0, 4) + '.' + v.slice(4)).join(' ~ ')
+        : '';
     // 미확인 입금 지정 팝업: 고른 세대(asgSel)와, 미수 잔액이 입금액과 같은 세대(asgSame)
     const asgSel = (s.asg && (s.payAll || []).find(x => x.unit === s.asgUnit)) || null;
     const asgSame = s.asg ? (s.payAll || []).filter(x => x.unpaid === s.asg.amount) : [];
@@ -2259,6 +2268,11 @@ class Component extends DCLogic {
       })),
       // 납부 계좌 안내는 세대 화면에만
       showAcct: !isA,
+      // 미납 안내 (최신 달 고지서): 구글시트 세대정보의 미납 기간·미납원금. 완납이거나 값이 없으면(오프라인·예전 Apps Script) 숨긴다
+      unpaidInfo:
+        bmIdx === 5 && pay && !paidUp
+          ? [unpaidSpan(pay), pay.unpaidAmt > 0 ? '미납 원금 ' + fmt(pay.unpaidAmt) + '원' : ''].filter(Boolean).join(' · ')
+          : '',
 
       // ── 공지 목록·상세 ──
       isNotices: s.screen === 'notices',
@@ -2488,9 +2502,7 @@ class Component extends DCLogic {
           pay && pay.lastDate ? pay.lastDate.replace(/-/g, '.') + ' · ' + fmt(pay.lastAmount) + '원' : '입금 내역 없음',
         ],
         ['청구 금액', pay ? fmt(pay.billed) + '원' : '–'],
-        ...(pay && /^\d{6}$/.test(pay.unpaidFrom) && /^\d{6}$/.test(pay.unpaidTo)
-          ? [['미납 기간', [pay.unpaidFrom, pay.unpaidTo].map(v => v.slice(0, 4) + '.' + v.slice(4)).join(' ~ ')]]
-          : []),
+        ...(unpaidSpan(pay) ? [['미납 기간', unpaidSpan(pay)]] : []),
         ['차량번호', (pay && pay.car) || '–'],
         ['리모컨키', (pay && pay.remote) || '–'],
       ].map(([k, v, color, w]) => ({ k, v, color: color || 'var(--color-text)', w: w || 400 })),
