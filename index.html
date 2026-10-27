@@ -202,6 +202,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
               </div>
               <span class="tag {{ bm.tagClass }}">{{ bm.status }}</span>
             </div>
+            <!-- 세대 안내: 구글시트 '고지서'의 비고 칸 -->
+            <sc-if value="{{ bm.memo }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px;border-left:2px solid var(--color-accent-700);padding:2px 0 2px 10px;font-size:13px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere"><span style="font-weight:600;color:var(--color-accent-700)">세대 안내</span>  {{ bm.memo }}</div>
+            </sc-if>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px">
               <div>
@@ -1107,6 +1111,8 @@ function billFor(u, mi) {
     status,
     unpaid,
     move: mi === 5 ? u.move : '',
+    // 구글시트 '고지서'의 비고 칸: 그 달 이 세대에게만 하는 안내
+    memo: (sb && sb.memo) || '',
     monthTitle:
       MONTHS[mi][2].slice(0, 4) + '년 ' + MONTHS[mi][0] + '분' + (sb ? '' : DEMO ? ' (예시)' : ' (고지서 없음)'),
     tagClass: status === '미납' ? 'tag-accent-2' : status === '납부 대기' ? 'tag-accent' : 'tag-neutral',
@@ -1269,6 +1275,7 @@ const toFound = list =>
         resident: String(b.resident || ''),
         items: b.items.map(i => ({ name: String(i.name), amount: i.amount })),
         notices: Array.isArray(b.notices) ? b.notices.map(String) : [],
+        memo: typeof b.memo === 'string' ? b.memo.trim() : '',
       })),
     }))
     .filter(f => f.bills.length)
